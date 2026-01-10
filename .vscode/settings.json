@@ -1,0 +1,17 @@
+{
+  // Enable formatting on save
+  "editor.formatOnSave": true,
+
+  // Ensure common template files are treated as HTML for formatters
+  "files.associations": {
+    "*.html": "html",
+    "*.djhtml": "html",
+    "*.j2": "html"
+  },
+
+  // Prefer Prettier for HTML; install the Prettier extension if not present
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}

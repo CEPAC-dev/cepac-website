@@ -1,0 +1,389 @@
+{% extends "includes/base.html" %}
+{% load static %}
+{% load tld_filters %}
+{% get_media_prefix as MEDIA_PREFIX %}
+
+{% block title %}Trip Length Distribution Results | CEPAC{% endblock %}
+
+{% block content %}
+<div class="tld-results-container" id="print">
+  <div class="tld-results-wrapper">
+    <div class="tld-results-grid">
+      <!-- Input Data Section -->
+      <div class="tld-input-section">
+        <div class="tld-section-header">
+          <h2><i class="fas fa-table"></i> Input Data</h2>
+        </div>
+        <div class="tld-table-container">
+          <table class="tld-data-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Time</th>
+                <th>Frequency</th>
+                <th>Normalized</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for i in data.numberOfIntervals|times %}
+              <tr>
+                <td>{{ i|add:1 }}</td>
+                <td>{{ data.fittingResults.inputs.time|get_item:i|floatformat:2 }}</td>
+                <td>{{ data.frequencies|get_item:i|floatformat:2 }}</td>
+                <td>{{ data.fittingResults.inputs.frequency|get_item:i|multiply:100|floatformat:2 }}%</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+            <tfoot>
+              <tr class="tld-total-row">
+                <td colspan="2">Total</td>
+                <td>{{ data.totalFrequencySum }}</td>
+                <td>100%</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+
+      <!-- Results Section -->
+      <div class="tld-results-section">
+        <div class="tld-section-header">
+          <h2><i class="fas fa-chart-line"></i> Analysis Results</h2>
+        </div>
+        
+        <div class="tld-results-content">
+          <!-- Visualization -->
+          <div class="tld-visualization">
+            <img src="{{ plot_url }}" alt="Trip Length Distribution Fitting Results" class="tld-plot">
+          </div>
+          
+          <!-- Parameters Card -->
+          <div class="tld-parameters-card">
+            <div class="tld-parameter-group">
+              <h3><i class="fas fa-cog"></i> Optimized Parameters</h3>
+              <ul class="tld-parameter-list">
+                <li>
+                  <span class="tld-param-name">A:</span>
+                  <span class="tld-param-value">{{ data.fittingResults.optimized_parameters.a|floatformat:3 }}</span>
+                </li>
+                <li>
+                  <span class="tld-param-name">B:</span>
+                  <span class="tld-param-value">{{ data.fittingResults.optimized_parameters.b|floatformat:3 }}</span>
+                </li>
+                <li>
+                  <span class="tld-param-name">C:</span>
+                  <span class="tld-param-value">{{ data.fittingResults.optimized_parameters.c|floatformat:3 }}</span>
+                </li>
+              </ul>
+            </div>
+            
+            <div class="tld-parameter-group">
+              <h3><i class="fas fa-function"></i> Distribution Equation</h3>
+              <div class="tld-equation">
+                <p>
+                  <strong>f(t)</strong> = 
+                  {{ data.fittingResults.optimized_parameters.a|floatformat:3 }}
+                  t<sup>{{ data.fittingResults.optimized_parameters.b|floatformat:4 }}</sup>
+                  e<sup>{{ data.fittingResults.optimized_parameters.c|floatformat:3 }} t</sup>
+                </p>
+              </div>
+            </div>
+            
+            <div class="tld-parameter-group">
+              <h3><i class="fas fa-chart-bar"></i> Statistics</h3>
+              <ul class="tld-parameter-list">
+                <li>
+                  <span class="tld-param-name">R²:</span>
+                  <span class="tld-param-value">{{ data.fittingResults.statistics.R2|floatformat:4 }}</span>
+                </li>
+                <li>
+                  <span class="tld-param-name">SSE:</span>
+                  <span class="tld-param-value">{{ data.fittingResults.statistics.SSE|floatformat:4 }}</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Action Buttons -->
+<div class="tld-actions-container">
+  <div class="tld-actions-grid">
+    {% with json_data=data|tojson %}
+      <a href="{% url 'trip_length_distribution:download_pdf' %}?data={{ json_data|urlencode }}" class="tld-action-btn pdf-btn">
+        <i class="fas fa-file-pdf"></i> Download PDF Report
+      </a>
+      <a href="{% url 'trip_length_distribution:download_excel' %}?data={{ json_data|urlencode }}" class="tld-action-btn excel-btn">
+        <i class="fas fa-file-excel"></i> Download Excel Data
+      </a>
+    {% endwith %}
+    <a href="{% url 'trip_length_distribution:index' %}" class="tld-action-btn new-analysis-btn">
+      <i class="fas fa-plus-circle"></i> New Analysis
+    </a>
+  </div>
+</div>
+
+<script>
+  const data = {{ data|tojson|safe }};
+  const data_json = encodeURIComponent(JSON.stringify(data));
+</script>
+
+<style>
+  .tld-results-container {
+    padding: 40px 0;
+    background: #f8f9fa;
+  }
+
+  .tld-results-wrapper {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .tld-results-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 30px;
+    margin-bottom: 40px;
+  }
+
+  /* Input Section */
+  .tld-input-section {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+  }
+
+  .tld-section-header {
+    padding: 20px;
+    background: #17a98a;
+    color: white;
+  }
+
+  .tld-section-header h2 {
+    margin: 0;
+    font-size: 20px;
+    display: flex;
+    color: white;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .tld-table-container {
+    padding: 20px;
+    overflow-x: auto;
+  }
+
+  .tld-data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  .tld-data-table th, 
+  .tld-data-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #e9ecef;;
+  }
+
+  .tld-data-table th {
+    background: #17a98a;
+    color: white;
+    font-weight: 500;
+  }
+
+  .tld-data-table tbody tr:hover {
+    background-color: rgba(74, 108, 247, 0.05);
+  }
+
+  .tld-total-row {
+    font-weight: bold;
+    background: #e9ecef;
+  }
+
+  /* Results Section */
+  .tld-results-section {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+  }
+
+  .tld-results-content {
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+  }
+
+  .tld-visualization {
+    background: white;
+    border-radius: 8px;
+    padding: 15px;
+    border: 1px solid #e9ecef;
+  }
+
+  .tld-plot {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+  }
+
+  /* Parameters Card */
+  .tld-parameters-card {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .tld-parameter-group {
+    background: white;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e9ecef;
+  }
+
+  .tld-parameter-group h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #17a98a;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+  }
+
+  .tld-parameter-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .tld-parameter-list li {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px dashed #e9ecef;
+  }
+
+  .tld-parameter-list li:last-child {
+    border-bottom: none;
+  }
+
+  .tld-param-name {
+    font-weight: 500;
+    color: #6b7280;
+  }
+
+  .tld-param-value {
+    font-weight: 600;
+    color: #111827;
+  }
+
+  .tld-equation {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 6px;
+    font-family: monospace;
+    font-size: 16px;
+    text-align: center;
+  }
+
+  /* Action Buttons */
+  .tld-actions-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px 40px;
+  }
+
+  .tld-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+  }
+
+  .tld-action-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px 20px;
+    border-radius: 8px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    text-align: center;
+  }
+
+  .pdf-btn {
+    background: #ef4444;
+    color: white;
+  }
+
+  .pdf-btn:hover {
+    background: #dc2626;
+    transform: translateY(-2px);
+    color: white;
+  }
+
+  .excel-btn {
+    background: #10b981;
+    color: white;
+  }
+
+  .excel-btn:hover {
+    background: #17a98a;
+    transform: translateY(-2px);
+    color: white;
+  }
+
+  .new-analysis-btn {
+    background: #4a6cf7;
+    color: white;
+  }
+
+  .new-analysis-btn:hover {
+    background: #4a6cf7;
+    color: white;    
+    transform: translateY(-2px);
+  }
+
+  /* Responsive Design */
+  @media (max-width: 1200px) {
+    .tld-results-content {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 992px) {
+    .tld-results-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .tld-section-header {
+      padding: 15px;
+    }
+    
+    .tld-table-container,
+    .tld-results-content {
+      padding: 15px;
+    }
+    
+    .tld-data-table th, 
+    .tld-data-table td {
+      padding: 8px 10px;
+    }
+  }
+</style>
+
+<!-- Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+{% endblock %}

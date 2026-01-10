@@ -1,0 +1,61 @@
+{% extends "includes/base.html" %}
+{% load static %}
+
+{% block title %}Trip Generation | CEPAC{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h4 class="text-center mb-5 fw-normal">Trip Generation </h4>
+    
+    <div class="row g-4 justify-content-center">
+        <!-- Card 1 -->
+        <div class="col-lg-5 col-md-6">
+            <div class="card border-0 shadow-sm h-100 hover-lift">
+                <div class="card-body p-4 text-center">
+                    <div class="icon-wrapper mb-3">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#0d6efd" stroke-width="1.5">
+                            <path d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2 2 0 01-2 2H5a2 2 0 01-2-2V5.25a2 2 0 012-2h13a2 2 0 012 2z"/>
+                        </svg>
+                    </div>
+                    <h5 class="card-title mb-3"> Service</h5>
+                    <p class="card-text text-muted mb-4">Generate comprehensive trip analysis reports</p>
+                    <a href="{% url 'trip_generation:tripGeneration' %}" class="btn btn-primary px-4">
+                        Calculation
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 2 -->
+        <div class="col-lg-5 col-md-6">
+            <div class="card border-0 shadow-sm h-100 hover-lift">
+                <div class="card-body p-4 text-center">
+                    <div class="icon-wrapper mb-3">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#198754" stroke-width="1.5">
+                            <path d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934M12 21a9 9 0 11 0-18 9 9 0 010 18z"/>
+                        </svg>
+                    </div>
+                    <h5 class="card-title mb-3">  Analysis</h5>
+                    <p class="card-text text-muted mb-4">Manual analysis of inbound/outbound trip rates</p>
+                    <a href="{% url 'trip_generation:showReport' %}" class="btn btn-success px-4">
+                        Show Report
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .hover-lift {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .hover-lift:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1) !important;
+    }
+    .icon-wrapper {
+        opacity: 0.9;
+    }
+</style>
+{% endblock %}

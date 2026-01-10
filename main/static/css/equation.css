@@ -1,0 +1,1322 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Mirza:wght@700&family=Prociono&family=Reem+Kufi+Ink&display=swap');
+
+
+
+
+/* Start first page style */
+.first {
+    padding-top: 50px;
+}
+
+.first .card {
+    font-family: cursive;
+    background-color: #fff;
+    transition: transform 0.5s ease-in-out, background-color 0.5s ease-in-out;
+    border: none;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    color: #000;
+}
+
+.first .card h5{
+    color: #000;
+}
+
+.first .card img {
+
+    height: 350px;
+    transition: transform 0.5s ease-in-out;
+
+    height: 250px; /* يمكن تعديله حسب الحاجة */
+    object-fit: cover; /* لضمان تغطية الصورة بالكامل دون تمدد غير طبيعي */
+
+}
+.first .RIRO .card img {
+
+    object-fit: unset; /* لضمان تغطية الصورة بالكامل دون تمدد غير طبيعي */
+
+}
+
+.first .card:hover {
+    transform: translateY(-10px);
+    background-color: #e96b56;
+    color: white;
+}
+
+.first .card:hover .card-title {
+    color: white;
+}
+
+.first .card-body {
+    flex-grow: 1; /* يجعل جميع صناديق النصوص بنفس الطول */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 80px; /* لضمان توحيد ارتفاع النصوص */
+}
+/* End first page style */
+
+/* ///////////////////////////////////////////////////////////////////////// */
+
+/* {{-- Responsive Styling --}} */
+
+    .design {
+        position: relative;
+    }
+    .design .classDeo {
+        position: absolute;
+    }
+    .design .topIn {
+        top: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    .design .rightIn {
+        right: -10px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    @media (max-width: 768px) {
+        .design img {
+            width: 100%;
+        }
+    }
+
+
+
+
+/*   /////    End four page ///// */
+
+
+
+/*   /////    start four  input page style ///// */
+/* /////////////////////////////////////////////////////////////////////////////////// */
+.action .row{
+    justify-content: space-between;
+}
+.action .row button,
+.action .row a{
+    background-color: rgb(255, 255, 255);
+    color: var(--accent-color);
+    padding: 10px 20px;
+    font-size: 18px;
+    font-weight: 700;
+
+    border: 1px solid var(--accent-color);
+    border-radius: 10px;
+    transition: all 1s ease-in-out;
+}
+.action .row button:hover,
+.action .row a:hover{
+    background-color:color-mix(in srgb, var(--accent-color), transparent 20%);
+    color: var(--contrast-color);
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+
+}
+.design img{
+    padding: 10px;
+    background-color: #fff;
+    border: 5px solid #000;
+    border-radius: 10px;
+    overflow: hidden;
+}
+.design .sifevgl{
+    position: absolute;
+    left: 20px;
+    /* top: 50px; */
+}
+.design{
+    position: relative;
+}
+.design .classDeo{
+    position: absolute;
+    top: 200px;
+    left: 50px;
+}
+
+.design .topIn{
+    top: -80px;
+    left: 190px;
+}
+.design .TopOut{
+    top: 0px;
+    left: 300px;
+    transform: rotate(180deg);
+}
+.design .leftOut{
+    top: 80px;
+    transform: rotate(180deg);
+}
+.design .rightIn{
+    top: 80px;
+    right: 46px;
+    transform: rotate(180deg);
+}
+.design .rightOut{
+    top: 213px;
+    right: 81px;
+    left: 515px;
+}
+
+.design .dowenIN{
+    top: 359px;
+    left: 316px;
+    transform: rotate(180deg);
+}
+.design .downOut{
+    top:290px;
+    left: 201px;
+}
+.fourDiretion .allInput {
+    position: relative;
+    color: #fff;
+    font-size: 22px;
+    text-transform: capitalize;
+}
+
+/*  input */
+.fourDiretion .right{
+    display: inline;
+    width:6rem ;
+    margin-bottom: 10px;
+    margin-left: 6px;
+}
+.fourDiretion .Top {
+    padding-top: 200%;
+}
+
+.fourDiretion .mar{
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.fourDiretion .Botom{
+    padding-top: 154px;
+}
+.fourDiretion .buttoInPut{
+    text-align: end;
+    padding-right: 142px;
+}
+
+.fourInput .rightT {
+    text-align: left;
+    padding-left: 64px;
+
+}
+
+.fourDiretion .Botom {
+    padding-top: 141px;
+    text-align: left;
+}
+.foutoutput .rightSection .Top {
+    padding-top: 35%;
+    text-align: left;
+}
+
+/* ///////////////////////////////////// */
+/* //////////  input page style  */
+/* ////////////////////////////////////////// */
+.foutoutput,
+.fourInput{
+    background: center #d6d0ce24;
+
+ }
+
+
+.fourInput .topInputNumber{
+    margin-right: 241px;
+}
+
+.fourInput .bouttonInputNumber{
+    margin-left: 171px;
+
+}
+.fourInput .rightInputNumber{
+    margin-bottom: 146px;
+    margin-left: 20px;
+}
+.fourInput .leftInputNumber{
+    margin-top: 105px;
+    margin-right: 20px;
+}
+
+    /* /////////////////////////////////// */
+   /* /////////////////////////////////// */
+  /* /////   output  page style    ///// */
+ /* /////////////////////////////////// */
+/* /////////////////////////////////// */
+
+
+
+
+
+/* عند الشاشات المتوسطة (أقل من 992 بكسل) */
+@media (max-width: 992px) {
+
+
+    /* ///////////// input page ///////////////// */
+
+    .fourInput .topInputNumber{
+        margin-right: 79px;
+    }
+
+    .fourInput .bouttonInputNumber{
+        margin-left: 79px;
+    }
+    .fourInput .rightInputNumber{
+        margin-bottom: 69px;
+    }
+    .fourInput .leftInputNumber{
+        margin-top: 69px;
+    }
+
+}
+
+
+
+
+
+/* عند الشاشات الصغيرة (أقل من 768 بكسل) */
+@media (max-width: 768px) {
+
+
+
+}
+
+
+
+/* عند الشاشات الدقيقة جداً (أقل من 576 بكسل) */
+@media (max-width: 576px) {
+
+    .fourDiretion form label{
+        display: none;
+    }
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* /////////////// */
+/* // action botton   */
+
+/* //////////////// */
+.action a,
+.action button {
+    color: #f2f2f6;
+    background: var(--accent-color);
+    /* margin-top: 40px; */
+    transition: all 300ms ease-in-out;
+    width: 50%;
+    border: 2px solid #fff;
+
+}
+.action a:hover,
+.action button:hover{
+    border: 2px solid var(--accent-color);
+    color:var(--accent-color)  #f2f2f6;
+    background:#f2f2f6;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ///////   Start four output style page  ////// */
+
+
+.kk input#midNameOneMoecd {
+    bottom: -4px;
+
+}
+
+
+
+
+.fourDiretion{
+    overflow: hidden;
+    padding: 30px;
+}
+.fourDiretion .dirct{
+    line-height: 2;
+    text-align: left;
+    display: none;
+    width: 257px;
+    position: absolute;
+    letter-spacing: 1.8;
+    z-index: 999999;
+    background: #0d0d0ddd;
+    padding: 20px;
+    top: -100px;
+    border-spacing: revert;
+    font-size: 18px;
+    color: #fff;
+    opacity: .1;
+    left: 0px;
+    /* visibility: hidden; */
+    padding-top: 23px;
+    /* transition-property: opacity; */
+    /* transition-timing-function: ease-in-out; */
+    transition: all 3000ms, top 2000ms;
+
+}
+.fourDiretion .dirct div{
+    margin: 10px;
+    text-align: left;
+}
+
+.fourDiretion .dirct div span{
+    margin-right: 3rem;
+}
+.fourDiretion .show{
+    display: block;
+    opacity: 1; /* Make it fully visible */
+    /* top: -50px; */
+    transition-duration: 2s;
+    transition-property: top;
+    transition-timing-function: ease-in-out;
+    transition: all 2s ease-in-out;
+    /* transition:
+    all 900ms,
+    opacity 1500ms; */
+}
+.fourDiretion .colCenter{
+    text-align: center;
+}
+
+
+
+
+
+
+
+
+
+.fourDiretion .dirct div span svg{
+    font-size: 20px;
+    margin: 0  7px;
+    color: #0bdf09;
+}
+
+.cdk{
+    transform: rotate(90deg);
+}
+.cdf{
+    transform: rotate(180deg);
+}
+
+/* .vkkk{
+    position: relative;
+} */
+
+.classDeo{
+    position: absolute;
+    top: 200px;
+    font-size: 45px;
+    color: rgb(255, 242, 2);
+    /* right: 52%; */
+    left: 50px;
+}
+
+
+.dis{
+    display: none;
+}
+
+.ZeroValu{
+    top: 50px;
+    font-size: 120px;
+    right: 50%;
+}
+.color{
+    color: rgb(237 6 6);
+
+}
+
+.shoeZero{
+    display: block;
+}
+
+.diectionB
+{
+    z-index: 999;
+}
+#EBIdiv{
+    left: 50px;
+    top: 200px;
+}
+
+.ZeroValuDowen{
+    top: 170px;
+    font-size: 120px;
+    right: 40%;
+}
+.ZeroValuRight{
+    transform: rotate(90deg);
+    top: 70px;
+    font-size: 120px;
+    right: 35%;
+}
+.ZeroValuLeft{
+    transform: rotate(90deg);
+    top: 130px;
+    font-size: 120px;
+    right: 60%;
+}
+/* ////////////// Left /////////////// */
+.fourDiretion .EBIdiv div .right svg {
+    transform: rotate(90deg);
+
+}
+.fourDiretion .EBIdiv div .throw svg {
+    transform: rotate(180deg);
+
+}
+/* ///////////////Right////////////// */
+.fourDiretion .WBIdiv div .WBIright svg {
+    transform: rotateY(180deg); /* تدوير العنصر */
+
+}
+.fourDiretion .WBIdiv div .left svg {
+    transform: rotateY(180deg); /* تدوير العنصر */
+
+}
+
+.fourDiretion .WBIdiv div .throw svg {
+    transform: rotate(270deg); /* تدوير العنصر */
+
+}
+/* /////////////buttom ////////////// */
+.fourDiretion .NBIdiv div .Right svg {
+    transform: rotate(270deg); /* تدوير العنصر */
+
+}
+.fourDiretion .NBIdiv div .left svg {
+    transform: rotate(270deg);
+}
+
+.fourDiretion .direction-That-Select .images{
+    position: relative;
+
+}
+.fourDiretion .direction-That-Select .images .topDirectionSelect,
+.fourDiretion .direction-That-Select .images .leftDirectionSelect,
+.fourDiretion .direction-That-Select .images .rightDirectionSelect,
+.fourDiretion .direction-That-Select .images .buttomDirectionSelect
+{
+    position: absolute;
+}
+
+.fourDiretion .direction-That-Select .images .topDirectionSelect{
+    top: 25%;
+    left: 47%;
+}
+
+.fourDiretion .direction-That-Select .images .topDirectionSelect .right,
+.fourDiretion .direction-That-Select .images .topDirectionSelect .throw,
+.fourDiretion .direction-That-Select .images .topDirectionSelect .left,
+.fourDiretion .direction-That-Select .images .topDirectionSelect .uturn{
+    font-size: 70px;
+    font-family: 'FontAwesome';
+    color: #46ee0c;
+    position: absolute;
+    left: 20px;
+    top: 30px;
+    opacity: 0;
+
+}
+.fourDiretion .direction-That-Select .images .topDirectionSelect .throw{
+    left: 0px;
+    top:50px;
+
+}
+.fourDiretion .direction-That-Select .images .topDirectionSelect .left{
+    left: -30px;
+}
+.fourDiretion .direction-That-Select .images .topDirectionSelect .uturn{
+    top: -20px;
+    left: 38px;
+    /* transform: rotate(90deg); */
+}
+
+.fourDiretion .direction-That-Select .images .leftDirectionSelect{
+    position: absolute;
+    top: 38%;
+    left: 30%;
+
+}
+
+.fourDiretion .direction-That-Select .images .leftDirectionSelect .left,
+.fourDiretion .direction-That-Select .images .leftDirectionSelect .throw,
+.fourDiretion .direction-That-Select .images .leftDirectionSelect .right,
+.fourDiretion .direction-That-Select .images .leftDirectionSelect .uturn{
+
+    position: absolute;
+    font-size: 70px;
+    color: yellow;
+    opacity: 0;
+}
+
+.fourDiretion .direction-That-Select .images .leftDirectionSelect .right{
+    left: 40px;
+    transform: rotate(0deg);
+
+}
+
+.fourDiretion .direction-That-Select .images .leftDirectionSelect .throw{
+    transform: rotate(90deg);
+    left: 80px;
+    top: 30px;
+}
+.fourDiretion .direction-That-Select .images .leftDirectionSelect .left{
+    transform: rotate(0deg);
+    top: 60px;
+    left: 50px
+}
+.fourDiretion .direction-That-Select .images .leftDirectionSelect .uturn{
+    top: 15px;
+    left: 20px;
+    transform: rotate(270deg);
+    font-size: 50px;
+
+}
+/* .fourDiretion .direction-That-Select .images .leftDirectionSelect{
+    top: 45%;
+    left: 35%;
+} */
+.fourDiretion .direction-That-Select .images .rightDirectionSelect{
+    top: 48%;
+    right: 35%;
+}
+
+
+.fourDiretion .direction-That-Select .images .rightDirectionSelect .right,
+.fourDiretion .direction-That-Select .images .rightDirectionSelect .throw,
+.fourDiretion .direction-That-Select .images .rightDirectionSelect .left,
+.fourDiretion .direction-That-Select .images .rightDirectionSelect .uturn{
+    position: absolute;
+    font-size: 70px;
+    color: azure;
+    opacity: 0;
+}
+
+.fourDiretion .direction-That-Select .images .rightDirectionSelect .right{
+
+    top: -50px;
+    right: -20px;top: -20px;
+    right: -23px;
+    font-size: 60px;
+
+}
+.fourDiretion .direction-That-Select .images .rightDirectionSelect .throw{
+    top: -40px;
+    transform: rotate(270deg);
+    right: 40px;
+
+}
+.fourDiretion .direction-That-Select .images .rightDirectionSelect .uturn{
+    transform: rotate(180deg);
+    right: 30px;
+    font-size: 50px;
+
+}
+
+
+
+.fourDiretion .direction-That-Select .images .rightDirectionSelect .left
+{
+   top: -70px;
+    right: 20px;
+    transform: rotate(180deg);
+
+}
+.fourDiretion .direction-That-Select .images .buttomDirectionSelect{
+    top: 58%;
+    right: 52.5%;
+    font-size: 70px;
+    color: red;
+
+
+}
+
+.fourDiretion .direction-That-Select .images .buttomDirectionSelect .right,
+.fourDiretion .direction-That-Select .images .buttomDirectionSelect .left,
+.fourDiretion .direction-That-Select .images .buttomDirectionSelect .uturn,
+.fourDiretion .direction-That-Select .images .buttomDirectionSelect .throw{
+    position:absolute;
+    opacity: 0;
+    transition: all .5s ease-in-out;
+}
+
+.fourDiretion .direction-That-Select .images .buttomDirectionSelect .uturn{
+
+    left: -20px;
+    top: 30px;
+    transform: rotate(180deg);
+    /* opacity: 1; */
+
+
+}
+.fourDiretion .direction-That-Select .images .buttomDirectionSelect .right{
+    transform: rotate(270deg);
+    top: -15px;
+    left: 30px;
+    font-size: 90px;
+    /* opacity: 0;*/
+}
+.fourDiretion .direction-That-Select .images .buttomDirectionSelect .throw{
+    top: -30px;
+    font-size: 90px;
+    /* opacity: 0; */
+}
+.fourDiretion .direction-That-Select .images .buttomDirectionSelect .left{
+    left: -40px;
+    top: -10px;
+    transform: rotate(270deg);
+    /* opacity: 0; */
+    font-size: 90px
+}
+
+.direction-That-Select{
+    /* margin-top: 20px; */
+    opacity: 0;
+    visibility:hidden;
+    margin-top: -70px;
+    transition: all 1s ease-in-out;
+}
+/*
+.container p{
+    font-size: 25px ;
+    padding: 20 30px;
+    margin: auto;
+    color: #fff;
+} */
+
+
+/* start class  */
+
+.fourClass .fourDiretion .dirct span{
+    /* color: #fc983c; */
+    margin-right: 20px;
+    font-size: 20px;
+}
+
+.fourClass .fourDiretion .dirct{
+    width: 527px;
+    z-index: 999999999999999999999999999999999999999999999999;
+    font-size: 15px;
+
+}
+
+.leftINOut .Top{
+    text-align: right;
+
+}
+
+.INPUTFORMEBI{
+    margin-bottom: 10px;
+    margin-right: 5px;
+}
+
+
+/*  */
+
+
+.all
+{
+    position: fixed;
+    inset: 0;
+    top: -100px;
+    overflow: hidden;
+    background: #000000d6;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    padding: 80px;
+    z-index: 999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 1s ease-in-out;
+
+}
+.all h2{
+    color: #fff;
+    font-family: "Prociono", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+.all .contat {
+
+    padding: 70px 50px;
+    /* color: black; */
+    letter-spacing: 1.2;
+    border: 4px solid #fff;
+    border-radius: 20px;
+    background: #000000ab;
+    line-height: 6;
+    margin-top: 10%;
+    transition: all 1s ease-in-out;
+
+}
+.all .contat a{
+    font-family: "Prociono", serif;
+    padding: 10px 10px;
+    background: #fff;
+    color: #000;
+    border: 2px solid #000000b2;
+    border-radius: 5px;
+    text-transform: capitalize;
+    transition: all 1s ease-in-out;
+    margin: 20px;
+    box-shadow: rgba(250, 252, 252, 0.2) 0px 7px 29px 0px;
+}
+
+.all .contat a:hover{
+    background: #000;
+    color: #fff;
+    border: 2px solid #fff;
+}
+
+
+
+
+/*
+/////////////////////// */
+
+.errorInput{
+    font-size: 15px;
+    text-transform: capitalize;
+    color: red;
+    color:rgb(1, 5,5,200);
+    text-decoration: underline 2px solid #000;
+
+}
+.WBIdiv {
+    right: 0px !important;
+    left: auto !important;
+}
+/* //////////////////////////////////////////////////////////////////////////// */
+/* //////////////////////////////////////////////////////////////////////////////////////// */
+
+/* /////////////////////////////////// */
+/* ////////////////////////////////////////// */
+/* //////////////////////////// */
+.DrowTopDirections{
+    position: absolute;
+    inset: 0;
+}
+
+/* //////////////////////////// */
+
+.Drow  span{
+    z-index: 9;
+}
+.Drow .topRightSVG{
+    position: absolute;
+    inset: 0;
+    width: 50px;
+    height: 50px;
+
+}
+.Drow .LiftRightSVG .a,
+.Drow .RightRightSVG .a,
+.Drow .DowenRightSVG .a,
+.Drow .topRightSVG .a{
+
+    position: absolute;
+    left: 38px;
+    top: 122px;
+    transform: rotate(90deg);
+
+
+}
+.Drow .LiftRightSVG .b,
+.Drow .RightRightSVG .b,
+.Drow .DowenRightSVG .b,
+.Drow .topRightSVG .b{
+    position: absolute;
+    left: 89px;
+    top: 20;
+    transform: rotate(90deg);
+}
+.Drow .LiftRightSVG span,
+.Drow .RightRightSVG span,
+.Drow .DowenRightSVG span,
+.Drow .topRightSVG span{
+    position: absolute;
+    top: 163px;
+    left: 350px;
+
+}
+
+/* //////////////////////////// */
+.Drow .topLiftSVG{
+    position: absolute;
+    inset: 0;
+    width: 50px;
+    height: 50px;
+
+}
+.Drow .LiftLiftSVG .a,
+.Drow .RightLiftSVG .a,
+.Drow .DowenLiftSVG .a,
+.Drow .topLiftSVG .a{
+
+    position: absolute;
+    top: 108px;
+    left: 400px;
+    transform: rotate3d(1, 1, 1, 45deg);
+}
+
+.Drow .LiftLiftSVG .b,
+.Drow .RightLiftSVG .b,
+.Drow .DowenLiftSVG .b,
+.Drow .topLiftSVG .b{
+    position: absolute;
+    transform: rotate(180deg);
+    top: -79px;
+    left: 227px;
+}
+
+.Drow .LiftLiftSVG span,
+.Drow .RightLiftSVG span,
+.Drow .DowenLiftSVG span,
+.Drow .topLiftSVG span{
+    position: absolute;
+    top: 171px;
+    left: 436px;
+}
+
+/* /////////////////////// */
+
+.Drow .topUturnSVG{
+    position: absolute;
+    inset: 0;
+    width: 50px;
+    height: 50px;
+
+}
+.Drow .LiftUturnSVG .a,
+.Drow .RightUturnSVG .a,
+.Drow .DrowDowenDirections .DowenUturnSVG .a,
+.Drow .topUturnSVG .a{
+
+    position: absolute;
+    top: -124px;
+    left: 237px;
+    transform: rotate(180deg);
+}
+
+.Drow .LiftUturnSVG .b,
+.Drow .RightUturnSVG .b,
+.Drow .DrowDowenDirections .DowenUturnSVG .b,
+.Drow .topUturnSVG .b{
+    position: absolute;
+    /* transform: rotate(180deg); */
+    top: 107px;
+    left: 446px;
+}
+.Drow .LiftUturnSVG span,
+.Drow .RightUturnSVG span,
+.Drow .DrowDowenDirections .DowenUturnSVG span,
+.Drow .topUturnSVG span{
+    position: absolute;
+    top: 132px;
+    left: 451px;
+}
+
+/* ////////////////// */
+
+.Drow .TopThrowSVG{
+    position: absolute;
+    inset: 0;
+    width: 50px;
+    height: 50px;
+
+}
+.Drow .LiftThrowSVG .a,
+.Drow .RightThrowSVG .a,
+.Drow .DrowDowenDirections .DowenThrowSVG .a,
+.Drow .TopThrowSVG .a{
+
+    position: absolute;
+    top: 118px;
+    left: 309px;
+}
+.Drow .LiftThrowSVG .b,
+.Drow .RightThrowSVG .b,
+.Drow .DrowDowenDirections .DowenThrowSVG .b,
+.Drow .TopThrowSVG .b{
+    position: absolute;
+    /* transform: rotate(180deg); */
+    top: 69px;
+    left: 308px;
+}
+.Drow .LiftThrowSVG span,
+.Drow .RightThrowSVG span,
+.Drow .DrowDowenDirections .DowenThrowSVG span,
+.Drow .TopThrowSVG span{
+    position: absolute;
+    top: 129px;
+    left: 393px;
+
+}
+/* //////////////////////////////////////////////////////////////////// */
+/* ////////Bottum/////////
+// */
+.DrowDowenDirections{
+    position: absolute;
+    inset: 14px 82px;
+    transform: rotate(180deg);
+}
+.Drow .DrowDowenDirections .DowenRightSVG,
+.Drow .DrowDowenDirections .DowenLiftSVG,
+.Drow .DrowDowenDirections .DowenUturnSVG,
+.Drow .DrowDowenDirections .DowenThrowSVG
+{
+    position: absolute;
+    inset: 0;
+    width: 50px;
+    height: 50px;
+
+}
+
+
+/* //////////////////////////// */
+/* Right */
+
+.DrowRightDirections{
+    transform: rotate(90deg);
+    position: absolute;
+    inset: 32px 39px;
+}
+
+.Drow .DrowRightDirections .RightRightSVG,
+.Drow .DrowRightDirections .RightLiftSVG,
+.Drow .DrowRightDirections .RightUturnSVG,
+.Drow .DrowRightDirections .RightThrowSVG
+{
+    position: absolute;
+    inset: 0;
+    width: 50px;
+    height: 50px;
+
+}
+
+
+/* ///////////////////////////////// */
+/* Lift */
+
+.DrowLiftDirections{
+    transform: rotate(270deg);
+    position: absolute;
+    inset:-36px 15px;
+
+}
+
+.Drow .DrowLiftDirections .LiftRightSVG,
+.Drow .DrowLiftDirections .LiftLiftSVG,
+.Drow .DrowLiftDirections .LiftUturnSVG,
+.Drow .DrowLiftDirections .LiftThrowSVG
+{
+    position: absolute;
+    inset: 0;
+    width: 50px;
+    height: 50px;
+}
+/*
+green :: #58BA49
+
+red : top */
+
+
+/*  */
+
+.Drow span{
+    border-radius: 100%;
+    padding: 2px 10px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 16px;
+    color: #f54600;
+    border: 2px solid #f54600;
+    background-color: #ffffffd5;
+
+}
+
+.Drow  .DrowLiftDirections span{
+    transform: rotate(90deg);
+}
+.Drow  .DrowRightDirections span{
+    transform: rotate(270deg);
+}
+.Drow  .DrowDowenDirections span{
+    transform: rotate(180deg);
+}
+
+/* /////////////////////////////// */
+
+.Drow table {
+    width: 300px;
+    line-height: 3;
+    text-align: center;
+    margin: 20px auto;
+    background: #fff;
+    border: 2px solid #000;
+}
+
+
+
+
+
+/* ////////////////////////// */
+
+/* ///////////////////////////////////////////// */
+
+/* //////////////////////////////////////////////// */
+
+/* //////// three   pages  style   //////// */
+
+
+/* ///////////////////////////////////////////////// */
+.threeDiretion .liftOut,
+.threeDiretion .buttomOut,
+.threeDiretion .Botom,
+.threeDiretion .Top,
+.threeDiretion .buttoInPut{
+    display: flex;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 25px;
+    color: #fff;
+
+}
+.threeDiretion .Top{
+    margin-top: 331px;
+
+}
+/* }
+.threeDiretion .Botom {
+    margin-top: 150px;
+} */
+.threeDiretion .liftOut input,
+.threeDiretion .buttomOut input,
+.threeDiretion .buttoInPut input,
+.threeDiretion .Top input,
+.threeDiretion .Botom input{
+    width:70%;
+}
+.threeDiretion .design .rightOut,
+.threeDiretion .design .leftIn {
+    top: 252px !important;
+}
+
+
+.threeDiretion .design .downOut {
+    top: 493px;
+    left: 138px;
+}
+.threeDiretion .design .dowenIN {
+    top: 512px;
+    left: 400px;
+    transform: rotate(180deg);
+}
+
+/* /////////////////////////////////// */
+
+.outPutPage .threeDiretion .liftOutputPage .Top,
+.threeDiretion .rightSection .Top{
+    /* margin-top: 131px; */
+    margin-top: 25px;
+}
+
+.output .rightSection .Top,
+.output .liftOutputPage .Top{
+        margin-top: 131px;
+
+}
+.outPutPage .threeDiretion .liftOut{
+    margin-top: 150px;
+}
+
+
+.threeDiretion .rightSection button{
+    margin-left: 5px;
+}
+
+.threeDiretion .liftOutputPage button{
+    margin-left: 75px;
+}
+.threeDiretion .buttoInPut button {
+    margin: 0 17px;
+
+}
+
+
+.threeDrow .DrowLiftDirections {
+    inset: 77px 80px;
+}
+
+.threeDrow .DrowRightDirections {
+
+    inset: 78px -205px;
+}
+
+
+.threeDrow .DrowDowenDirections {
+    position: absolute;
+    inset: 264px -46px;
+}
+
+
+.threeDrow .DowenRightSVG .a
+{
+    position: absolute;
+    left: 38px;
+    top: 102px;
+    transform: rotate(90deg);
+}
+
+.outPutPage .InputOutPageLeft
+{
+    margin-top: 131px !important;
+
+}
+.outPutPage .InputOutPageright,
+.input .InputInPageright
+{
+    margin-top: 150px;
+}
+
+
+
+
+/* ///////////////////////Equation //////////// */
+
+
+.equation button,
+.equationPage input[type=submit]
+{
+
+    background-color: var(--accent-color);
+    color: #fff;
+    margin: 20px 0px;
+    /* width: 100px; */
+    border: 2px solid #fff;
+    font-size: 16px;
+    font-weight: 700;
+    transition: all 0.5s ease-in-out;
+
+}
+.equation button:hover,
+.equation button:focus,
+.equationPage input[type=submit]:hover,
+.equationPage input[type=submit]:focus
+{
+    background-color:#fff ;
+    color:var(--accent-color);
+    border: 1px solid var(--accent-color);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* //////////////////////////////////////////////////////////////// */
+
+/* /////////////////////equation  pae  /////////////////////////////*/
+/* //////////////////////////////////////////////////////////////// */
+
+.equationPage .allEq .formAddEq{
+    position: relative;
+    left: -100%; /* Hide off-screen to the left */
+    opacity: 0;
+    z-index: 1; /* Ensures it's above other elements */
+    background-color: lightcoral;
+    padding: 20px;
+    margin: 20px 0;
+    transition: left 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}
+/* Show state for the div */
+.equationPage .allEq .show {
+    left: 0; /* Slide to its original position */
+    opacity: 1; /* Make it fully visible */
+    z-index: 10; /* Ensure it's on top when shown */
+}

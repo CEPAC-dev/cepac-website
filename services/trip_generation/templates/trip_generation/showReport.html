@@ -1,0 +1,2761 @@
+{% extends "includes/base.html" %} {% load static %} {% block title %}Trip
+Generation | CEPAC{% endblock %} {% block content %}
+
+<style>
+  :root {
+    /* Color System */
+    --primary-color: #2c3e50;
+    --secondary-color: #3498db;
+    --accent-color: #3498db;
+    --success-color: #27ae60;
+    --warning-color: #e67e22;
+    --danger-color: #e74c3c;
+    --nosel-color: #27ae60;
+    --light-gray: #f8f9fa;
+    --border-color: #dee2e6;
+    --text-color: #333;
+    --text-light: #6c757d;
+
+    /* Spacing */
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+
+    /* Border Radius */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+
+    /* Transitions */
+    --transition-fast: 150ms;
+    --transition-normal: 300ms;
+    --transition-slow: 500ms;
+
+    /* Shadows */
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 12px 24px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Base Styles */
+  .trip-generation-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: var(--spacing-xl);
+    position: relative;
+    animation: fadeIn var(--transition-slow) ease-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Header */
+  .form-header {
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+    padding-bottom: var(--spacing-lg);
+    border-bottom: 1px solid var(--border-color);
+    animation: slideDown var(--transition-normal) ease-out;
+  }
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .form-header h1 {
+    color: var(--primary-color);
+    margin-bottom: var(--spacing-sm);
+    font-weight: 700;
+    font-size: 2.5rem;
+    line-height: 1.2;
+  }
+
+  .form-header p {
+    color: var(--text-light);
+    font-size: 1.1rem;
+    line-height: 1.6;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  /* Progress Indicator */
+  .progress-indicator {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-xl);
+    position: relative;
+    counter-reset: step;
+  }
+
+  .progress-indicator::before {
+    content: "";
+    position: absolute;
+    top: 16px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--border-color);
+    z-index: 1;
+    transition: all var(--transition-normal);
+  }
+
+  .progress-indicator.completed::before {
+    background: var(--success-color);
+  }
+
+  .progress-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    flex: 1;
+    max-width: 180px;
+  }
+
+  .progress-step:hover:not(.active):not(.completed) .step-number {
+    border-color: var(--secondary-color);
+    transform: scale(1.1);
+    box-shadow: var(--shadow-md);
+  }
+
+  .step-number {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: white;
+    border: 3px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    margin-bottom: var(--spacing-sm);
+    transition: all var(--transition-normal);
+    position: relative;
+    font-size: 1rem;
+  }
+
+  .step-number::before {
+    counter-increment: step;
+    content: counter(step);
+  }
+
+  .step-label {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    text-align: center;
+    font-weight: 500;
+    transition: all var(--transition-normal);
+    width: 100%;
+    padding: 0 var(--spacing-xs);
+  }
+
+  .progress-step.active .step-number {
+    background: var(--accent-color);
+    border-color: var(--accent-color);
+    color: white;
+    transform: scale(1.1);
+    box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.2);
+  }
+
+  .progress-step.active .step-label {
+    color: var(--accent-color);
+    font-weight: 600;
+  }
+
+  .progress-step.completed .step-number {
+    background: var(--success-color);
+    border-color: var(--success-color);
+    color: white;
+  }
+
+  .progress-step.completed .step-number::after {
+    content: "✓";
+    position: absolute;
+    font-size: 1.2rem;
+  }
+
+  .progress-step.completed .step-number::before {
+    content: "";
+  }
+
+  /* Carousel Container */
+  .form-carousel {
+    position: relative;
+    overflow: hidden;
+    background: white;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-xl);
+    min-height: 550px;
+    margin-bottom: var(--spacing-xl);
+    animation: scaleIn var(--transition-normal) ease-out;
+  }
+
+  @keyframes scaleIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .carousel-track {
+    display: flex;
+    transition: transform var(--transition-slow) cubic-bezier(0.4, 0, 0.2, 1);
+    min-height: 550px;
+  }
+
+  .carousel-slide {
+    flex: 0 0 100%;
+    padding: var(--spacing-xl);
+    box-sizing: border-box;
+    min-height: 550px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Form Sections */
+  .form-section {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    animation: fadeInSlide var(--transition-normal) ease-out;
+  }
+
+  @keyframes fadeInSlide {
+    from {
+      opacity: 0;
+      transform: translateX(20px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: var(--spacing-lg);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .section-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(
+      135deg,
+      var(--accent-color),
+      var(--secondary-color)
+    );
+    color: white;
+    border-radius: 50%;
+    font-weight: 700;
+    margin-right: var(--spacing-md);
+    font-size: 1.3rem;
+    box-shadow: var(--shadow-md);
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin: 0;
+  }
+
+  .section-description {
+    color: var(--text-light);
+    margin-bottom: var(--spacing-lg);
+    line-height: 1.7;
+    font-size: 1.05rem;
+  }
+
+  .section-content {
+    flex: 1;
+    padding: var(--spacing-sm) 0;
+    overflow-y: auto;
+    max-height: 380px;
+    padding-right: var(--spacing-sm);
+  }
+
+  .section-content::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .section-content::-webkit-scrollbar-track {
+    background: var(--light-gray);
+    border-radius: var(--radius-sm);
+  }
+
+  .section-content::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: var(--radius-sm);
+  }
+
+  .section-content::-webkit-scrollbar-thumb:hover {
+    background: var(--text-light);
+  }
+
+  /* Manual Grid */
+  .manual-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .manual-checkbox {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-lg);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    background: white;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    font-weight: 500;
+    min-height: 60px;
+  }
+
+  .manual-checkbox:hover {
+    border-color: var(--accent-color);
+    background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+
+  .manual-checkbox.selected {
+    border-color: var(--accent-color);
+    background: linear-gradient(135deg, #f0f8ff, #e3f2fd);
+    box-shadow: 0 6px 12px rgba(52, 152, 219, 0.15);
+    transform: translateY(-2px);
+  }
+
+  .manual-checkbox input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    width: 0;
+    height: 0;
+  }
+
+  .checkmark {
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    position: relative;
+    transition: all var(--transition-normal);
+    flex-shrink: 0;
+  }
+
+  .manual-checkbox.selected .checkmark {
+    background: var(--accent-color);
+    border-color: var(--accent-color);
+    animation: checkmarkPop 0.3s ease-out;
+  }
+
+  @keyframes checkmarkPop {
+    0% {
+      transform: scale(1);
+    }
+
+    50% {
+      transform: scale(1.2);
+    }
+
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  .manual-checkbox.selected .checkmark::after {
+    content: "";
+    position: absolute;
+    left: 7px;
+    top: 3px;
+    width: 6px;
+    height: 12px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg);
+  }
+
+  /* Selection Summary */
+  .selection-summary {
+    background: linear-gradient(135deg, #e7f3ff, #d4eaff);
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: var(--radius-lg);
+    margin-top: var(--spacing-md);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    border: 1px solid rgba(52, 152, 219, 0.2);
+    animation: slideUp var(--transition-normal);
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .selection-summary i {
+    font-size: 1.2rem;
+  }
+
+  /* Form Controls */
+  .form-group {
+    margin-bottom: var(--spacing-xl);
+  }
+
+  .form-group label {
+    display: block;
+    margin-bottom: var(--spacing-sm);
+    font-weight: 600;
+    color: var(--primary-color);
+    font-size: 1.1rem;
+  }
+
+  .form-control {
+    padding: var(--spacing-md) var(--spacing-lg);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    font-size: 1rem;
+    transition: all var(--transition-normal);
+    width: 100%;
+    background: white;
+    color: var(--text-color);
+  }
+
+  .form-control:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+    outline: none;
+    transform: translateY(-1px);
+  }
+
+  .form-control.select-control {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23333' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right var(--spacing-md) center;
+    background-size: 16px;
+    padding-right: calc(var(--spacing-lg) * 2);
+    appearance: none;
+    cursor: pointer;
+  }
+
+  /* Options Grid */
+  .options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+  }
+
+  .options-grid .manual-checkbox {
+    min-height: 50px;
+    padding: var(--spacing-md);
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .day-type-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .day-type-icon {
+    font-size: 1.5rem;
+  }
+
+  /* Independent Variables Container */
+  .independent-variable-section {
+    background: white;
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+    transition: all var(--transition-normal);
+  }
+
+  .independent-variable-section:hover {
+    border-color: var(--accent-color);
+    box-shadow: var(--shadow-md);
+  }
+
+  .independent-variable-section h4 {
+    margin: 0 0 var(--spacing-md) 0;
+    color: var(--primary-color);
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+
+  /* Navigation */
+  .carousel-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-lg) var(--spacing-xl);
+    border-top: 1px solid var(--border-color);
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+  }
+
+  .nav-btn {
+    padding: var(--spacing-md) var(--spacing-xl);
+    border-radius: var(--radius-lg);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    border: none;
+    font-size: 1rem;
+    min-width: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    letter-spacing: 0.5px;
+  }
+
+  .nav-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  .btn-prev {
+    background: white;
+    color: var(--text-color);
+    border: 2px solid var(--border-color);
+  }
+
+  .btn-prev:hover:not(:disabled) {
+    background: var(--light-gray);
+    border-color: var(--secondary-color);
+    color: var(--secondary-color);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+
+  .btn-next {
+    background: linear-gradient(135deg, var(--accent-color), #2980b9);
+    color: white;
+  }
+
+  .btn-next:hover:not(:disabled) {
+    background: linear-gradient(135deg, #2980b9, var(--accent-color));
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .btn-submit {
+    background: linear-gradient(135deg, var(--success-color), #219653);
+    color: white;
+  }
+
+  .btn-submit:hover:not(:disabled) {
+    background: linear-gradient(135deg, #219653, var(--success-color));
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  /* Results Section */
+  .results-section {
+    display: none;
+    background: white;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-xl);
+    padding: var(--spacing-xl);
+    margin-top: var(--spacing-xl);
+    border-left: 6px solid var(--success-color);
+    animation: slideInUp var(--transition-normal);
+  }
+
+  @keyframes slideInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .results-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-lg);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .results-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin: 0;
+  }
+
+  .results-actions {
+    display: flex;
+    gap: var(--spacing-md);
+  }
+
+  /* Results Tables */
+  .results-tables-container {
+    margin-top: var(--spacing-lg);
+  }
+
+  .result-table-section {
+    margin-bottom: var(--spacing-xl);
+    background: #f8f9fa;
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    border: 1px solid var(--border-color);
+  }
+
+  .table-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 2px solid var(--secondary-color);
+  }
+
+  .table-title {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin: 0;
+  }
+
+  .table-subtitle {
+    font-size: 1rem;
+    color: var(--text-light);
+    margin: var(--spacing-xs) 0 var(--spacing-md) 0;
+  }
+
+  /* Table Styles */
+  .rates-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: white;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .rates-table th {
+    background: linear-gradient(135deg, var(--secondary-color), #2980b9);
+    color: white;
+    font-weight: 600;
+    text-align: left;
+    padding: var(--spacing-md) var(--spacing-lg);
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border: none;
+  }
+
+  .rates-table th:first-child {
+    border-top-left-radius: var(--radius-md);
+  }
+
+  .rates-table th:last-child {
+    border-top-right-radius: var(--radius-md);
+  }
+
+  .rates-table td {
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-bottom: 1px solid var(--border-color);
+    font-size: 0.95rem;
+    vertical-align: middle;
+  }
+
+  .rates-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  .rates-table tr:hover {
+    background-color: #f8fafc;
+  }
+
+  /* Rate indicators */
+  .rate-value {
+    font-weight: 600;
+    color: var(--primary-color);
+    font-size: 1.1rem;
+  }
+
+  .in-out-container {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+  }
+
+  .in-pill,
+  .out-pill {
+    padding: var(--spacing-xs) var(--spacing-md);
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    min-width: 70px;
+    text-align: center;
+  }
+
+  .in-pill {
+    background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+    color: #1565c0;
+    border: 1px solid #90caf9;
+  }
+
+  .out-pill {
+    background: linear-gradient(135deg, #f3e5f5, #e1bee7);
+    color: #7b1fa2;
+    border: 1px solid #ce93d8;
+  }
+
+  /* Period badges */
+  .period-badge {
+    display: inline-block;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .period-am {
+    background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+    color: #ef6c00;
+  }
+
+  .period-md {
+    background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+    color: #2e7d32;
+  }
+
+  .period-pm {
+    background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+    color: #1565c0;
+  }
+
+  .period-phg {
+    background: linear-gradient(135deg, #f3e5f5, #e1bee7);
+    color: #7b1fa2;
+  }
+
+  /* Day badges */
+  .day-badge {
+    display: inline-block;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .weekday-badge {
+    background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+    color: #1565c0;
+  }
+
+  .weekend-badge {
+    background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+    color: #2e7d32;
+  }
+
+  .together-badge {
+    background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+    color: #ef6c00;
+  }
+
+  /* Summary Cards */
+  .summary-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .summary-card {
+    background: white;
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-color);
+  }
+
+  .summary-card h4 {
+    margin: 0 0 var(--spacing-md) 0;
+    color: var(--primary-color);
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+
+  .summary-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-sm);
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 1px solid var(--light-gray);
+  }
+
+  .summary-item:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+
+  .summary-label {
+    color: var(--text-light);
+    font-weight: 500;
+  }
+
+  .summary-value {
+    color: var(--primary-color);
+    font-weight: 600;
+  }
+
+  /* Download Section */
+  .download-section {
+    text-align: center;
+    padding: var(--spacing-xl);
+    margin-top: var(--spacing-lg);
+    border-top: 1px solid var(--border-color);
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+  }
+
+  .download-btn {
+    background: linear-gradient(135deg, var(--success-color), #219653);
+    color: white;
+    padding: var(--spacing-lg) var(--spacing-xl);
+    border-radius: var(--radius-lg);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    border: none;
+    font-size: 1.1rem;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    min-width: 250px;
+    justify-content: center;
+  }
+
+  .download-btn:hover {
+    background: linear-gradient(135deg, #219653, var(--success-color));
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  /* Loading Overlay */
+  .loading-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: white;
+    backdrop-filter: blur(5px);
+  }
+
+  .spinner {
+    border: 4px solid rgba(255, 255, 255, 0.1);
+    border-top: 4px solid var(--accent-color);
+    border-radius: 50%;
+    width: 70px;
+    height: 70px;
+    animation: spin 1s linear infinite;
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .loading-text {
+    font-size: 1.2rem;
+    font-weight: 500;
+    text-align: center;
+    max-width: 300px;
+    line-height: 1.6;
+  }
+
+  .loading-dots::after {
+    content: "";
+    animation: dots 1.5s steps(4, end) infinite;
+  }
+
+  @keyframes dots {
+    0%,
+    20% {
+      content: ".";
+    }
+
+    40% {
+      content: "..";
+    }
+
+    60%,
+    100% {
+      content: "...";
+    }
+  }
+
+  /* Error Messages */
+  .error-message {
+    background: linear-gradient(135deg, #ffe6e6, #ffcccc);
+    color: #d63031;
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: var(--radius-md);
+    margin: var(--spacing-md) 0;
+    border-left: 4px solid #ff4444;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    animation: shake 0.5s ease-in-out;
+  }
+
+  @keyframes shake {
+    0%,
+    100% {
+      transform: translateX(0);
+    }
+
+    25% {
+      transform: translateX(-5px);
+    }
+
+    75% {
+      transform: translateX(5px);
+    }
+  }
+
+  /* Success Messages */
+  .success-message {
+    background: linear-gradient(135deg, #e6ffe6, #ccffcc);
+    color: #27ae60;
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: var(--radius-md);
+    margin: var(--spacing-md) 0;
+    border-left: 4px solid #27ae60;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    animation: slideInRight 0.5s ease-out;
+  }
+
+  @keyframes slideInRight {
+    from {
+      opacity: 0;
+      transform: translateX(20px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  /* Empty State */
+  .empty-state {
+    text-align: center;
+    padding: var(--spacing-xl);
+    color: var(--text-light);
+  }
+
+  .empty-state i {
+    font-size: 3rem;
+    margin-bottom: var(--spacing-md);
+    opacity: 0.5;
+  }
+
+  .empty-state h4 {
+    margin-bottom: var(--spacing-sm);
+    color: var(--text-light);
+  }
+
+  /* Form Hint */
+  .form-hint {
+    background: #f8f9fa;
+    padding: 10px 15px;
+    border-radius: 8px;
+    border-left: 4px solid var(--secondary-color);
+    margin-top: 15px;
+    font-size: 0.9rem;
+    color: var(--text-light);
+  }
+
+  /* Responsive Design */
+  @media (max-width: 1200px) {
+    .summary-cards {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 992px) {
+    .manual-grid {
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    }
+
+    .rates-table {
+      display: block;
+      overflow-x: auto;
+    }
+
+    .results-actions {
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .results-actions .download-btn {
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .trip-generation-container {
+      padding: var(--spacing-md);
+    }
+
+    .form-header h1 {
+      font-size: 2rem;
+    }
+
+    .carousel-slide {
+      padding: var(--spacing-lg);
+      min-height: 500px;
+    }
+
+    .carousel-nav {
+      flex-direction: column;
+      gap: var(--spacing-md);
+      padding: var(--spacing-md);
+    }
+
+    .nav-btn {
+      width: 100%;
+      min-width: auto;
+    }
+
+    .progress-step .step-label {
+      font-size: 0.8rem;
+    }
+
+    .manual-grid {
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: var(--spacing-sm);
+    }
+
+    .manual-checkbox {
+      padding: var(--spacing-md);
+      min-height: 55px;
+    }
+
+    .rates-table th,
+    .rates-table td {
+      padding: var(--spacing-sm);
+      font-size: 0.85rem;
+    }
+
+    .table-title {
+      font-size: 1.2rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .manual-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .section-title {
+      font-size: 1.3rem;
+    }
+
+    .form-header p {
+      font-size: 1rem;
+    }
+
+    .download-btn {
+      width: 100%;
+      min-width: auto;
+    }
+
+    .options-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* Print Styles */
+  @media print {
+    .carousel-nav,
+    .download-btn,
+    .loading-overlay,
+    .results-actions {
+      display: none !important;
+    }
+
+    .form-carousel {
+      box-shadow: none;
+      border: 1px solid #ddd;
+    }
+
+    .results-section {
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    .rates-table {
+      page-break-inside: avoid;
+    }
+  }
+</style>
+
+<div class="trip-generation-container">
+  <div class="form-header">
+    <h1>Trip Generation Analysis</h1>
+    <p>Configure your trip generation manual step by step</p>
+  </div>
+
+  <!-- Progress Indicator -->
+  <div class="progress-indicator" id="progressIndicator">
+    <div
+      class="progress-step active"
+      data-step="0"
+      role="button"
+      tabindex="0"
+      aria-label="Go to step 1: Manual Selection"
+    >
+      <div class="step-number" aria-hidden="true"></div>
+      <div class="step-label">Manual</div>
+    </div>
+    <div
+      class="progress-step"
+      data-step="1"
+      role="button"
+      tabindex="0"
+      aria-label="Go to step 2: Variables"
+    >
+      <div class="step-number" aria-hidden="true"></div>
+      <div class="step-label">Variables</div>
+    </div>
+    <div
+      class="progress-step"
+      data-step="2"
+      role="button"
+      tabindex="0"
+      aria-label="Go to step 3: Land Use"
+    >
+      <div class="step-number" aria-hidden="true"></div>
+      <div class="step-label">Land Use</div>
+    </div>
+    <div
+      class="progress-step"
+      data-step="3"
+      role="button"
+      tabindex="0"
+      aria-label="Go to step 4: Options"
+    >
+      <div class="step-number" aria-hidden="true"></div>
+      <div class="step-label">Options</div>
+    </div>
+  </div>
+
+  <!-- Carousel Form -->
+  <div class="form-carousel">
+    <div class="carousel-track" id="carouselTrack">
+      <!-- SLIDE 1: Manual Selection -->
+      <div
+        class="carousel-slide"
+        data-step="0"
+        aria-labelledby="section1-title"
+      >
+        <div class="form-section">
+          <div class="section-header">
+            <div class="section-number">1</div>
+            <h3 id="section1-title" class="section-title">Select Manual(s)</h3>
+          </div>
+          <p class="section-description">
+            Choose one or multiple manuals for calculation. Selecting "AVERAGE"
+            will automatically deselect all other manuals.
+          </p>
+
+          <div class="section-content">
+            <div class="manual-grid" id="manualGrid"></div>
+            <div class="selection-summary" id="selectionSummary">
+              <i>📊</i> <span>No manual selected</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 2: Variable Selection -->
+      <div
+        class="carousel-slide"
+        data-step="1"
+        aria-labelledby="section2-title"
+      >
+        <div class="form-section">
+          <div class="section-header">
+            <div class="section-number">2</div>
+            <h3 id="section2-title" class="section-title">
+              Select Independent Variable
+            </h3>
+          </div>
+          <p class="section-description">
+            Choose the measurement unit for your analysis:
+          </p>
+          <div class="section-content" id="independentContainer"></div>
+        </div>
+      </div>
+
+      <!-- SLIDE 3: Land Use Selection -->
+      <div
+        class="carousel-slide"
+        data-step="2"
+        aria-labelledby="section3-title"
+      >
+        <div class="form-section">
+          <div class="section-header">
+            <div class="section-number">3</div>
+            <h3 id="section3-title" class="section-title">
+              Select Land Use Options
+            </h3>
+          </div>
+          <p class="section-description">
+            Configure the Land Use categories for your analysis:
+          </p>
+          <div class="section-content">
+            <div id="buildLandUseOptions"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 4: Options Selection -->
+      <div
+        class="carousel-slide"
+        data-step="3"
+        aria-labelledby="section4-title"
+      >
+        <div class="form-section">
+          <div class="section-header">
+            <div class="section-number">4</div>
+            <h3 id="section4-title" class="section-title">
+              Select Analysis Options
+            </h3>
+          </div>
+          <p class="section-description">
+            Configure the time parameters for your analysis. Select at least one
+            day type:
+          </p>
+          <div class="section-content">
+            <div class="form-group">
+              <label
+                for="dayTypeGroup"
+                style="font-size: 1.1rem; margin-bottom: 15px; display: block"
+              >
+                <strong>📅 Day Type Selection:</strong>
+              </label>
+              <div class="options-grid" id="dayTypeGroup">
+                <label class="manual-checkbox day-type-option">
+                  <input type="checkbox" name="dayType" value="Weekday" />
+                  <span class="checkmark"></span>
+                  <span class="day-type-label">
+                    <span class="day-type-icon">🏢</span>
+                    Weekday
+                  </span>
+                </label>
+                <label class="manual-checkbox day-type-option">
+                  <input type="checkbox" name="dayType" value="Weekend" />
+                  <span class="checkmark"></span>
+                  <span class="day-type-label">
+                    <span class="day-type-icon">🏝️</span>
+                    Weekend
+                  </span>
+                </label>
+              </div>
+              <div
+                class="selection-summary"
+                id="dayTypeSummary"
+                style="display: none; margin-top: 15px"
+              >
+                <i>📅</i> <span>No day type selected</span>
+              </div>
+
+              <div class="form-hint">
+                <i>💡 Tip:</i> You can select multiple day types for your
+                analysis
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Buttons -->
+    <div class="carousel-nav">
+      <button type="button" class="nav-btn btn-prev" id="prevBtn" disabled>
+        <span aria-hidden="true">←</span> Previous
+      </button>
+      <button type="button" class="nav-btn btn-next" id="nextBtn">
+        Next <span aria-hidden="true">→</span>
+      </button>
+      <button
+        type="button"
+        class="nav-btn btn-submit"
+        id="submitBtn"
+        style="display: none"
+      >
+        <span aria-hidden="true">🚀</span> Generate Analysis
+      </button>
+    </div>
+  </div>
+
+  <!-- Results Section -->
+  <div class="results-section" id="resultsSection">
+    <div class="results-header">
+      <div>
+        <h3 class="results-title">Analysis Results</h3>
+        <p class="section-description" style="margin-bottom: 0">
+          Review the trip generation rates based on your configuration
+        </p>
+      </div>
+      <div class="results-actions">
+        <button
+          id="printResultsBtn"
+          class="download-btn"
+          style="
+            background: linear-gradient(135deg, #6c757d, #495057);
+            min-width: 150px;
+          "
+        >
+          <span aria-hidden="true">🖨️</span> Print
+        </button>
+        <button
+          id="newAnalysisBtn"
+          class="download-btn"
+          style="
+            background: linear-gradient(
+              135deg,
+              var(--secondary-color),
+              #2980b9
+            );
+            min-width: 180px;
+          "
+        >
+          <span aria-hidden="true">🔄</span> New Analysis
+        </button>
+      </div>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="summary-cards" id="summaryCards"></div>
+
+    <!-- Results Tables Container -->
+    <div class="results-tables-container" id="resultsTablesContainer">
+      <!-- Results tables will be inserted here -->
+    </div>
+
+    <!-- Download Section -->
+    <div class="download-section">
+      <button id="downloadExcelBtn" class="download-btn">
+        <span aria-hidden="true">📥</span> Download Excel Report
+      </button>
+      <p style="margin-top: 15px; color: var(--text-light); font-size: 0.9rem">
+        Download the complete analysis report in Excel format
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- Loading Overlay -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="spinner"></div>
+  <p class="loading-text">
+    Processing your request<span class="loading-dots"></span>
+  </p>
+</div>
+
+<script>
+  /* =====================================================
+         TRIP GENERATION FORM MANAGER CLASS
+      ===================================================== */
+  class TripGenerationForm {
+    constructor() {
+      this.availableManuals = [
+        {
+          id: 1,
+          name: "Dubai",
+          code: "1",
+        },
+        {
+          id: 2,
+          name: "Qatar",
+          code: "2",
+        },
+        {
+          id: 3,
+          name: "Kuwait",
+          code: "3",
+        },
+        {
+          id: 4,
+          name: "Abu Dhabi",
+          code: "4",
+        },
+        // { id: 5, name: 'Kuwait', code: '5' },
+        {
+          id: 6,
+          name: "Riyadh",
+          code: "6",
+        },
+        {
+          id: 7,
+          name: "ITE",
+          code: "7",
+        },
+        {
+          id: 8,
+          name: "TRICS",
+          code: "8",
+        },
+        {
+          id: 9,
+          name: "AVERAGE",
+          code: "9",
+        },
+      ];
+
+      this.state = {
+        selectedManuals: [],
+        selectedVariables: {},
+        selectedLandUses: [],
+        selectedDayTypes: [],
+        currentSlide: 0,
+        totalSlides: 4,
+        isLoading: false,
+        analysisResults: null,
+      };
+
+      this.cache = {
+        independentVariables: null,
+        landUseOptions: null,
+      };
+
+      this.apiEndpoints = {
+        independentVariables:
+          "https://5m0b1g8t-4000.euw.devtunnels.ms/independent-variable",
+        landUseOptions:
+          "https://5m0b1g8t-4000.euw.devtunnels.ms/categories/find-by-independent-variables",
+        getRates:
+          "https://5m0b1g8t-4000.euw.devtunnels.ms/trip-generation/getRates",
+      };
+
+      this.init();
+    }
+
+    /* =====================================================
+               INITIALIZATION
+            ===================================================== */
+    init() {
+      this.loadManuals();
+      this.setupEventListeners();
+      this.setupDayTypeListeners();
+      this.updateNavigation();
+      this.updateProgressIndicator();
+      // this.loadSavedState();
+      this.setupKeyboardNavigation();
+    }
+
+    /* =====================================================
+               DOM MANIPULATION
+            ===================================================== */
+    loadManuals() {
+      const container = document.getElementById("manualGrid");
+      if (!container) return;
+
+      container.innerHTML = "";
+
+      this.availableManuals.forEach((manual) => {
+        const label = document.createElement("label");
+        label.className = "manual-checkbox";
+        label.innerHTML = `
+                    <input 
+                        type="checkbox" 
+                        value="${manual.id}" 
+                        data-code="${manual.code}"
+                        aria-label="Select ${manual.name} manual"
+                    >
+                    <span class="checkmark" aria-hidden="true"></span>
+                    ${manual.name}
+                `;
+
+        const checkbox = label.querySelector("input");
+        checkbox.addEventListener("change", () => this.toggleManual(manual.id));
+
+        container.appendChild(label);
+      });
+    }
+
+    buildIndependentVariables(data) {
+      console.log({
+        data,
+      });
+      const container = document.getElementById("independentContainer");
+      if (!container) return;
+
+      container.innerHTML = "";
+
+      if (!data || data.length === 0) {
+        container.innerHTML = `
+                    <div class="empty-state">
+                        <i>📊</i>
+                        <h4>No variables available</h4>
+                        <p>Please select at least one manual first</p>
+                    </div>
+                `;
+        return;
+      }
+
+      data.forEach((item) => {
+        const section = document.createElement("div");
+        section.className = "independent-variable-section";
+        section.id = `var-section-${item.nation
+          .toLowerCase()
+          .replace(/\s+/g, "-")}`;
+
+        section.innerHTML = `
+                    <h4>${item.nation}</h4>
+                    <select 
+                        class="form-control select-control" 
+                        data-nation="${item.nation}"
+                        aria-label="Select independent variable for ${
+                          item.nation
+                        }"
+                    >
+                        <option value="">Select Variable</option>
+                        ${item.independentVariables
+                          .map(
+                            (variable) =>
+                              `<option value="${variable}">${variable}</option>`
+                          )
+                          .join("")}
+                    </select>
+                    <div class="selection-summary" id="varSummary-${
+                      item.nation
+                    }" style="display: none;"></div>
+                `;
+
+        const select = section.querySelector("select");
+        const summary = section.querySelector(".selection-summary");
+
+        select.addEventListener("change", (e) => {
+          if (e.target.value) {
+            this.state.selectedVariables[item.nation] = e.target.value;
+            summary.innerHTML = `<i>📈</i> <span>${e.target.value}</span>`;
+            summary.style.display = "flex";
+          } else {
+            delete this.state.selectedVariables[item.nation];
+            summary.style.display = "none";
+          }
+
+          this.updateProgressIndicator();
+          this.updateNavigation();
+          this.saveState();
+        });
+
+        // Restore previous selection if exists
+        if (this.state.selectedVariables[item.nation]) {
+          select.value = this.state.selectedVariables[item.nation];
+          summary.innerHTML = `<i>📈</i> <span>${
+            this.state.selectedVariables[item.nation]
+          }</span>`;
+          summary.style.display = "flex";
+        }
+
+        container.appendChild(section);
+      });
+
+      this.cache.independentVariables = data;
+    }
+
+    buildLandUseOptions(data) {
+      const container = document.getElementById("buildLandUseOptions");
+      if (!container) return;
+
+      container.innerHTML = "";
+
+      if (!data || data.length === 0) {
+        container.innerHTML = `
+                    <div class="empty-state">
+                        <i>🏢</i>
+                        <h4>No land use options available</h4>
+                        <p>Please complete the previous steps first</p>
+                    </div>
+                `;
+        return;
+      }
+
+      data.forEach((manual) => {
+        const section = document.createElement("div");
+        section.className = "independent-variable-section";
+        section.innerHTML = `
+                    <h4>${manual.manualName}</h4>
+                    <div class="manual-grid" id="landuse-${manual.manualCode}"></div>
+                `;
+
+        const grid = section.querySelector(".manual-grid");
+
+        console.log({
+          manual,
+        });
+
+        manual.categories.forEach((landUse) => {
+          const label = document.createElement("label");
+          label.className = "manual-checkbox";
+          label.innerHTML = `
+                        <input 
+                            type="checkbox" 
+                            name="landUse" 
+                            value="${landUse.code}"
+                            data-manual="${manual.manualCode}"
+                            aria-label="Select ${landUse.name}"
+                        >
+                        <span class="checkmark" aria-hidden="true"></span>
+                        ${landUse.name}
+                    `;
+
+          const checkbox = label.querySelector("input");
+          checkbox.addEventListener("change", (e) => {
+            label.classList.toggle("selected", e.target.checked);
+            this.updateSelectedLandUses();
+            this.updateProgressIndicator();
+            this.updateNavigation();
+            this.saveState();
+          });
+
+          // Restore previous selection if exists
+          if (this.state.selectedLandUses.includes(landUse.code)) {
+            checkbox.checked = true;
+            label.classList.add("selected");
+          }
+
+          grid.appendChild(label);
+        });
+
+        container.appendChild(section);
+      });
+
+      this.cache.landUseOptions = data;
+    }
+
+    /* =====================================================
+               DAY TYPE HANDLING
+            ===================================================== */
+    setupDayTypeListeners() {
+      const dayTypeCheckboxes = document.querySelectorAll(
+        'input[name="dayType"]'
+      );
+      const summary = document.getElementById("dayTypeSummary");
+
+      dayTypeCheckboxes.forEach((checkbox) => {
+        // إعادة تعيين event listeners
+        const newCheckbox = checkbox.cloneNode(true);
+        checkbox.parentNode.replaceChild(newCheckbox, checkbox);
+      });
+
+      // الحصول على الـ checkboxes الجديدة
+      const refreshedCheckboxes = document.querySelectorAll(
+        'input[name="dayType"]'
+      );
+
+      refreshedCheckboxes.forEach((checkbox) => {
+        checkbox.addEventListener("change", (e) => {
+          this.handleDayTypeChange(e.target);
+        });
+
+        // استعادة القيمة المحفوظة
+        if (this.state.selectedDayTypes.includes(checkbox.value)) {
+          checkbox.checked = true;
+          checkbox.parentElement.classList.add("selected");
+        }
+      });
+
+      this.updateDayTypeSummary();
+    }
+
+    handleDayTypeChange(checkbox) {
+      const value = checkbox.value;
+      const isChecked = checkbox.checked;
+
+      if (isChecked) {
+        if (!this.state.selectedDayTypes.includes(value)) {
+          this.state.selectedDayTypes.push(value);
+          checkbox.parentElement.classList.add("selected");
+        }
+      } else {
+        const index = this.state.selectedDayTypes.indexOf(value);
+        if (index > -1) {
+          this.state.selectedDayTypes.splice(index, 1);
+          checkbox.parentElement.classList.remove("selected");
+        }
+      }
+
+      // تحديث الـ UI
+      this.updateDayTypeSummary();
+      this.updateProgressIndicator();
+      this.updateNavigation();
+      this.saveState();
+    }
+
+    updateDayTypeSummary() {
+      const summary = document.getElementById("dayTypeSummary");
+      if (!summary) return;
+
+      if (this.state.selectedDayTypes.length === 0) {
+        summary.innerHTML = "<i>📅</i> <span>No day type selected</span>";
+        summary.style.display = "flex";
+        summary.style.background = "linear-gradient(135deg, #fff5f5, #ffe6e6)";
+        summary.style.border = "1px solid rgba(231, 76, 60, 0.2)";
+      } else {
+        summary.innerHTML = `<i>✅</i> <span>Selected: ${this.state.selectedDayTypes.join(
+          ", "
+        )}</span>`;
+        summary.style.display = "flex";
+        summary.style.background = "linear-gradient(135deg, #f0fff4, #e6ffe6)";
+        summary.style.border = "1px solid rgba(39, 174, 96, 0.2)";
+      }
+    }
+
+    updateSelectedLandUses() {
+      this.state.selectedLandUses = Array.from(
+        document.querySelectorAll('input[name="landUse"]:checked')
+      ).map((cb) => cb.value);
+    }
+
+    updateSelectionSummary() {
+      const summary = document.getElementById("selectionSummary");
+      if (!summary) return;
+
+      if (this.state.selectedManuals.length === 0) {
+        summary.innerHTML = "<i>📊</i> <span>No manual selected</span>";
+      } else {
+        summary.innerHTML = `
+                    <i>📊</i> 
+                    <span>${this.state.selectedManuals
+                      .map((m) => m.name)
+                      .join(", ")}</span>
+                `;
+      }
+      summary.style.display = "flex";
+    }
+
+    /* =====================================================
+               API INTEGRATION
+            ===================================================== */
+    async fetchIndependentVariables() {
+      if (!this.state.selectedManuals.length) {
+        throw new Error("Please select at least one manual first");
+      }
+
+      this.showLoading();
+
+      try {
+        const response = await fetch(this.apiEndpoints.independentVariables, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            manualCodes: this.state.selectedManuals.map((m) => String(m.id)),
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error(`API Error: ${response.status}`);
+        }
+
+        const data = await response.json();
+        this.buildIndependentVariables(data);
+        return data;
+      } catch (error) {
+        this.showError(
+          "Failed to fetch independent variables. Please try again."
+        );
+        throw error;
+      } finally {
+        this.hideLoading();
+      }
+    }
+
+    async fetchLandUseOptions() {
+      const selectedData = [];
+
+      this.state.selectedManuals.forEach((manual) => {
+        const variable = this.state.selectedVariables[manual.name];
+
+        console.log({
+          variable,
+        });
+
+        if (variable) {
+          selectedData.push({
+            manualCode: manual.code,
+            independentVariable: variable,
+          });
+        }
+      });
+      console.log({
+        selectedData,
+      });
+      if (selectedData.length === 0) {
+        throw new Error("Please select independent variables first");
+      }
+
+      this.showLoading();
+
+      try {
+        const response = await fetch(this.apiEndpoints.landUseOptions, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(selectedData),
+        });
+
+        if (!response.ok) {
+          throw new Error(`API Error: ${response.status}`);
+        }
+
+        const data = await response.json();
+        this.buildLandUseOptions(data);
+        return data;
+      } catch (error) {
+        this.showError("Failed to fetch land use options. Please try again.");
+        throw error;
+      } finally {
+        this.hideLoading();
+      }
+    }
+
+    async submitAnalysis() {
+      if (!this.isFormComplete()) {
+        this.showError("Please complete all steps before submitting.");
+        return;
+      }
+
+      // التأكد من أن day types قد تم اختيارها
+      if (this.state.selectedDayTypes.length === 0) {
+        this.showError("Please select at least one day type.");
+        return;
+      }
+
+      this.showLoading();
+
+      try {
+        // Prepare submission data in the required format
+        const submissionData = this.prepareSubmissionData();
+
+        console.log("Submitting data:", submissionData);
+
+        const response = await fetch(this.apiEndpoints.getRates, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify(submissionData),
+        });
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(`API Error (${response.status}): ${errorText}`);
+        }
+
+        const data = await response.json();
+        console.log("API Response:", data);
+
+        this.state.analysisResults = data;
+        this.buildResults(data);
+        this.showResults();
+
+        this.showSuccess("Analysis completed successfully!");
+      } catch (error) {
+        console.error("Submission error:", error);
+        this.showError(`Failed to submit analysis: ${error.message}`);
+      } finally {
+        this.hideLoading();
+      }
+    }
+
+    prepareSubmissionData() {
+      // Group data by manual code
+      const groupedData = {};
+
+      this.state.selectedManuals.forEach((manual) => {
+        const manualCode = manual.code;
+        const manualName = manual.name;
+
+        if (!groupedData[manualCode]) {
+          groupedData[manualCode] = {
+            manualCode: manualCode,
+            manualName: manualName,
+            categoryCodes: [],
+            independentVariable: [],
+            time: [...this.state.selectedDayTypes],
+          };
+        }
+
+        // Add land uses for this manual
+        const manualLandUses = this.state.selectedLandUses.filter((lu) => {
+          const checkbox = document.querySelector(
+            `input[value="${lu}"][data-manual="${manualCode}"]`
+          );
+          return checkbox !== null;
+        });
+
+        groupedData[manualCode].categoryCodes.push(...manualLandUses);
+
+        // Add independent variable for this manual
+        if (this.state.selectedVariables[manualName]) {
+          groupedData[manualCode].independentVariable.push(
+            this.state.selectedVariables[manualName]
+          );
+        }
+      });
+
+      // Convert to array format as required
+      return Object.values(groupedData).map((item) => ({
+        manualCode: item.manualCode,
+        categoryCodes: [...new Set(item.categoryCodes)], // Remove duplicates
+        independentVariable: [...new Set(item.independentVariable)], // Remove duplicates
+        time: item.time,
+      }));
+    }
+
+    /* =====================================================
+               RESULTS DISPLAY
+            ===================================================== */
+    buildResults(data) {
+      if (!data || !Array.isArray(data) || data.length === 0) {
+        this.showError("No results returned from the analysis.");
+        return;
+      }
+
+      // Build summary cards
+      this.buildSummaryCards(data);
+
+      // Build results tables
+      this.buildResultsTables(data);
+    }
+
+    buildSummaryCards(data) {
+      const container = document.getElementById("summaryCards");
+      if (!container) return;
+
+      // Calculate totals
+      const totalCategories = data.length;
+      const totalRates = data.reduce(
+        (sum, item) => sum + (item.rates ? item.rates.length : 0),
+        0
+      );
+
+      // Get unique manuals
+      const uniqueManuals = [...new Set(data.map((item) => item.manual))];
+
+      // Get unique day types from all rates
+      const allDayTypes = data.flatMap((item) =>
+        item.rates ? [...new Set(item.rates.map((rate) => rate.day))] : []
+      );
+      const uniqueDayTypes = [...new Set(allDayTypes)];
+
+      container.innerHTML = `
+                <div class="summary-card">
+                    <h4>📊 Analysis Summary</h4>
+                    <div class="summary-item">
+                        <span class="summary-label">Total Categories:</span>
+                        <span class="summary-value">${totalCategories}</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Total Rates:</span>
+                        <span class="summary-value">${totalRates}</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Selected Manuals:</span>
+                        <span class="summary-value">${
+                          this.state.selectedManuals.length
+                        }</span>
+                    </div>
+                </div>
+                
+                <div class="summary-card">
+                    <h4>📅 Time Parameters</h4>
+                    <div class="summary-item">
+                        <span class="summary-label">Day Types:</span>
+                        <span class="summary-value">${
+                          uniqueDayTypes.join(", ") || "None"
+                        }</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Periods:</span>
+                        <span class="summary-value">AM, MD, PM, PHG</span>
+                    </div>
+                </div>
+                
+                <div class="summary-card">
+                    <h4>⚙️ Configuration</h4>
+                    <div class="summary-item">
+                        <span class="summary-label">Manual(s):</span>
+                        <span class="summary-value">${this.state.selectedManuals
+                          .map((m) => m.name)
+                          .join(", ")}</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Land Uses:</span>
+                        <span class="summary-value">${
+                          this.state.selectedLandUses.length
+                        }</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Variables:</span>
+                        <span class="summary-value">${
+                          Object.keys(this.state.selectedVariables).length
+                        }</span>
+                    </div>
+                </div>
+            `;
+    }
+
+    buildResultsTables(data) {
+      const container = document.getElementById("resultsTablesContainer");
+      if (!container) return;
+
+      container.innerHTML = "";
+
+      // Group data by manual and category for better organization
+      const groupedData = {};
+
+      data.forEach((item, index) => {
+        // const key = `${item.manual}-${item.category}`;
+        const key = `${item.manual.code}-${item.category.code}`;
+
+        if (!groupedData[key]) {
+          groupedData[key] = {
+            manual: item.manual,
+            category: item.category,
+            items: [],
+          };
+        }
+
+        groupedData[key].items.push(item);
+      });
+
+      // Create tables for each group
+      Object.values(groupedData).forEach((group, groupIndex) => {
+        const tableSection = document.createElement("div");
+        tableSection.className = "result-table-section";
+
+        let tablesHTML = `
+                    <div class="table-section-header">
+                        <div>
+                           
+                            <h4 class="table-title">${group.manual.name} - ${group.category.name}</h4>
+                            <p class="table-subtitle">${group.items.length} sub-category(s) found</p>
+                        </div>
+                    </div>
+                `;
+
+        // Create a table for each item in the group
+        group.items.forEach((item, itemIndex) => {
+          if (!item.rates || item.rates.length === 0) return;
+
+          tablesHTML += `
+ <div style="margin-bottom: ${
+   itemIndex < group.items.length - 1 ? "30px" : "0"
+ };">
+                            <h5 style="margin: 0 0 15px 0; color: var(--primary-color); font-size: 1.1rem;">
+ ${item.subSubCategory ? item.subCategory.name : ""}${
+            item.subSubCategory
+              ? item.subSubCategory.name
+                ? ` - ${item.subSubCategory.name}`
+                : ""
+              : ""
+          }
+                                    <span style="color: var(--text-light); font-size: 0.9rem; margin-left: 10px;">
+ ${item.independentVariable} ${
+            item.subSubCategory ? `(${item.subSubCategory.code})` : ""
+          }
+                                    </span>
+ ${!item.subSubCategory && item.subCategory.name ? item.subCategory.name : ""}
+                                    <span style="color: var(--text-light); font-size: 0.9rem; margin-left: 10px;">
+ ${item.independentVariable} ${
+            !item.subSubCategory && item.subCategory.code
+              ? `(${item.subCategory.code})`
+              : ""
+          }
+                                    </span>
+                            </h5>
+                            
+                            <table class="rates-table">
+                                <thead>
+                                    <tr>
+                                        <th>Day</th>
+                                        <th>Period</th>
+                                        <th>Rate</th>
+                                        <th>In</th>
+                                        <th>Out</th>
+                                        <th>In/Out %</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${item.rates
+                                      .map(
+                                        (rate) => `
+                                        <tr>
+                                            <td>
+                                                <span class="day-badge ${this.getDayBadgeClass(
+                                                  rate.day
+                                                )}">
+                                                    ${rate.day}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="period-badge ${this.getPeriodBadgeClass(
+                                                  rate.period
+                                                )}">
+                                                    ${rate.period}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="rate-value">${
+                                                  rate.rate !== "N/A"
+                                                    ? rate.rate.toFixed(4)
+                                                    : "-"
+                                                }</span>
+                                            </td>
+                                            <td>${
+                                              rate.in !== "N/A" ? rate.in : "-"
+                                            }</td>
+                                            <td>${
+                                              rate.out !== "N/A"
+                                                ? rate.out
+                                                : "-"
+                                            }</td>
+                                            <td>
+                                                <div class="in-out-container">
+                                                    <span class="in-pill">${
+                                                      rate.in !== "N/A"
+                                                        ? (rate.rate
+                                                            ? rate.in * 100
+                                                            : rate.in
+                                                          ).toFixed(0)
+                                                        : "-"
+                                                    }%</span>
+                                                    <span class="out-pill">${
+                                                      rate.out !== "N/A"
+                                                        ? (rate.rate
+                                                            ? rate.out * 100
+                                                            : rate.out
+                                                          ).toFixed(0)
+                                                        : "-"
+                                                    }%</span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    `
+                                      )
+                                      .join("")}
+                                </tbody>
+                            </table>
+                        </div>
+                    `;
+        });
+
+        tableSection.innerHTML = tablesHTML;
+        container.appendChild(tableSection);
+      });
+
+      // If no data with rates
+      if (container.children.length === 0) {
+        container.innerHTML = `
+                    <div class="empty-state">
+                        <i>📊</i>
+                        <h4>No rate data available</h4>
+                        <p>The analysis completed successfully but no rate data was returned.</p>
+                    </div>
+                `;
+      }
+    }
+
+    getDayBadgeClass(day) {
+      switch (day.toLowerCase()) {
+        case "weekday":
+          return "weekday-badge";
+        case "weekend":
+          return "weekend-badge";
+        case "together":
+          return "together-badge";
+        default:
+          return "weekday-badge";
+      }
+    }
+
+    getPeriodBadgeClass(period) {
+      switch (period.toLowerCase()) {
+        case "am":
+          return "period-am";
+        case "md":
+          return "period-md";
+        case "pm":
+          return "period-pm";
+        case "phg":
+          return "period-phg";
+        default:
+          return "period-am";
+      }
+    }
+
+    showResults() {
+      const resultsSection = document.getElementById("resultsSection");
+      if (resultsSection) {
+        resultsSection.style.display = "block";
+        resultsSection.scrollIntoView({
+          behavior: "smooth",
+        });
+      }
+    }
+
+    /* =====================================================
+               FORM VALIDATION
+            ===================================================== */
+    isCurrentSlideValid() {
+      const slideValidations = [
+        () => this.state.selectedManuals.length > 0,
+        () => Object.keys(this.state.selectedVariables).length > 0,
+        () => this.state.selectedLandUses.length > 0,
+        () => this.state.selectedDayTypes.length > 0,
+      ];
+
+      return slideValidations[this.state.currentSlide]();
+    }
+
+    isFormComplete() {
+      return (
+        this.state.selectedManuals.length > 0 &&
+        Object.keys(this.state.selectedVariables).length > 0 &&
+        this.state.selectedLandUses.length > 0 &&
+        this.state.selectedDayTypes.length > 0
+      );
+    }
+
+    isStepCompleted(step) {
+      const stepValidations = [
+        () => this.state.selectedManuals.length > 0,
+        () => Object.keys(this.state.selectedVariables).length > 0,
+        () => this.state.selectedLandUses.length > 0,
+        () => this.state.selectedDayTypes.length > 0,
+      ];
+
+      return stepValidations[step]();
+    }
+
+    /* =====================================================
+               NAVIGATION
+            ===================================================== */
+    async handleNextStep() {
+      if (!this.isCurrentSlideValid()) {
+        const errorMessages = [
+          "Please select at least one manual.",
+          "Please select independent variables for all selected manuals.",
+          "Please select at least one land use option.",
+          "Please select at least one day type.",
+        ];
+
+        this.showError(errorMessages[this.state.currentSlide]);
+        return;
+      }
+
+      this.showLoading();
+
+      try {
+        switch (this.state.currentSlide) {
+          case 0:
+            await this.fetchIndependentVariables();
+            break;
+          case 1:
+            await this.fetchLandUseOptions();
+            break;
+          case 2:
+            // عند الانتقال إلى شريحة Options
+            setTimeout(() => this.setupDayTypeListeners(), 100);
+            break;
+        }
+
+        this.goToSlide(this.state.currentSlide + 1);
+      } catch (error) {
+        console.error("Navigation error:", error);
+        this.showError("An error occurred while processing your request.");
+      } finally {
+        this.hideLoading();
+      }
+    }
+
+    goToSlide(slideIndex) {
+      if (slideIndex < 0 || slideIndex >= this.state.totalSlides) return;
+
+      this.state.currentSlide = slideIndex;
+
+      const carouselTrack = document.getElementById("carouselTrack");
+      if (carouselTrack) {
+        carouselTrack.style.transform = `translateX(-${slideIndex * 100}%)`;
+      }
+
+      this.updateNavigation();
+      this.updateProgressIndicator();
+      this.saveState();
+
+      // إذا انتقلنا إلى شريحة Options (index 3)
+      if (slideIndex === 3) {
+        setTimeout(() => {
+          this.setupDayTypeListeners();
+          this.updateDayTypeSummary();
+        }, 300);
+      }
+    }
+
+    updateNavigation() {
+      const prevBtn = document.getElementById("prevBtn");
+      const nextBtn = document.getElementById("nextBtn");
+      const submitBtn = document.getElementById("submitBtn");
+
+      if (prevBtn) {
+        prevBtn.disabled = this.state.currentSlide === 0;
+      }
+
+      if (nextBtn) {
+        nextBtn.disabled = !this.isCurrentSlideValid();
+        nextBtn.style.display =
+          this.state.currentSlide < this.state.totalSlides - 1
+            ? "block"
+            : "none";
+      }
+
+      if (submitBtn) {
+        submitBtn.disabled = !this.isCurrentSlideValid();
+        submitBtn.style.display =
+          this.state.currentSlide === this.state.totalSlides - 1
+            ? "block"
+            : "none";
+      }
+    }
+
+    updateProgressIndicator() {
+      const progressIndicator = document.getElementById("progressIndicator");
+      const steps = document.querySelectorAll(".progress-step");
+
+      steps.forEach((step, index) => {
+        step.classList.remove("active", "completed");
+
+        if (index === this.state.currentSlide) {
+          step.classList.add("active");
+        } else if (
+          index < this.state.currentSlide ||
+          this.isStepCompleted(index)
+        ) {
+          step.classList.add("completed");
+        }
+      });
+
+      // Update progress line
+      if (progressIndicator) {
+        const progress =
+          (this.state.currentSlide / (this.state.totalSlides - 1)) * 100;
+        progressIndicator.classList.toggle(
+          "completed",
+          this.state.currentSlide === this.state.totalSlides - 1
+        );
+      }
+    }
+
+    /* =====================================================
+               EVENT HANDLERS
+            ===================================================== */
+    setupEventListeners() {
+      // Navigation buttons
+      document
+        .getElementById("prevBtn")
+        ?.addEventListener("click", () =>
+          this.goToSlide(this.state.currentSlide - 1)
+        );
+
+      document
+        .getElementById("nextBtn")
+        ?.addEventListener("click", () => this.handleNextStep());
+
+      document
+        .getElementById("submitBtn")
+        ?.addEventListener("click", () => this.submitAnalysis());
+
+      // Progress steps
+      document.querySelectorAll(".progress-step").forEach((step) => {
+        step.addEventListener("click", () => {
+          const idx = Number(step.dataset.step);
+          if (idx <= this.state.currentSlide || this.isStepCompleted(idx - 1)) {
+            this.goToSlide(idx);
+          }
+        });
+      });
+
+      // Results actions
+      document
+        .getElementById("printResultsBtn")
+        ?.addEventListener("click", () => window.print());
+
+      document
+        .getElementById("newAnalysisBtn")
+        ?.addEventListener("click", () => this.resetForm());
+
+      document
+        .getElementById("downloadExcelBtn")
+        ?.addEventListener("click", () => this.downloadExcelReport());
+    }
+
+    setupKeyboardNavigation() {
+      document.addEventListener("keydown", (e) => {
+        // Ignore if user is typing in an input field
+        if (
+          e.target.tagName === "INPUT" ||
+          e.target.tagName === "SELECT" ||
+          e.target.tagName === "TEXTAREA"
+        ) {
+          return;
+        }
+
+        switch (e.key) {
+          case "ArrowRight":
+            e.preventDefault();
+            if (this.state.currentSlide < this.state.totalSlides - 1) {
+              this.handleNextStep();
+            }
+            break;
+          case "ArrowLeft":
+            e.preventDefault();
+            if (this.state.currentSlide > 0) {
+              this.goToSlide(this.state.currentSlide - 1);
+            }
+            break;
+        }
+      });
+    }
+
+    /* =====================================================
+               MANUAL SELECTION LOGIC
+            ===================================================== */
+    toggleManual(manualId) {
+      manualId = Number(manualId);
+      const manual = this.availableManuals.find((m) => m.id === manualId);
+
+      if (!manual) return;
+
+      const isAverage = manualId === 9;
+      const checkbox = document.querySelector(`input[value="${manualId}"]`);
+
+      if (isAverage) {
+        // إذا تم اختيار AVERAGE، نلغى كل الاختيارات الأخرى
+        if (checkbox.checked) {
+          this.state.selectedManuals = [manual];
+          document.querySelectorAll("#manualGrid input").forEach((cb) => {
+            cb.checked = Number(cb.value) === 9;
+            cb.parentElement.classList.toggle("selected", cb.checked);
+          });
+        } else {
+          this.state.selectedManuals = [];
+        }
+      } else {
+        // إلغاء اختيار AVERAGE إذا كان مختارًا
+        const averageCheckbox = document.querySelector('input[value="9"]');
+        if (averageCheckbox && averageCheckbox.checked) {
+          averageCheckbox.checked = false;
+          averageCheckbox.parentElement.classList.remove("selected");
+          this.state.selectedManuals = this.state.selectedManuals.filter(
+            (m) => m.id !== 9
+          );
+        }
+
+        // إضافة أو إزالة الدليل المحدد
+        const index = this.state.selectedManuals.findIndex(
+          (m) => m.id === manualId
+        );
+        if (index === -1) {
+          this.state.selectedManuals.push(manual);
+        } else {
+          this.state.selectedManuals.splice(index, 1);
+        }
+
+        checkbox.parentElement.classList.toggle("selected", checkbox.checked);
+      }
+
+      this.updateSelectionSummary();
+      this.updateProgressIndicator();
+      this.updateNavigation();
+      this.saveState();
+    }
+
+    /* =====================================================
+               STATE MANAGEMENT
+            ===================================================== */
+    saveState() {
+      try {
+        const state = {
+          selectedManuals: this.state.selectedManuals,
+          selectedVariables: this.state.selectedVariables,
+          selectedLandUses: this.state.selectedLandUses,
+          selectedDayTypes: this.state.selectedDayTypes,
+          currentSlide: this.state.currentSlide,
+        };
+
+        localStorage.setItem("tripGenerationState", JSON.stringify(state));
+      } catch (error) {
+        console.warn("Failed to save state:", error);
+      }
+    }
+
+    /* =====================================================
+               RESET FORM
+            ===================================================== */
+    resetForm() {
+      if (
+        confirm(
+          "Are you sure you want to start a new analysis? All current selections will be lost."
+        )
+      ) {
+        this.state = {
+          selectedManuals: [],
+          selectedVariables: {},
+          selectedLandUses: [],
+          selectedDayTypes: [],
+          currentSlide: 0,
+          totalSlides: 4,
+          isLoading: false,
+          analysisResults: null,
+        };
+
+        // Reset UI elements
+        document.querySelectorAll('input[type="checkbox"]').forEach((cb) => {
+          cb.checked = false;
+          cb.parentElement.classList.remove("selected");
+        });
+
+        document.querySelectorAll("select").forEach((select) => {
+          select.value = "";
+        });
+
+        document.getElementById("independentContainer").innerHTML = "";
+        document.getElementById("buildLandUseOptions").innerHTML = "";
+        document.getElementById("resultsTablesContainer").innerHTML = "";
+        document.getElementById("summaryCards").innerHTML = "";
+        document.getElementById("resultsSection").style.display = "none";
+
+        this.updateSelectionSummary();
+        this.updateDayTypeSummary();
+        this.goToSlide(0);
+        localStorage.removeItem("tripGenerationState");
+
+        this.showSuccess("Form has been reset. You can start a new analysis.");
+      }
+    }
+
+    /* =====================================================
+               DOWNLOAD EXCEL REPORT
+            ===================================================== */
+    async downloadExcelReport() {
+      if (!this.state.analysisResults) {
+        this.showError("No analysis results to download.");
+        return;
+      }
+
+      this.showLoading();
+
+      console.log({
+        results: this.state.analysisResults,
+      });
+
+      try {
+        const response = await fetch("export-trip-generation-excel/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            results: this.state.analysisResults,
+          }),
+        });
+
+        if (!response.ok) throw new Error("Failed to generate Excel");
+
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "Trip_Generation_Reports.zip";
+        a.click();
+
+        window.URL.revokeObjectURL(url);
+
+        this.showSuccess("Excel downloaded successfully");
+      } catch (err) {
+        this.showError(err.message);
+      } finally {
+        this.hideLoading();
+      }
+    }
+
+    /* =====================================================
+               UI HELPERS
+            ===================================================== */
+    showLoading() {
+      this.state.isLoading = true;
+      const overlay = document.getElementById("loadingOverlay");
+      if (overlay) {
+        overlay.style.display = "flex";
+        document.body.style.overflow = "hidden";
+      }
+    }
+
+    hideLoading() {
+      this.state.isLoading = false;
+      const overlay = document.getElementById("loadingOverlay");
+      if (overlay) {
+        overlay.style.display = "none";
+        document.body.style.overflow = "";
+      }
+    }
+
+    showError(message) {
+      this.hideLoading();
+
+      // Remove existing error messages
+      document.querySelectorAll(".error-message").forEach((el) => el.remove());
+
+      const errorDiv = document.createElement("div");
+      errorDiv.className = "error-message";
+      errorDiv.innerHTML = `
+                <span aria-hidden="true">⚠️</span>
+                <span>${message}</span>
+            `;
+
+      // Insert at the top of the container
+      const container = document.querySelector(".trip-generation-container");
+      if (container) {
+        container.insertBefore(errorDiv, container.firstChild);
+
+        // Auto-remove after 5 seconds
+        setTimeout(() => {
+          if (errorDiv.parentNode) {
+            errorDiv.remove();
+          }
+        }, 5000);
+      }
+    }
+
+    showSuccess(message) {
+      // Remove existing success messages
+      document
+        .querySelectorAll(".success-message")
+        .forEach((el) => el.remove());
+
+      const successDiv = document.createElement("div");
+      successDiv.className = "success-message";
+      successDiv.innerHTML = `
+                <span aria-hidden="true">✅</span>
+                <span>${message}</span>
+            `;
+
+      // Insert at the top of the container
+      const container = document.querySelector(".trip-generation-container");
+      if (container) {
+        container.insertBefore(successDiv, container.firstChild);
+
+        // Auto-remove after 5 seconds
+        setTimeout(() => {
+          if (successDiv.parentNode) {
+            successDiv.remove();
+          }
+        }, 5000);
+      }
+    }
+  }
+
+  /* =====================================================
+         INITIALIZE APPLICATION
+      ===================================================== */
+  document.addEventListener("DOMContentLoaded", () => {
+    // Initialize the form manager
+    window.tripGenerationForm = new TripGenerationForm();
+  });
+</script>
+
+{% endblock %}

@@ -1,0 +1,242 @@
+{% extends "includes/base.html" %}
+{% load static %}
+{% load tld_filters %}
+
+{% block title %}Trip Length Distribution Frequencies | CEPAC{% endblock %}
+
+{% block content %}
+<div class="tld-frequency-container">
+  <div class="tld-frequency-page">
+    <div class="tld-frequency-wrapper">
+      <div class="tld-frequency-left">
+        <div class="tld-frequency-hero">
+          <h1>Trip <br>Length <br>Distribution</h1>
+          <div class="tld-frequency-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="4" y1="21" x2="4" y2="14"></line>
+              <line x1="4" y1="10" x2="4" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="12"></line>
+              <line x1="12" y1="8" x2="12" y2="3"></line>
+              <line x1="20" y1="21" x2="20" y2="16"></line>
+              <line x1="20" y1="12" x2="20" y2="3"></line>
+              <line x1="1" y1="14" x2="7" y2="14"></line>
+              <line x1="9" y1="8" x2="15" y2="8"></line>
+              <line x1="17" y1="16" x2="23" y2="16"></line>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div class="tld-frequency-right">
+        <form method="post" action="{% url 'trip_length_distribution:validation' %}" class="tld-frequency-form">
+          {% csrf_token %}
+          <h2 class="tld-frequency-form-title">Enter Frequency Values</h2>
+          
+          <div class="tld-frequency-inputs">
+            {% for i in numberOfIntervals_range %}
+              <div class="tld-frequency-group">
+                <label for="time{{ i }}">Time to {{ arrayOfTime|index:i }}</label>
+                <input type="number" 
+                       id="time{{ i }}" 
+                       name="time{{ i }}" 
+                       min="0" 
+                       step="any" 
+                       required
+                       class="tld-frequency-input">
+              </div>
+            {% endfor %}
+          </div>
+          
+          <div class="tld-frequency-submit">
+            <button type="submit" class="tld-frequency-submit-btn">
+              <span>Calculate Distribution</span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .tld-frequency-container {
+    padding: 40px 0;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  }
+
+  .tld-frequency-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .tld-frequency-wrapper {
+    display: flex;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+  }
+
+  .tld-frequency-left {
+    flex: 1;
+    background: linear-gradient(135deg, #17a98a 0%, #17a98a 100%);
+    color: white;
+    padding: 60px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .tld-frequency-hero {
+    text-align: center;
+  }
+
+  .tld-frequency-hero h1 {
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 30px;
+    color: white;
+  
+  }
+
+  .tld-frequency-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .tld-frequency-icon svg {
+    stroke: white;
+  }
+
+  .tld-frequency-right {
+    flex: 1;
+    padding: 60px 40px;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+
+  .tld-frequency-form-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+
+  .tld-frequency-inputs {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+
+  .tld-frequency-group {
+    margin-bottom: 15px;
+  }
+
+  .tld-frequency-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 8px;
+  }
+
+  .tld-frequency-input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.2s ease;
+  }
+
+  .tld-frequency-input:focus {
+    border-color: #17a98a;
+    box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.1);
+    outline: none;
+  }
+
+  .tld-frequency-submit {
+    text-align: center;
+    margin-top: 30px;
+  }
+
+  .tld-frequency-submit-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px 28px;
+    background: #17a98a;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .tld-frequency-submit-btn:hover {
+    background: #17a98a;
+    transform: translateY(-2px);
+    color: white;
+  }
+
+  .tld-frequency-submit-btn svg {
+    transition: transform 0.2s ease;
+  }
+
+  .tld-frequency-submit-btn:hover svg {
+    transform: translateX(3px);
+  }
+
+  @media (max-width: 992px) {
+    .tld-frequency-wrapper {
+      flex-direction: column;
+    }
+    
+    .tld-frequency-left, .tld-frequency-right {
+      padding: 40px;
+    }
+    
+    .tld-frequency-right {
+      max-height: none;
+    }
+    
+    .tld-frequency-hero h1 {
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .tld-frequency-inputs {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .tld-frequency-left, .tld-frequency-right {
+      padding: 30px 20px;
+    }
+    
+    .tld-frequency-hero h1 {
+      font-size: 24px;
+    }
+    
+    .tld-frequency-form-title {
+      font-size: 20px;
+    }
+  }
+</style>
+{% endblock %}

@@ -1,0 +1,255 @@
+
+
+{% extends "includes/base.html" %}
+{% load static %}
+
+{% block title %} Outliers| CEPAC{% endblock %}
+
+{% block content %}
+
+    <style>
+       
+        
+        .ouliers {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .ouliers .container {
+            width: 100%;
+            max-width: 800px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .ouliers .header {
+            background: linear-gradient(90deg, #279797 0%, var(--accent-color) 100%);
+            color: white;
+            padding: 25px 30px;
+            text-align: center;
+        }
+        
+        .ouliers .header h1 {
+            font-size: 28px;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .ouliers .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .ouliers .content {
+            padding: 30px;
+        }
+        
+        .ouliers .upload-area {
+            border: 2px dashed var(--accent-color);
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
+            background: #f8f9ff;
+        }
+        
+        .ouliers .upload-area:hover {
+            background: #eef1ff;
+            border-color: var(--accent-color);
+        }
+        
+        .ouliers .upload-icon {
+            font-size: 50px;
+            color: var(--accent-color);
+            margin-bottom: 15px;
+        }
+        
+        .ouliers .upload-text {
+            margin-bottom: 20px;
+        }
+        
+        .ouliers .upload-text h3 {
+            color: var(--accent-color);
+            margin-bottom: 8px;
+        }
+        
+        .ouliers .upload-text p {
+            color: #070707;
+            font-size: 14px;
+        }
+        
+        .ouliers .file-input {
+            display: none;
+        }
+        
+        .ouliers .file-label {
+            display: inline-block;
+            background: var(--accent-color);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+        
+        .ouliers .file-label:hover {
+            background: #02daf70f;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            color: var(--accent-color);
+            border: 2px solid var(--accent-color);
+        }
+        
+        .ouliers .requirements {
+            background: #e6f9ff;
+            border-left: 4px solid #279797;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        
+        .ouliers .requirements h4 {
+            color: #15627b;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .ouliers .requirements ul {
+            padding-left: 20px;
+            color: #666;
+        }
+        
+        .ouliers .requirements li {
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        
+        .ouliers .btn-submit {
+            width: 100%;
+            background: linear-gradient(90deg, #279797 0%, var(--accent-color) 100%);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        
+        .ouliers .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+        }
+        
+        .ouliers .btn-submit:active {
+            transform: translateY(0);
+        }
+        
+        .ouliers .selected-file {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+            color: var(--accent-color);
+            font-weight: 500;
+        }
+        
+      
+        @media (max-width: 600px) {
+            .ouliers .header h1 {
+                font-size: 22px;
+            }
+            
+            .ouliers .content {
+                padding: 20px;
+            }
+            
+            .ouliers .upload-area {
+                padding: 20px;
+            }
+        }
+    </style>
+<div class="ouliers">
+
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-chart-line"></i> DataOutlier Analytics</h1>
+            <p>Advanced outlier detection for your data</p>
+        </div>
+        {% if message %}
+            <div class="message">{{ message }}</div>
+        {% endif %}
+        {% if error %}
+            <div class="message alert alert-danger mt-3 text-align-center" role="alert"><p class="fs-3">{{ error }}</p></div>
+        {% endif %}
+        
+        
+        <div class="content">
+            <div class="upload-area">
+                <div class="upload-icon">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                </div>
+                <div class="upload-text">
+                    <h3>Upload Your Data File</h3>
+                    <p>CSV or Excel format with a 'Rate' column</p>
+                </div>
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="file" id="fileInput" class="file-input" name="file" accept=".csv,.xlsx,.xls" required>
+                    <label for="fileInput" class="file-label">
+                        <i class="fas fa-file-upload"></i> Choose File
+                    </label>
+                    <div id="fileName" class="selected-file">No file selected</div>
+                    <button type="submit" class="btn-submit">Analyze for Outliers</button>
+                </form>
+            </div>
+            
+            <div class="requirements">
+                <h4><i class="fas fa-exclamation-circle"></i> File Requirements</h4>
+                <ul>
+                    <li>File must be in CSV, XLSX, or XLS format</li>
+                    <li>Dataset must contain a column named "Rate" (case-sensitive)</li>
+                    <li>Maximum file size: 10MB</li>
+                    <li>Ensure your data is properly formatted without merged cells</li>
+                </ul>
+            </div>
+        </div>
+        
+       
+    </div>
+
+    <script>
+        // Display selected file name
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const fileName = e.target.files[0] ? e.target.files[0].name : 'No file selected';
+            document.getElementById('fileName').textContent = fileName;
+        });
+        
+        // Simple form validation
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const fileInput = document.getElementById('fileInput');
+            if (!fileInput.value) {
+                e.preventDefault();
+                alert('Please select a file to upload');
+                fileInput.focus();
+            }
+        });
+    </script>
+</div>
+
+
+{% endblock %}
