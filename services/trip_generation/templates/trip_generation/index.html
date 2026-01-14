@@ -4,8 +4,21 @@
 {% block title %}Trip Generation | CEPAC{% endblock %}
 
 {% block content %}
+
+<style>
+    .hover-lift {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .hover-lift:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1) !important;
+    }
+    .icon-wrapper {
+        opacity: 0.9;
+    }
+</style>
 <div class="container py-5">
-    <h4 class="text-center mb-5 fw-normal">Trip Generation </h4>
+    <h1 class="text-center mb-5 fw-normal">Trip Generation</h1>
     
     <div class="row g-4 justify-content-center">
         <!-- Card 1 -->
@@ -36,7 +49,7 @@
                         </svg>
                     </div>
                     <h5 class="card-title mb-3">  Analysis</h5>
-                    <p class="card-text text-muted mb-4">Manual analysis of inbound/outbound trip rates</p>
+                    <p class="card-text text-muted mb-4">Manual analysis of <strong>Inbound / Outbound</strong> trip rates</p>
                     <a href="{% url 'trip_generation:showReport' %}" class="btn btn-success px-4">
                         Show Report
                     </a>
@@ -46,16 +59,4 @@
     </div>
 </div>
 
-<style>
-    .hover-lift {
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-    .hover-lift:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 8px 25px rgba(0,0,0,0.1) !important;
-    }
-    .icon-wrapper {
-        opacity: 0.9;
-    }
-</style>
 {% endblock %}

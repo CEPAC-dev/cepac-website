@@ -2,1485 +2,1372 @@
 Generation | CEPAC{% endblock %} {% block content %}
 
 <style>
-    :root {
-        --primary-color: #2c3e50;
-        --accent-color: #3498db;
-        --success-color: #27ae60;
-        --warning-color: #e67e22;
-        --danger-color: #e74c3c;
-        --light-gray: #f8f9fa;
-        --border-color: #dee2e6;
-        --text-color: #333;
-        --text-light: #6c757d;
-        --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        --transition: all 0.3s ease;
-    }
+  :root {
+    --primary-color: #2c3e50;
+    --accent-color: #3498db;
+    --success-color: #27ae60;
+    --warning-color: #47bb9e;
+    --danger-color: #e74c3c;
+    --light-gray: #f8f9fa;
+    --border-color: #dee2e6;
+    --text-color: #333;
+    --text-light: #6c757d;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+  }
 
-    .trip-generation-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 20px;
-        position: relative;
-    }
+  .trip-generation-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    position: relative;
+  }
 
-    /* Slider Styles */
-    .form-slider {
-        position: relative;
-        overflow: hidden;
-        background: white;
-        border-radius: 15px;
-        box-shadow: var(--shadow);
-        margin-top: 30px;
-        min-height: 600px;
-    }
+  /* Slider Styles */
+  .form-slider {
+    position: relative;
+    overflow: hidden;
+    background: white;
+    border-radius: 15px;
+    box-shadow: var(--shadow);
+    margin-top: 30px;
+    min-height: 600px;
+  }
 
-    .slider-header {
-        background: linear-gradient(135deg,
-                var(--primary-color),
-                var(--accent-color));
-        color: white;
-        padding: 25px;
-        border-radius: 15px 15px 0 0;
-        position: relative;
-        overflow: hidden;
-    }
+  .slider-header {
+    background: linear-gradient(
+      135deg,
+      var(--primary-color),
+      var(--accent-color)
+    );
+    color: white;
+    padding: 25px;
+    border-radius: 15px 15px 0 0;
+    position: relative;
+    overflow: hidden;
+  }
 
-    .slider-header:before {
-        content: "";
-        position: absolute;
-        top: -50%;
-        right: -50%;
-        width: 200px;
-        height: 200px;
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 50%;
-    }
+  .slider-header:before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200px;
+    height: 200px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+  }
 
-    .slider-header h1 {
-        font-size: 2.2rem;
-        font-weight: 700;
-        margin-bottom: 10px;
-        position: relative;
-        z-index: 1;
-    }
+  .slider-header h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 1;
+    color: #fff;
+  }
 
-    .slider-header p {
-        font-size: 1.1rem;
-        opacity: 0.9;
-        position: relative;
-        z-index: 1;
-    }
+  .slider-header p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    position: relative;
+    z-index: 1;
+  }
 
-    .slider-content {
-        padding: 40px;
-        min-height: 500px;
-        position: relative;
-    }
+  .slider-content {
+    padding: 40px;
+    min-height: 500px;
+    position: relative;
+  }
 
-    .slider-step {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        padding: 40px;
-        opacity: 0;
-        transform: translateX(50px);
-        transition: var(--transition);
-        pointer-events: none;
-        overflow-y: auto;
-        max-height: 100%;
-    }
+  .slider-step {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 40px;
+    opacity: 0;
+    transform: translateX(50px);
+    transition: var(--transition);
+    pointer-events: none;
+    overflow-y: auto;
+    max-height: 100%;
+  }
 
-    .slider-step.active {
-        opacity: 1;
-        transform: translateX(0);
-        pointer-events: all;
-        position: relative;
-    }
+  .slider-step.active {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: all;
+    position: relative;
+  }
 
-    .step-number {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 40px;
-        height: 40px;
-        background: var(--accent-color);
-        color: white;
-        border-radius: 50%;
-        font-weight: bold;
-        font-size: 1.2rem;
-        margin-bottom: 20px;
-        box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
-    }
+  .step-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: var(--accent-color);
+    color: white;
+    border-radius: 50%;
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+  }
 
-    .step-title {
-        font-size: 1.8rem;
-        color: var(--primary-color);
-        margin-bottom: 10px;
-        font-weight: 600;
-    }
+  .step-title {
+    font-size: 1.8rem;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
 
-    .step-description {
-        color: var(--text-light);
-        margin-bottom: 30px;
-        font-size: 1.1rem;
-        line-height: 1.6;
-    }
+  .step-description {
+    color: var(--text-light);
+    margin-bottom: 30px;
+    font-size: 1.1rem;
+    line-height: 1.6;
+  }
 
-    /* Manual Selection Cards */
-    .manual-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-        gap: 20px;
-        margin-top: 20px;
-    }
+  /* Manual Selection Cards */
+  .manual-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+  }
 
-    .manual-card {
-        background: white;
-        border: 2px solid var(--border-color);
-        border-radius: 12px;
-        padding: 25px 15px;
-        text-align: center;
-        cursor: pointer;
-        transition: var(--transition);
-        position: relative;
-        overflow: hidden;
-    }
+  .manual-card {
+    background: white;
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    padding: 25px 15px;
+    text-align: center;
+    cursor: pointer;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+  }
 
-    .manual-card:hover {
-        transform: translateY(-5px);
-        box-shadow: var(--shadow);
-        border-color: var(--accent-color);
-    }
+  .manual-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow);
+    border-color: var(--accent-color);
+  }
 
-    .manual-card.selected {
-        border-color: var(--accent-color);
-        background: linear-gradient(135deg, #f0f8ff, #e3f2fd);
-        box-shadow: 0 8px 25px rgba(52, 152, 219, 0.2);
-    }
+  .manual-card.selected {
+    border-color: var(--accent-color);
+    background: linear-gradient(135deg, #f0f8ff, #e3f2fd);
+    box-shadow: 0 8px 25px rgba(52, 152, 219, 0.2);
+  }
 
-    .manual-card.selected:before {
-        content: "✓";
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        background: var(--accent-color);
-        color: white;
-        width: 25px;
-        height: 25px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: bold;
-    }
+  .manual-card.selected:before {
+    content: "✓";
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: var(--accent-color);
+    color: white;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+  }
 
-    .manual-icon {
-        font-size: 2.5rem;
-        margin-bottom: 15px;
-        color: var(--accent-color);
-    }
+  .manual-icon {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    color: var(--accent-color);
+  }
 
-    .manual-name {
-        font-size: 1.2rem;
-        font-weight: 600;
-        color: var(--primary-color);
-        margin-bottom: 5px;
-    }
+  .manual-name {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 5px;
+  }
 
-    .manual-hint {
-        font-size: 0.9rem;
-        color: var(--text-light);
-        margin-top: 10px;
-        font-style: italic;
-    }
+  .manual-hint {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    margin-top: 10px;
+    font-style: italic;
+  }
 
-    /* Location Selection */
-    .location-section {
-        margin-top: 30px;
-        margin-bottom: 30px;
-    }
+  .location-section {
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
 
-    .location-section h3 {
-        color: var(--primary-color);
-        margin-bottom: 15px;
-        font-size: 1.3rem;
-    }
+  .location-section h3 {
+    color: var(--primary-color);
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+  }
 
-    .country-select {
-        width: 100%;
-        padding: 15px;
-        border: 2px solid var(--border-color);
-        border-radius: 10px;
-        font-size: 1.1rem;
-        background: white;
-        cursor: pointer;
-        transition: var(--transition);
-    }
+  .country-select {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    font-size: 1.1rem;
+    background: white;
+    cursor: pointer;
+    transition: var(--transition);
+  }
 
-    .country-select:focus {
-        outline: none;
-        border-color: var(--accent-color);
-        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
-    }
+  .time-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+    margin: 20px 0;
+  }
 
-    /* Time Selection */
-    .time-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-        gap: 15px;
-        margin: 20px 0;
-    }
+  .time-card {
+    background: white;
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: var(--transition);
+  }
 
-    .time-card {
-        background: white;
-        border: 2px solid var(--border-color);
-        border-radius: 10px;
-        padding: 20px;
-        text-align: center;
-        cursor: pointer;
-        transition: var(--transition);
-    }
+  .time-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  }
 
-    .time-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    }
+  .time-card.selected {
+    border-color: var(--accent-color);
+    background: #f0f8ff;
+  }
 
-    .time-card.selected {
-        border-color: var(--accent-color);
-        background: #f0f8ff;
-    }
+  .time-icon {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: var(--accent-color);
+  }
 
-    .time-icon {
-        font-size: 1.5rem;
-        margin-bottom: 10px;
-        color: var(--accent-color);
-    }
+  .upload-container {
+    margin-top: 30px;
+  }
 
-    /* File Upload Styling */
-    .upload-container {
-        margin-top: 30px;
-    }
+  .upload-area {
+    border: 3px dashed var(--border-color);
+    border-radius: 15px;
+    padding: 50px 20px;
+    text-align: center;
+    background: var(--light-gray);
+    transition: var(--transition);
+    cursor: pointer;
+    position: relative;
+  }
 
-    .upload-area {
-        border: 3px dashed var(--border-color);
-        border-radius: 15px;
-        padding: 50px 20px;
-        text-align: center;
-        background: var(--light-gray);
-        transition: var(--transition);
-        cursor: pointer;
-        position: relative;
-    }
+  .upload-area:hover {
+    border-color: var(--accent-color);
+    background: #f0f8ff;
+  }
 
-    .upload-area:hover {
-        border-color: var(--accent-color);
-        background: #f0f8ff;
-    }
+  .upload-area.dragover {
+    border-color: var(--accent-color);
+    background: #e3f2fd;
+    transform: scale(1.02);
+  }
 
-    .upload-area.dragover {
-        border-color: var(--accent-color);
-        background: #e3f2fd;
-        transform: scale(1.02);
-    }
+  .upload-icon {
+    font-size: 3rem;
+    color: var(--accent-color);
+    margin-bottom: 20px;
+  }
 
-    .upload-icon {
-        font-size: 3rem;
-        color: var(--accent-color);
-        margin-bottom: 20px;
-    }
+  .upload-text {
+    font-size: 1.2rem;
+    color: var(--text-color);
+    margin-bottom: 10px;
+  }
 
-    .upload-text {
-        font-size: 1.2rem;
-        color: var(--text-color);
-        margin-bottom: 10px;
-    }
+  .upload-hint {
+    color: var(--text-light);
+    font-size: 0.9rem;
+  }
 
-    .upload-hint {
-        color: var(--text-light);
-        font-size: 0.9rem;
-    }
+  .instructions-container {
+    background: #f8f9fa;
+    border-left: 4px solid var(--accent-color);
+    padding: 20px;
+    border-radius: 8px;
+    margin: 30px 0;
+  }
 
-    /* Excel Instructions */
-    .instructions-container {
-        background: #f8f9fa;
-        border-left: 4px solid var(--accent-color);
-        padding: 20px;
-        border-radius: 8px;
-        margin: 30px 0;
-    }
+  .instructions-container h4 {
+    color: var(--primary-color);
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+  }
 
-    .instructions-container h4 {
-        color: var(--primary-color);
-        margin-bottom: 10px;
-        font-size: 1.2rem;
-    }
+  .instructions-container ul {
+    padding-left: 20px;
+    margin: 10px 0;
+  }
 
-    .instructions-container ul {
-        padding-left: 20px;
-        margin: 10px 0;
-    }
+  .instructions-container li {
+    margin-bottom: 8px;
+    color: var(--text-color);
+  }
 
-    .instructions-container li {
-        margin-bottom: 8px;
-        color: var(--text-color);
-    }
+  /* Updated Subcategory Styling */
+  .subcategory-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+  }
 
-    /* Subcategory Selection */
+  .subcategory-card {
+    width: 100%;
+    background: white;
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    padding: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+
+  .subcategory-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .subcategory-card.selected {
+    border-color: var(--success-color);
+    background-color: #e8f6ef;
+  }
+
+  .subcategory-card.auto-selected {
+
+    border-color: var(--accent-color);
+    background-color: #e3f2fd;
+  }
+
+  .subcategory-card.auto-selected:after {
+    content: "Auto-selected";
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: var(--accent-color);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    font-weight: 500;
+  }
+
+  .subcategory-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  .subcategory-code {
+    background: var(--primary-color);
+    color: white;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+  }
+
+  .subcategory-actions {
+    display: flex;
+    align-items: center;
+  }
+
+  .subcategory-radio {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: var(--primary-color);
+  }
+
+  .subcategory-name {
+    font-weight: 500;
+    color: var(--text-color);
+    margin-bottom: 8px;
+    font-size: 1rem;
+  }
+
+  .subcategory-description {
+    color: var(--text-light);
+    font-size: 0.85rem;
+    margin-bottom: 10px;
+  }
+
+  .independent-vars {
+    margin-top: 10px;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 6px;
+    font-size: 0.85rem;
+  }
+
+  .independent-vars label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: var(--primary-color);
+  }
+
+  .var-select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    background: white;
+    cursor: pointer;
+  }
+
+  .independent-vars.single {
+    background: #e8f5e9;
+    border: 1px solid #c8e6c9;
+    color: #2e7d32;
+  }
+
+  .progress-container {
+    padding: 50px 40px;
+    background: white;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .progress-bar {
+    height: 6px;
+    background: #e9ecef;
+    border-radius: 3px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-color), #2980b9);
+    width: 25%;
+    transition: width 0.5s ease;
+    border-radius: 3px;
+  }
+
+  .step-dots {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+  }
+
+  .step-dot {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: white;
+    border: 2px solid #e9ecef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: var(--text-light);
+    transition: var(--transition);
+    cursor: pointer;
+    position: relative;
+  }
+
+  .step-dot.active {
+    background: var(--accent-color);
+    border-color: var(--accent-color);
+    color: white;
+    transform: scale(1.1);
+  }
+
+  .step-dot.completed {
+    background: var(--success-color);
+    border-color: var(--success-color);
+    color: white;
+  }
+
+  .step-label {
+    position: absolute;
+    top: 35px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.8rem;
+    color: var(--text-light);
+    white-space: nowrap;
+  }
+
+  .slider-navigation {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 40px;
+    background: white;
+    border-top: 1px solid var(--border-color);
+    border-radius: 0 0 15px 15px;
+  }
+
+  .nav-btn {
+    padding: 12px 30px;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    border: none;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .btn-prev {
+    background: white;
+    color: var(--text-color);
+    border: 2px solid var(--border-color);
+  }
+
+  .btn-prev:hover:not(:disabled) {
+    background: var(--light-gray);
+    border-color: var(--text-light);
+  }
+
+  .btn-next {
+    background: var(--accent-color);
+    color: white;
+  }
+
+  .btn-next:hover:not(:disabled) {
+    background: #2980b9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+  }
+
+  .btn-submit {
+    background: var(--success-color);
+    color: white;
+    padding: 12px 30px;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    border: none;
+    font-size: 1rem;
+  }
+
+  .btn-submit:hover {
+    background: #219653;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+  }
+
+  .results-section {
+    background: white;
+    border-radius: 15px;
+    box-shadow: var(--shadow);
+    margin-top: 30px;
+    padding: 40px;
+    display: none;
+    animation: fadeIn 0.5s ease;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .results-header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .results-header .step-number {
+    background: var(--success-color);
+    margin: 0 auto 20px;
+  }
+
+  .loading-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: white;
+    backdrop-filter: blur(5px);
+  }
+
+  .spinner {
+    width: 70px;
+    height: 70px;
+    border: 5px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: var(--accent-color);
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .file-list {
+    margin-top: 20px;
+  }
+
+  .file-item {
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 10px;
+    animation: slideIn 0.3s ease;
+  }
+
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .summary-card {
+    background: white;
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 50px;
+    margin-bottom: 20px;
+    transition: var(--transition);
+  }
+
+  .summary-card:hover {
+    border-color: var(--accent-color);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  .summary-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .summary-content {
+    color: var(--text-light);
+    line-height: 1.6;
+  }
+
+  .skip-container {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  .column-info {
+    margin-top: 5px;
+    font-size: 0.9rem;
+    color: var(--accent-color);
+    background: #e3f2fd;
+    padding: 5px 10px;
+    border-radius: 4px;
+    display: inline-block;
+  }
+
+  .error-message {
+    background: #fee;
+    border-left: 4px solid var(--danger-color);
+    padding: 15px;
+    border-radius: 8px;
+    margin: 20px 0;
+    color: var(--danger-color);
+    font-weight: 500;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .manual-grid,
     .subcategory-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-        gap: 15px;
-        margin-top: 20px;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     }
 
-    .subcategory-card {
-        background: white;
-        border: 2px solid var(--border-color);
-        border-radius: 10px;
-        padding: 20px;
-        cursor: pointer;
-        transition: var(--transition);
-        position: relative;
+    .time-grid {
+      grid-template-columns: repeat(2, 1fr);
     }
 
-    .subcategory-card:hover {
-        border-color: var(--accent-color);
-        transform: translateY(-2px);
-        box-shadow: var(--shadow);
+    .slider-content,
+    .slider-step {
+      padding: 20px;
     }
 
-    .subcategory-card.selected {
-        border-color: var(--success-color);
-        background: #e8f6ef;
+    .slider-navigation {
+      flex-direction: column;
+      gap: 10px;
+      padding: 15px;
     }
 
-    .subcategory-code {
-        display: inline-block;
-        background: var(--primary-color);
-        color: #f0f8ff;;
-        padding: 3px 10px;
-        border-radius: 20px;
-        font-size: 0.8rem;
-        margin-bottom: 10px;
-    }
-
-    .subcategory-name {
-        font-size: 1.1rem;
-        font-weight: 600;
-        color: var(--primary-color);
-        margin-bottom: 5px;
-    }
-
-    .subcategory-description {
-        font-size: 0.9rem;
-        color: var(--text-light);
-    }
-
-    /* Progress Bar */
-    .progress-container {
-        padding: 50px 40px;
-        background: white;
-        border-bottom: 1px solid var(--border-color);
-    }
-
-    .progress-bar {
-        height: 6px;
-        background: #e9ecef;
-        border-radius: 3px;
-        overflow: hidden;
-        position: relative;
-    }
-
-    .progress-fill {
-        height: 100%;
-        background: linear-gradient(90deg, var(--accent-color), #2980b9);
-        width: 25%;
-        transition: width 0.5s ease;
-        border-radius: 3px;
+    .nav-btn {
+      width: 100%;
+      justify-content: center;
     }
 
     .step-dots {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 15px;
+      flex-wrap: wrap;
+      gap: 10px;
     }
 
     .step-dot {
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
-        background: white;
-        border: 2px solid #e9ecef;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: bold;
-        color: var(--text-light);
-        transition: var(--transition);
-        cursor: pointer;
-        position: relative;
+      width: 25px;
+      height: 25px;
+      font-size: 0.9rem;
     }
-
-    .step-dot.active {
-        background: var(--accent-color);
-        border-color: var(--accent-color);
-        color: white;
-        transform: scale(1.1);
-    }
-
-    .step-dot.completed {
-        background: var(--success-color);
-        border-color: var(--success-color);
-        color: white;
-    }
-
-    .step-label {
-        position: absolute;
-        top: 35px;
-        left: 50%;
-        transform: translateX(-50%);
-        font-size: 0.8rem;
-        color: var(--text-light);
-        white-space: nowrap;
-    }
-
-    /* Navigation Buttons */
-    .slider-navigation {
-        display: flex;
-        justify-content: space-between;
-        padding: 20px 40px;
-        background: white;
-        border-top: 1px solid var(--border-color);
-        border-radius: 0 0 15px 15px;
-    }
-
-    .nav-btn {
-        padding: 12px 30px;
-        border-radius: 8px;
-        font-weight: 500;
-        cursor: pointer;
-        transition: var(--transition);
-        border: none;
-        font-size: 1rem;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-
-    .nav-btn i {
-        font-size: 1.1rem;
-    }
-
-    .nav-btn:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-    }
-
-    .btn-prev {
-        background: white;
-        color: var(--text-color);
-        border: 2px solid var(--border-color);
-    }
-
-    .btn-prev:hover:not(:disabled) {
-        background: var(--light-gray);
-        border-color: var(--text-light);
-    }
-
-    .btn-next {
-        background: var(--accent-color);
-        color: white;
-    }
-
-    .btn-next:hover:not(:disabled) {
-        background: #2980b9;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
-    }
-
-    .btn-submit {
-        background: var(--success-color);
-        color: white;
-        padding: 12px 30px;
-        border-radius: 8px;
-        font-weight: 500;
-        cursor: pointer;
-        transition: var(--transition);
-        border: none;
-        font-size: 1rem;
-    }
-
-    .btn-submit:hover {
-        background: #219653;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
-    }
-
-    /* Results Section */
-    .results-section {
-        background: white;
-        border-radius: 15px;
-        box-shadow: var(--shadow);
-        margin-top: 30px;
-        padding: 40px;
-        display: none;
-        animation: fadeIn 0.5s ease;
-    }
-
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    .results-header {
-        text-align: center;
-        margin-bottom: 40px;
-    }
-
-    .results-header .step-number {
-        background: var(--success-color);
-        margin: 0 auto 20px;
-    }
-
-    /* Loading Overlay */
-    .loading-overlay {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.8);
-        z-index: 9999;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        color: white;
-        backdrop-filter: blur(5px);
-    }
-
-    .spinner {
-        width: 70px;
-        height: 70px;
-        border: 5px solid rgba(255, 255, 255, 0.3);
-        border-radius: 50%;
-        border-top-color: var(--accent-color);
-        animation: spin 1s linear infinite;
-        margin-bottom: 20px;
-    }
-
-    @keyframes spin {
-        to {
-            transform: rotate(360deg);
-        }
-    }
-
-    /* File List */
-    .file-list {
-        margin-top: 20px;
-    }
-
-    .file-item {
-        background: white;
-        border: 1px solid var(--border-color);
-        border-radius: 8px;
-        padding: 15px;
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        margin-bottom: 10px;
-        animation: slideIn 0.3s ease;
-    }
-
-    @keyframes slideIn {
-        from {
-            opacity: 0;
-            transform: translateY(-10px);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    /* Summary Cards */
-    .summary-card {
-        background: white;
-        border: 2px solid var(--border-color);
-        border-radius: 10px;
-        padding: 20px;
-        margin-top: 50px;;
-        margin-bottom: 20px;
-        transition: var(--transition);
-    }
-
-    .summary-card:hover {
-        border-color: var(--accent-color);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    }
-
-    .summary-title {
-        font-size: 1.1rem;
-        font-weight: 600;
-        color: var(--primary-color);
-        margin-bottom: 10px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .summary-content {
-        color: var(--text-light);
-        line-height: 1.6;
-    }
-
-    /* Responsive Design */
-    @media (max-width: 768px) {
-
-        .manual-grid,
-        .subcategory-grid {
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-        }
-
-        .time-grid {
-            grid-template-columns: repeat(2, 1fr);
-        }
-
-        .slider-content,
-        .slider-step {
-            padding: 20px;
-        }
-
-        .slider-navigation {
-            flex-direction: column;
-            gap: 10px;
-            padding: 15px;
-        }
-
-        .nav-btn {
-            width: 100%;
-            justify-content: center;
-        }
-
-        .step-dots {
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .step-dot {
-            width: 25px;
-            height: 25px;
-            font-size: 0.9rem;
-        }
-    }
-    
-    /* Subcategories Styling */
-    .subcategory-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 15px;
-        margin-top: 15px;
-    }
-
-    .subcategory-card {
-        background: white;
-        border: 2px solid var(--border-color);
-        border-radius: 10px;
-        padding: 15px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        position: relative;
-    }
-
-    .subcategory-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
-
-    .subcategory-card.selected {
-        border-color: var(--primary-color);
-        background-color: #e3f2fd;
-    }
-
-    .subcategory-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 8px;
-    }
-
-    .subcategory-code {
-        background: var(--primary-color);
-        color: white;
-        padding: 4px 10px;
-        border-radius: 20px;
-        font-size: 0.85rem;
-        font-weight: 500;
-    }
-
-    .subcategory-actions {
-        display: flex;
-        align-items: center;
-    }
-
-    .subcategory-checkbox {
-        width: 20px;
-        height: 20px;
-        cursor: pointer;
-        accent-color: var(--primary-color);
-    }
-
-    .subcategory-name {
-        font-weight: 500;
-        color: var(--text-dark);
-        margin-bottom: 8px;
-        font-size: 1rem;
-    }
-
-    .subcategory-description {
-        color: var(--text-light);
-        font-size: 0.85rem;
-        margin-bottom: 10px;
-    }
-
-    .independent-vars {
-        margin-top: 10px;
-        padding: 10px;
-        background: #f8f9fa;
-        border-radius: 6px;
-        font-size: 0.85rem;
-    }
-
-    .independent-vars label {
-        display: block;
-        margin-bottom: 5px;
-        font-weight: 500;
-        color: var(--primary-color);
-    }
-
-    .var-select {
-        width: 100%;
-        padding: 8px 12px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        font-size: 0.85rem;
-        background: white;
-        cursor: pointer;
-    }
-
-    .independent-vars.single {
-        background: #e8f5e9;
-        border: 1px solid #c8e6c9;
-        color: #2e7d32;
-    }
-
-    .column-value {
-        font-size: 0.9rem;
-        font-weight: 500;
-        color: var(--success-color);
-        margin-left: 10px;
-        background: #e8f5e9;
-        padding: 2px 8px;
-        border-radius: 4px;
-    }
-
-    .loading-message {
-        animation: pulse 1.5s infinite;
-    }
-
-    @keyframes pulse {
-        0% { opacity: 0.6; }
-        50% { opacity: 1; }
-        100% { opacity: 0.6; }
-    }
-
-    .slider-navigation {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 40px;
-        padding-top: 30px;
-        border-top: 1px solid var(--border-color);
-    }
-
-    .nav-btn {
-        padding: 12px 25px;
-        border: none;
-        border-radius: 8px;
-        font-size: 1rem;
-        font-weight: 500;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        transition: all 0.3s ease;
-    }
-
-    .btn-prev {
-        background: var(--bg-light);
-        color: var(--text-dark);
-    }
-
-    .btn-prev:hover:not(:disabled) {
-        background: #e2e8f0;
-    }
-
-    .btn-prev:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-    }
-
-    .btn-next {
-        background: var(--primary-color);
-        color: white;
-    }
-
-    .btn-next:hover {
-        background: var(--secondary-color);
-    }
-
-    .btn-submit {
-        background: linear-gradient(135deg, var(--success-color), #00b4d8);
-        color: white;
-        padding: 12px 25px;
-        border: none;
-        border-radius: 8px;
-        font-size: 1rem;
-        font-weight: 500;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        transition: all 0.3s ease;
-    }
-
-    .btn-submit:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(76, 201, 240, 0.4);
-    }
-
-    .loading-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(255, 255, 255, 0.9);
-        display: none;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        z-index: 1000;
-    }
-
-    .spinner {
-        width: 60px;
-        height: 60px;
-        border: 5px solid var(--border-color);
-        border-top-color: var(--primary-color);
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin {
-        to {
-            transform: rotate(360deg);
-        }
-    }
-
-    .results-section {
-        animation: fadeIn 0.5s ease;
-    }
-
-    @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
-    }
-
-    .results-header {
-        text-align: center;
-        margin-bottom: 40px;
-    }
-
-    .skip-container {
-        text-align: center;
-        margin-top: 20px;
-    }
+  }
+  /* أضف هذا إلى قسم CSS */
+  .error-message {
+    background: #fff5f5;
+    border: 1px solid #fecaca;
+    border-left: 4px solid #ef4444;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+    color: #7f1d1d;
+  }
+
+  .error-message h4 {
+    color: #dc2626;
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+  }
+
+  .error-message ul {
+    margin: 10px 0;
+    padding-left: 20px;
+  }
+
+  .error-message li {
+    margin-bottom: 5px;
+  }
+  .returnTOIndex {
+    text-align: center;
+    margin: 50px;
+  }
+  .returnTOIndex a {
+    background: var(--accent-color);
+    color: white;
+    padding: 12px 30px;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    border: none;
+    font-size: 1rem;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .returnTOIndex a:hover {
+    background: #2980b9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+  }
+  table {
+    text-align: center;
+  }
 </style>
+
 <div class="trip-generation-container">
-    <!-- Header -->
-    <div class="slider-header">
-        <h1>Trip Generation Analysis</h1>
-        <p>Configure your trip generation analysis step by step</p>
+  <!-- Header -->
+  <div class="slider-header">
+    <h1>Trip Generation Analysis</h1>
+    <p>Configure your trip generation analysis step by step</p>
+  </div>
+
+  <!-- Progress Bar -->
+  <div class="progress-container">
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+    <div class="step-dots">
+      <div class="step-dot active" data-step="1">
+        1
+        <span class="step-label">Manuals & Location</span>
+      </div>
+      <div class="step-dot" data-step="2">
+        2
+        <span class="step-label">Time Selection</span>
+      </div>
+      <div class="step-dot" data-step="3">
+        3
+        <span class="step-label">Upload Data</span>
+      </div>
+      <div class="step-dot" data-step="4">
+        4
+        <span class="step-label">Select Subcategories</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slider Container -->
+  <div class="form-slider">
+    <!-- Step 1: Manual & Location Selection -->
+    <div class="slider-step active" id="step-1">
+      <div class="step-number">1</div>
+      <h2 class="step-title">Select Manual(s) & Project Location</h2>
+      <p class="step-description">
+        Choose manuals for calculation and specify the project location
+      </p>
+
+      <h3 style="margin-top: 20px; color: var(--primary-color)">
+        Select Manuals
+      </h3>
+      <div class="manual-grid" id="manualGrid"></div>
+
+      <div class="summary-card" id="manualSummary">
+        <div class="summary-title">
+          <i>📊</i>
+          <span>Selection Summary</span>
+        </div>
+        <div class="summary-content" id="manualSummaryText">
+          No manuals selected
+        </div>
+      </div>
     </div>
 
-    <!-- Progress Bar -->
-    <div class="progress-container">
-        <div class="progress-bar">
-            <div class="progress-fill" id="progressFill"></div>
+    <!-- Step 2: Time Selection -->
+    <div class="slider-step" id="step-2">
+      <div class="step-number">2</div>
+      <h2 class="step-title">Select Time Parameters</h2>
+      <p class="step-description">
+        Configure the time parameters for your analysis
+      </p>
+
+      <h3 style="margin-top: 30px; color: var(--primary-color)">Day Type</h3>
+      <div class="time-grid" id="dayTypeGrid">
+        <div class="time-card" data-value="Weekday">
+          <div class="time-icon">📅</div>
+          <div class="time-name">Weekday</div>
         </div>
-        <div class="step-dots">
-            <div class="step-dot active" data-step="1">
-                1
-                <span class="step-label">Manuals & Location</span>
-            </div>
-            <div class="step-dot" data-step="2">
-                2
-                <span class="step-label">Time Selection</span>
-            </div>
-            <div class="step-dot" data-step="3">
-                3
-                <span class="step-label">Upload Data</span>
-            </div>
-            <div class="step-dot" data-step="4">
-                4
-                <span class="step-label">Select Subcategories</span>
-            </div>
+        <div class="time-card" data-value="Weekend">
+          <div class="time-icon">🌴</div>
+          <div class="time-name">Weekend</div>
         </div>
+        <div class="time-card" data-value="Both">
+          <div class="time-icon">📆</div>
+          <div class="time-name">Both</div>
+        </div>
+      </div>
+
+      <h3 style="margin-top: 30px; color: var(--primary-color)">
+        Time Periods
+      </h3>
+      <div class="time-grid" id="timePeriodGrid">
+        <div class="time-card" data-value="AM">
+          <div class="time-icon">🌅</div>
+          <div class="time-name">AM Peak</div>
+        </div>
+        <div class="time-card" data-value="PM">
+          <div class="time-icon">🌇</div>
+          <div class="time-name">PM Peak</div>
+        </div>
+        <div class="time-card" data-value="LT">
+          <div class="time-icon">🌞</div>
+          <div class="time-name">Lunch Time</div>
+        </div>
+        <div class="time-card" data-value="PHG">
+          <div class="time-icon">🌙</div>
+          <div class="time-name">Peak Hour</div>
+        </div>
+        <div class="time-card" data-value="24HR">
+          <div class="time-icon">⏰</div>
+          <div class="time-name">24 Hours</div>
+        </div>
+      </div>
+
+      <div class="summary-card" id="optionsSummary">
+        <div class="summary-title">
+          <i>⚙️</i>
+          <span>Time Summary</span>
+        </div>
+        <div class="summary-content" id="optionsSummaryText">
+          No options selected
+        </div>
+      </div>
     </div>
 
-    <!-- Slider Container -->
-    <div class="form-slider">
-        <!-- Step 1: Manual & Location Selection -->
-        <div class="slider-step active" id="step-1">
-            <div class="step-number">1</div>
-            <h2 class="step-title">Select Manual(s) & Project Location</h2>
-            <p class="step-description">
-                Choose manuals for calculation and specify the project location
-            </p>
+    <!-- Step 3: File Upload -->
+    <div class="slider-step" id="step-3">
+      <div class="step-number">3</div>
+      <h2 class="step-title">Upload Excel File</h2>
+      <p class="step-description">
+        Upload your Excel file containing the trip data for analysis
+      </p>
 
-            <h3 style="margin-top: 20px; color: var(--primary-color)">
-                Select Manuals
-            </h3>
-            <div class="manual-grid" id="manualGrid"></div>
+      <div class="instructions-container">
+        <h4>📋 Excel File Requirements:</h4>
+        <ul>
+          <li>File must be in .xlsx or .xls format</li>
+          <li>
+            The first column must be "Zone" and its inner values would be the
+            zone numbers
+          </li>
+          <li>First row must contain Landuse names</li>
+          <li>
+            The next columns must be values (Its units are the equevalent to the
+            selected independent-variable)
+          </li>
+          <li>Maximum file size: 10MB</li>
+          <li>Ensure the correct table format</li>
+          <li>If you select more than one manual, you must upload a file with the same name of sheets as the name of manuals selected.</li>
+        </ul>
+        <p><strong>Example:</strong></p>
+        <table
+          style="
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            text-align: center;
+          "
+        >
+          <tr style="background: #e3f2fd">
+            <th style="border: 1px solid #ddd; padding: 8px">Zone</th>
+            <th style="border: 1px solid #ddd; padding: 8px">Commercial</th>
+            <th style="border: 1px solid #ddd; padding: 8px">Office</th>
+            <th style="border: 1px solid #ddd; padding: 8px">Industrial</th>
+            <th style="border: 1px solid #ddd; padding: 8px">Retail</th>
+            <th style="border: 1px solid #ddd; padding: 8px">Education</th>
+            <th style="border: 1px solid #ddd; padding: 8px">Other</th>
+          </tr>
+          <tr>
+            <td style="border: 1px solid #ddd; padding: 8px">1</td>
+            <td style="border: 1px solid #ddd; padding: 8px">0</td>
+            <td style="border: 1px solid #ddd; padding: 8px">0</td>
+            <td style="border: 1px solid #ddd; padding: 8px">0</td>
+            <td style="border: 1px solid #ddd; padding: 8px">0</td>
+            <td style="border: 1px solid #ddd; padding: 8px">0</td>
+            <td style="border: 1px solid #ddd; padding: 8px">0</td>
+          </tr>
+          <tr>
+            <td style="border: 1px solid #ddd; padding: 8px">2</td>
+            <td style="border: 1px solid #ddd; padding: 8px">0</td>
+            <td style="border: 1px solid #ddd; padding: 8px">0</td>
+            <td style="border: 1px solid #ddd; padding: 8px">0</td>
+            <td style="border: 1px solid #ddd; padding: 8px">0</td>
+            <td style="border: 1px solid #ddd; padding: 8px">0</td>
+            <td style="border: 1px solid #ddd; padding: 8px">0</td>
+          </tr>
+        </table>
+      </div>
 
-            <!-- <div class="location-section">
-                <h3>Project Location</h3>
-                <select class="country-select" id="countrySelect">
-                    <option value="">Select a country...</option>
-                    <option value="UAE">United Arab Emirates</option>
-                    <option value="QAT">Qatar</option>
-                    <option value="KWT">Kuwait</option>
-                    <option value="SAU">Saudi Arabia</option>
-                    <option value="BHR">Bahrain</option>
-                    <option value="OMN">Oman</option>
-                    <option value="EGY">Egypt</option>
-                    <option value="JOR">Jordan</option>
-                    <option value="LBN">Lebanon</option>
-                </select>
-            </div> -->
-
-            <div class="summary-card" id="manualSummary">
-                <div class="summary-title">
-                    <i>📊</i>
-                    <span>Selection Summary</span>
-                </div>
-                <div class="summary-content" id="manualSummaryText">
-                    No manuals selected
-                </div>
-            </div>
+      <div class="upload-container">
+        <div class="upload-area" id="uploadArea">
+          <div class="upload-icon">📁</div>
+          <div class="upload-text">Drag & drop your Excel file here</div>
+          <div class="upload-hint">
+            or click to browse files (Supports .xlsx, .xls)
+          </div>
+          <input
+            type="file"
+            id="excelFile"
+            class="file-input"
+            accept=".xlsx, .xls"
+            style="display: none"
+          />
         </div>
 
-        <!-- Step 2: Time Selection -->
-        <div class="slider-step" id="step-2">
-            <div class="step-number">2</div>
-            <h2 class="step-title">Select Time Parameters</h2>
-            <p class="step-description">
-                Configure the time parameters for your analysis
-            </p>
+        <div class="file-list" id="fileList"></div>
+      </div>
 
-            <h3 style="margin-top: 30px; color: var(--primary-color)">Day Type</h3>
-            <div class="time-grid" id="dayTypeGrid">
-                <div class="time-card" data-value="Weekday">
-                    <div class="time-icon">📅</div>
-                    <div class="time-name">Weekday</div>
-                </div>
-                <div class="time-card" data-value="Weekend">
-                    <div class="time-icon">🌴</div>
-                    <div class="time-name">Weekend</div>
-                </div>
-                <div class="time-card" data-value="Both">
-                    <div class="time-icon">📆</div>
-                    <div class="time-name">Both</div>
-                </div>
-            </div>
-
-            <h3 style="margin-top: 30px; color: var(--primary-color)">
-                Time Periods
-            </h3>
-            <div class="time-grid" id="timePeriodGrid">
-                <div class="time-card" data-value="AM">
-                    <div class="time-icon">🌅</div>
-                    <div class="time-name">AM Peak</div>
-                </div>
-                <div class="time-card" data-value="PM">
-                    <div class="time-icon">🌇</div>
-                    <div class="time-name">PM Peak</div>
-                </div>
-                <div class="time-card" data-value="LT">
-                    <div class="time-icon">🌞</div>
-                    <div class="time-name">Lunch Time</div>
-                </div>
-                <div class="time-card" data-value="PHG">
-                    <div class="time-icon">🌙</div>
-                    <div class="time-name">Peak Hour</div>
-                </div>
-                <div class="time-card" data-value="24HR">
-                    <div class="time-icon">⏰</div>
-                    <div class="time-name">24 Hours</div>
-                </div>
-            </div>
-
-            <div class="summary-card" id="optionsSummary">
-                <div class="summary-title">
-                    <i>⚙️</i>
-                    <span>Time Summary</span>
-                </div>
-                <div class="summary-content" id="optionsSummaryText">
-                    No options selected
-                </div>
-            </div>
+      <div class="summary-card" id="fileSummary">
+        <div class="summary-title">
+          <i>📄</i>
+          <span>File Status</span>
         </div>
-
-        <!-- Step 3: File Upload -->
-        <div class="slider-step" id="step-3">
-            <div class="step-number">3</div>
-            <h2 class="step-title">Upload Excel File</h2>
-            <p class="step-description">
-                Upload your Excel file containing the trip data for analysis
-            </p>
-
-            <div class="instructions-container">
-                <h4>📋 Excel File Requirements:</h4>
-                <ul>
-                    <li>File must be in .xlsx or .xls format</li>
-                    <li>First column should contain activity names</li>
-                    <li>Second column should contain areas or units</li>
-                    <li>Ensure data is in the correct format</li>
-                    <li>Maximum file size: 10MB</li>
-                </ul>
-                <p><strong>Example format:</strong></p>
-                <table style="width: 100%; border-collapse: collapse; margin-top: 10px">
-                    <tr style="background: #e3f2fd">
-                        <th style="border: 1px solid #ddd; padding: 8px">
-                            Zone / Land Use
-                        </th>
-                        <th style="border: 1px solid #ddd; padding: 8px">Commercial</th>
-                        <th style="border: 1px solid #ddd; padding: 8px">Office</th>
-                        <th style="border: 1px solid #ddd; padding: 8px">Industrial</th>
-                        <th style="border: 1px solid #ddd; padding: 8px">Retail</th>
-                        <th style="border: 1px solid #ddd; padding: 8px">Education</th>
-                        <th style="border: 1px solid #ddd; padding: 8px">Other</th>
-                    </tr>
-                    <tr>
-                        <td style="border: 1px solid #ddd; padding: 8px">0</td>
-                        <td style="border: 1px solid #ddd; padding: 8px">0</td>
-                        <td style="border: 1px solid #ddd; padding: 8px">0</td>
-                        <td style="border: 1px solid #ddd; padding: 8px">0</td>
-                        <td style="border: 1px solid #ddd; padding: 8px">0</td>
-                        <td style="border: 1px solid #ddd; padding: 8px">0</td>
-                        <td style="border: 1px solid #ddd; padding: 8px">0</td>
-                    </tr>
-                    <tr>
-                        <td style="border: 1px solid #ddd; padding: 8px">0</td>
-                        <td style="border: 1px solid #ddd; padding: 8px">0</td>
-                        <td style="border: 1px solid #ddd; padding: 8px">0</td>
-                        <td style="border: 1px solid #ddd; padding: 8px">0</td>
-                        <td style="border: 1px solid #ddd; padding: 8px">0</td>
-                        <td style="border: 1px solid #ddd; padding: 8px">0</td>
-                        <td style="border: 1px solid #ddd; padding: 8px">0</td>
-                    </tr>
-                    <tr>
-                        <td style="border: 1px solid #ddd; padding: 8px">0</td>
-                        <td style="border: 1px solid #ddd; padding: 8px">0</td>
-                        <td style="border: 1px solid #ddd; padding: 8px">0</td>
-                        <td style="border: 1px solid #ddd; padding: 8px">0</td>
-                        <td style="border: 1px solid #ddd; padding: 8px">0</td>
-                        <td style="border: 1px solid #ddd; padding: 8px">0</td>
-                        <td style="border: 1px solid #ddd; padding: 8px">0</td>
-                    </tr>
-                </table>
-            </div>
-
-            <div class="upload-container">
-                <div class="upload-area" id="uploadArea">
-                    <div class="upload-icon">📁</div>
-                    <div class="upload-text">Drag & drop your Excel file here</div>
-                    <div class="upload-hint">
-                        or click to browse files (Supports .xlsx, .xls)
-                    </div>
-                    <input type="file" id="excelFile" class="file-input" accept=".xlsx, .xls" style="display: none" />
-                </div>
-
-                <div class="file-list" id="fileList"></div>
-            </div>
-
-            <div class="summary-card" id="fileSummary">
-                <div class="summary-title">
-                    <i>📄</i>
-                    <span>File Status</span>
-                </div>
-                <div class="summary-content" id="fileSummaryText">No file uploaded</div>
-            </div>
-        </div>
-
-        <!-- Step 4: Subcategory Selection -->
-        <div class="slider-step" id="step-4">
-            <div class="step-number">4</div>
-            <h2 class="step-title">Select Subcategories</h2>
-            <p class="step-description">
-                Select the appropriate subcategories for your activities. 
-                <span style="color: var(--primary-color); font-weight: 500;">
-                    Note: Subcategories with multiple independent variables require your selection.
-                </span>
-            </p>
-
-            <div id="subcategoriesContainer">
-                <!-- سيتم تحميل البيانات هنا تلقائيا بعد الرفع -->
-                <div class="loading-message" style="text-align: center; padding: 40px;">
-                    <div style="font-size: 2rem; margin-bottom: 10px;">📊</div>
-                    <div>Waiting for file processing...</div>
-                    <div style="font-size: 0.9rem; color: var(--text-light); margin-top: 10px;">
-                        Upload a file in step 3 to see available subcategories
-                    </div>
-                </div>
-            </div>
-
-            <div class="summary-card" id="selectionSummary" style="display: none">
-                <div class="summary-title">
-                    <i>✅</i>
-                    <span>Selection Summary</span>
-                </div>
-                <div class="summary-content" id="selectionSummaryText">
-                    Ready to generate report
-                </div>
-            </div>
-            
-            <div class="skip-container" style="margin-top: 20px; text-align: center;">
-                <button class="nav-btn" id="skipStep4Btn" style="background: var(--secondary-color);">
-                    Skip & Generate Report
-                </button>
-            </div>
-        </div>
+        <div class="summary-content" id="fileSummaryText">No file uploaded</div>
+      </div>
     </div>
 
-    <!-- Navigation Buttons -->
-    <div class="slider-navigation">
-        <button class="nav-btn btn-prev" id="prevBtn" disabled>
-            <i>←</i> Previous
+    <!-- Step 4: Subcategory Selection -->
+    <div class="slider-step" id="step-4">
+      <div class="step-number">4</div>
+      <h2 class="step-title">Select Subcategories</h2>
+      <p class="step-description">
+        Select the appropriate subcategories for your activities.
+        <br />
+        <span style="color: var(--primary-color); font-weight: 500">
+          Notes: <br />
+
+          1- Only one subcategory can be selected per column.
+          <br />
+          2- First option is auto-selected.
+        </span>
+      </p>
+
+      <div id="subcategoriesContainer">
+        <div class="loading-message" style="text-align: center; padding: 40px">
+          <div style="font-size: 2rem; margin-bottom: 10px">📊</div>
+          <div>Waiting for file processing...</div>
+          <div
+            style="
+              font-size: 0.9rem;
+              color: var(--text-light);
+              margin-top: 10px;
+            "
+          >
+            Upload a file in step 3 to see available subcategories
+          </div>
+        </div>
+      </div>
+
+      <div class="summary-card" id="selectionSummary" style="display: none">
+        <div class="summary-title">
+          <i>✅</i>
+          <span>Selection Summary</span>
+        </div>
+        <div class="summary-content" id="selectionSummaryText">
+          Ready to generate report
+        </div>
+      </div>
+
+      <div class="skip-container" style="margin-top: 20px; text-align: center">
+        <button
+          class="nav-btn"
+          id="skipStep4Btn"
+          style="background: var(--warning-color)"
+        >
+          Skip & Generate Report
         </button>
-        <button class="nav-btn btn-next" id="nextBtn">Next <i>→</i></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation Buttons -->
+  <div class="slider-navigation">
+    <button class="nav-btn btn-prev" id="prevBtn" disabled>
+      <i>←</i> Previous
+    </button>
+    <button class="nav-btn btn-next" id="nextBtn">Next <i>→</i></button>
+  </div>
+
+  <!-- Results Section -->
+  <div class="results-section" id="resultsSection" style="display: none">
+    <div class="results-header">
+      <div class="step-number">✓</div>
+      <h2 class="step-title">Analysis Complete</h2>
+      <p class="step-description">
+        Your trip generation analysis has been processed successfully
+      </p>
     </div>
 
-    <!-- Results Section -->
-    <div class="results-section" id="resultsSection" style="display: none;">
-        <div class="results-header">
-            <div class="step-number">✓</div>
-            <h2 class="step-title">Analysis Complete</h2>
-            <p class="step-description">
-                Your trip generation analysis has been processed successfully
-            </p>
+    <div id="resultsContent">
+      <div class="summary-card" id="finalSummary">
+        <div class="summary-title">
+          <i>📈</i>
+          <span>Analysis Summary</span>
         </div>
-
-        <div id="resultsContent">
-            <div class="summary-card" id="finalSummary">
-                <div class="summary-title">
-                    <i>📈</i>
-                    <span>Analysis Summary</span>
-                </div>
-                <div class="summary-content" id="finalSummaryText">
-                    <!-- Dynamic content will be added here -->
-                </div>
-            </div>
-
-            <div id="reportOptions">
-                <!-- Report options will be added here -->
-            </div>
+        <div class="summary-content" id="finalSummaryText">
+          <!-- Dynamic content will be added here -->
         </div>
+      </div>
 
-        <div class="slider-navigation" style="
-            border: none;
-            padding: 40px 0 0 0;
-            justify-content: center;
-            gap: 20px;
-        ">
-            <button class="btn-submit" id="downloadExcelBtn">
-                <i>📥</i> Download Excel Report
-            </button>
-            <a href="#" class="nav-btn btn-next" id="" style="background: var(--warning-color)">
-                <i>🔄</i> New Analysis
-            </a>
-        </div>
+      <div id="reportOptions">
+        <!-- Report options will be added here -->
+      </div>
     </div>
+
+    <div
+      class="slider-navigation"
+      style="
+        border: none;
+        padding: 40px 0 0 0;
+        justify-content: center;
+        gap: 20px;
+      "
+    >
+      <button class="btn-submit" id="downloadExcelBtn">
+        <i>📥</i> Download Excel Report
+      </button>
+      <a
+        href="{% url 'trip_generation:tripGeneration' %}"
+        class="nav-btn btn-next"
+        id=""
+        style="background: var(--warning-color)"
+      >
+        <i>🔄</i> New Analysis
+      </a>
+    </div>
+  </div>
+
+  <div class="returnTOIndex">
+    <a href="{% url 'trip_generation:index' %}">← Return to Main Menu</a>
+  </div>
 </div>
 
 <!-- Loading Overlay -->
 <div class="loading-overlay" id="loadingOverlay">
-    <div class="spinner"></div>
-    <p style="font-size: 1.2rem; margin-top: 20px" id="loadingText">
-        Processing your analysis, please wait...
-    </p>
+  <div class="spinner"></div>
+  <p style="font-size: 1.2rem; margin-top: 20px" id="loadingText">
+    Processing your analysis, please wait...
+  </p>
 </div>
 
-
-
 <script>
+  const availableManuals = [
+    { id: 1, name: "Dubai", icon: "🏙️", code: "1" },
+    { id: 2, name: "Qatar", icon: "🏜️", code: "2" },
+    { id: 3, name: "Kuwait", icon: "🛢️", code: "3" },
+    { id: 4, name: "Abu Dhabi", icon: "🕌", code: "4" },
+    { id: 5, name: "Riyadh", icon: "🌴", code: "5" },
+    { id: 6, name: "ITE", icon: "📚", code: "6" },
+    { id: 7, name: "TRICS", icon: "📊", code: "7" },
+    { id: 8, name: "AVERAGE", icon: "🌍", code: "8" },
+  ];
 
-    const availableManuals = [
-        { id: 1, name: "Dubai", icon: "🏙️", code: "1" },
-        { id: 2, name: "Qatar", icon: "🏜️", code: "2" },
-        { id: 3, name: "Kuwait", icon: "🛢️", code: "3" },
-        { id: 4, name: "Abu Dhabi", icon: "🕌", code: "4" },
-        { id: 5, name: "Riyadh", icon: "🌴", code: "5" },
-        { id: 6, name: "ITE", icon: "📚", code: "6" },
-        { id: 7, name: "TRICS", icon: "📊", code: "7" },
-        { id: 8, name: "AVERAGE", icon: "📈", code: "8" },
-    ];
+  let selectedManuals = [];
+  let selectedDayTypes = [];
+  let selectedTimePeriods = [];
+  let uploadedFile = null;
+  let selectedSubcategories = {};
+  let currentStep = 1;
+  let subcategoriesData = null;
+  let generatedExcelBlob = null;
+  let generatedExcelName = "Trip_Generation_Report.xlsx";
 
-    let selectedManuals = [];
-    let selectedCountry = "";
-    let selectedDayTypes = [];
-    let selectedTimePeriods = [];
-    let uploadedFile = null;
-    let selectedSubcategories = {};
-    let currentStep = 1;
-    let subcategoriesData = null;
+  // Map لتخزين أول subcategory تم اختيارها تلقائياً في كل عمود
+  const autoSelectedSubcategories = new Map();
 
-    document.addEventListener("DOMContentLoaded", function () {
-        initializeSlider();
-        setupEventListeners();
-        updateProgress();
-    });
+  document.addEventListener("DOMContentLoaded", function () {
+    initializeSlider();
+    setupEventListeners();
+    updateProgress();
+  });
 
-    let generatedExcelBlob = null;
-    let generatedExcelName = "Trip_Generation_Report.xlsx";
-
-
-    function initializeSlider() {
-        // Load manuals
-        const manualGrid = document.getElementById("manualGrid");
-        availableManuals.forEach((manual) => {
-            const card = document.createElement("div");
-            card.className = "manual-card";
-            card.dataset.id = manual.id;
-            card.innerHTML = `
+  function initializeSlider() {
+    // Load manuals
+    const manualGrid = document.getElementById("manualGrid");
+    availableManuals.forEach((manual) => {
+      const card = document.createElement("div");
+      card.className = "manual-card";
+      card.dataset.id = manual.id;
+      card.innerHTML = `
                 <div class="manual-icon">${manual.icon}</div>
                 <div class="manual-name">${manual.name}</div>
             `;
 
-            if (manual.name === "AVERAGE") {
-                card.innerHTML += `<div class="manual-hint">Will deselect others</div>`;
-            }
+      if (manual.name === "AVERAGE") {
+        card.innerHTML += `<div class="manual-hint">Will deselect others</div>`;
+      }
 
-            card.addEventListener("click", () => toggleManual(manual));
-            manualGrid.appendChild(card);
-        });
+      card.addEventListener("click", () => toggleManual(manual));
+      manualGrid.appendChild(card);
+    });
 
-       
+    // Setup step navigation
+    document.querySelectorAll(".step-dot").forEach((dot) => {
+      dot.addEventListener("click", function () {
+        const step = parseInt(this.dataset.step);
+        if (step < currentStep || this.classList.contains("completed")) {
+          goToStep(step);
+        }
+      });
+    });
+  }
 
-        // Setup step navigation
-        document.querySelectorAll(".step-dot").forEach((dot) => {
-            dot.addEventListener("click", function () {
-                const step = parseInt(this.dataset.step);
-                if (step < currentStep || this.classList.contains("completed")) {
-                    goToStep(step);
-                }
-            });
-        });
-    }
+  function setupEventListeners() {
+    // Day type selection
+    document.querySelectorAll("#dayTypeGrid .time-card").forEach((card) => {
+      card.addEventListener("click", function () {
+        const value = this.dataset.value;
+        if (value === "Both") {
+          selectedDayTypes = ["Weekday", "Weekend"];
+          document.querySelectorAll("#dayTypeGrid .time-card").forEach((c) => {
+            c.classList.toggle(
+              "selected",
+              c.dataset.value === "Both" ||
+                selectedDayTypes.includes(c.dataset.value)
+            );
+          });
+        } else {
+          const bothCard = document.querySelector(
+            '#dayTypeGrid .time-card[data-value="Both"]'
+          );
+          bothCard.classList.remove("selected");
+          toggleSelection(this, selectedDayTypes, value);
+        }
+        updateOptionsSummary();
+      });
+    });
 
-    function setupEventListeners() {
-        // Day type selection
-        document.querySelectorAll("#dayTypeGrid .time-card").forEach((card) => {
-            card.addEventListener("click", function () {
-                const value = this.dataset.value;
-                if (value === "Both") {
-                    // If "Both" is selected, clear other selections
-                    selectedDayTypes = ["Weekday", "Weekend"];
-                    document.querySelectorAll("#dayTypeGrid .time-card").forEach((c) => {
-                        c.classList.toggle(
-                            "selected",
-                            c.dataset.value === "Both" ||
-                            selectedDayTypes.includes(c.dataset.value)
-                        );
-                    });
-                } else {
-                    // Remove "Both" if it was selected
-                    const bothCard = document.querySelector(
-                        '#dayTypeGrid .time-card[data-value="Both"]'
-                    );
-                    bothCard.classList.remove("selected");
-
-                    // Toggle current selection
-                    toggleSelection(this, selectedDayTypes, value);
-                }
-                updateOptionsSummary();
-            });
-        });
-
-        // Time period selection
-        document.querySelectorAll("#timePeriodGrid .time-card").forEach((card) => {
-            card.addEventListener("click", function () {
-                const value = this.dataset.value;
-                if (value === "24HR") {
-                    // If "24HR" is selected, select all periods
-                    selectedTimePeriods = ["AM", "PM", "LT", "PGH", "24HR"];
-                    document
-                        .querySelectorAll("#timePeriodGrid .time-card")
-                        .forEach((c) => {
-                            c.classList.add("selected");
-                        });
-                } else {
-                    // Remove "24HR" if it was selected
-                    const allDayCard = document.querySelector(
-                        '#timePeriodGrid .time-card[data-value="24HR"]'
-                    );
-                    allDayCard.classList.remove("selected");
-                    selectedTimePeriods = selectedTimePeriods.filter((p) => p !== "24HR");
-
-                    // Toggle current selection
-                    toggleSelection(this, selectedTimePeriods, value);
-                }
-                updateOptionsSummary();
-            });
-        });
-
-        // File upload
-        const uploadArea = document.getElementById("uploadArea");
-        const fileInput = document.getElementById("excelFile");
-
-        uploadArea.addEventListener("click", () => fileInput.click());
-
-        fileInput.addEventListener("change", handleFileSelect);
-
-        // Drag and drop
-        uploadArea.addEventListener("dragover", (e) => {
-            e.preventDefault();
-            uploadArea.classList.add("dragover");
-        });
-
-        uploadArea.addEventListener("dragleave", () => {
-            uploadArea.classList.remove("dragover");
-        });
-
-        uploadArea.addEventListener("drop", (e) => {
-            e.preventDefault();
-            uploadArea.classList.remove("dragover");
-
-            if (e.dataTransfer.files.length) {
-                fileInput.files = e.dataTransfer.files;
-                handleFileSelect();
-            }
-        });
-
-        // Navigation buttons
-        document.getElementById("prevBtn").addEventListener("click", prevStep);
-        document.getElementById("nextBtn").addEventListener("click", nextStep);
-        
-        // Skip button for step 4
-        document.getElementById("skipStep4Btn").addEventListener("click", function() {
-            if (validateStep(4)) {
-                generateFinalReport();
-            }
-        });
-
-        // Download button
-        document
-            .getElementById("downloadExcelBtn")
-            .addEventListener("click", downloadExcel);
-
-        // New analysis button
-        document
-            .getElementById("newAnalysisBtn")
-            .addEventListener("click", resetAnalysis);
-    }
-
-    function toggleManual(manual) {
-        const isAverage = manual.name === "AVERAGE";
-
-        if (isAverage) {
-            // Clear all selections and select only AVERAGE
-            selectedManuals = [manual];
-
-            // Update UI
-            document.querySelectorAll(".manual-card").forEach((card) => {
-                card.classList.remove("selected");
-                if (parseInt(card.dataset.id) === manual.id) {
-                    card.classList.add("selected");
-                }
+    // Time period selection
+    document.querySelectorAll("#timePeriodGrid .time-card").forEach((card) => {
+      card.addEventListener("click", function () {
+        const value = this.dataset.value;
+        if (value === "24HR") {
+          selectedTimePeriods = ["AM", "PM", "LT", "PGH", "24HR"];
+          document
+            .querySelectorAll("#timePeriodGrid .time-card")
+            .forEach((c) => {
+              c.classList.add("selected");
             });
         } else {
-            // Remove AVERAGE if it was selected
-            selectedManuals = selectedManuals.filter((m) => m.name !== "AVERAGE");
-
-            // Toggle current manual
-            const index = selectedManuals.findIndex((m) => m.id === manual.id);
-            if (index === -1) {
-                selectedManuals.push(manual);
-            } else {
-                selectedManuals.splice(index, 1);
-            }
-
-            // Update UI
-            const card = document.querySelector(
-                `.manual-card[data-id="${manual.id}"]`
-            );
-            card.classList.toggle("selected");
+          const allDayCard = document.querySelector(
+            '#timePeriodGrid .time-card[data-value="24HR"]'
+          );
+          allDayCard.classList.remove("selected");
+          selectedTimePeriods = selectedTimePeriods.filter((p) => p !== "24HR");
+          toggleSelection(this, selectedTimePeriods, value);
         }
+        updateOptionsSummary();
+      });
+    });
 
-        updateManualSummary();
+    // File upload
+    const uploadArea = document.getElementById("uploadArea");
+    const fileInput = document.getElementById("excelFile");
+
+    uploadArea.addEventListener("click", () => fileInput.click());
+    fileInput.addEventListener("change", handleFileSelect);
+
+    // Drag and drop
+    uploadArea.addEventListener("dragover", (e) => {
+      e.preventDefault();
+      uploadArea.classList.add("dragover");
+    });
+
+    uploadArea.addEventListener("dragleave", () => {
+      uploadArea.classList.remove("dragover");
+    });
+
+    uploadArea.addEventListener("drop", (e) => {
+      e.preventDefault();
+      uploadArea.classList.remove("dragover");
+
+      if (e.dataTransfer.files.length) {
+        fileInput.files = e.dataTransfer.files;
+        handleFileSelect();
+      }
+    });
+
+    // Navigation buttons
+    document.getElementById("prevBtn").addEventListener("click", prevStep);
+    document.getElementById("nextBtn").addEventListener("click", nextStep);
+
+    // Skip button for step 4
+    document
+      .getElementById("skipStep4Btn")
+      .addEventListener("click", function () {
+        if (validateStep(4)) {
+          submitForm();
+        }
+      });
+
+    // Download button
+    document
+      .getElementById("downloadExcelBtn")
+      .addEventListener("click", downloadExcel);
+
+    // New analysis button
+    document
+      .getElementById("newAnalysisBtn")
+      .addEventListener("click", resetAnalysis);
+  }
+
+  function toggleManual(manual) {
+    const isAverage = manual.name === "AVERAGE";
+
+    if (isAverage) {
+      selectedManuals = [manual];
+      document.querySelectorAll(".manual-card").forEach((card) => {
+        card.classList.remove("selected");
+        if (parseInt(card.dataset.id) === manual.id) {
+          card.classList.add("selected");
+        }
+      });
+    } else {
+      selectedManuals = selectedManuals.filter((m) => m.name !== "AVERAGE");
+      const index = selectedManuals.findIndex((m) => m.id === manual.id);
+      if (index === -1) {
+        selectedManuals.push(manual);
+      } else {
+        selectedManuals.splice(index, 1);
+      }
+
+      const card = document.querySelector(
+        `.manual-card[data-id="${manual.id}"]`
+      );
+      card.classList.toggle("selected");
     }
 
-    function toggleSelection(element, array, value) {
-        const index = array.indexOf(value);
-        if (index === -1) {
-            array.push(value);
-            element.classList.add("selected");
-        } 
-        else {
-            array.splice(index, 1);
-            element.classList.remove("selected");
-        }
+    updateManualSummary();
+  }
+
+  function toggleSelection(element, array, value) {
+    const index = array.indexOf(value);
+    if (index === -1) {
+      array.push(value);
+      element.classList.add("selected");
+    } else {
+      array.splice(index, 1);
+      element.classList.remove("selected");
+    }
+  }
+
+  function handleFileSelect() {
+    const fileInput = document.getElementById("excelFile");
+    const file = fileInput.files[0];
+    const fileList = document.getElementById("fileList");
+
+    if (!file) return;
+
+    const allowed = ["xlsx", "xls"];
+    const ext = file.name.split(".").pop().toLowerCase();
+
+    if (!allowed.includes(ext)) {
+      alert("Please upload only Excel files (.xlsx or .xls)");
+      fileInput.value = "";
+      return;
     }
 
-    function handleFileSelect() {
-        const fileInput = document.getElementById("excelFile");
-        const file = fileInput.files[0];
-        const fileList = document.getElementById("fileList");
+    if (file.size > 10 * 1024 * 1024) {
+      alert("File size must be less than 10MB");
+      fileInput.value = "";
+      return;
+    }
 
-        if (!file) return;
+    uploadedFile = file;
 
-        // Validate file type
-        const allowed = ["xlsx", "xls"];
-        const ext = file.name.split(".").pop().toLowerCase();
-
-        if (!allowed.includes(ext)) {
-            alert("Please upload only Excel files (.xlsx or .xls)");
-            fileInput.value = "";
-            return;
-        }
-
-        if (file.size > 10 * 1024 * 1024) {
-            // 10MB limit
-            alert("File size must be less than 10MB");
-            fileInput.value = "";
-            return;
-        }
-
-        uploadedFile = file;
-
-        // Display file info
-        fileList.innerHTML = `
+    fileList.innerHTML = `
             <div class="file-item">
                 <div style="font-size: 1.5rem;">📄</div>
                 <div style="flex: 1;">
@@ -1488,8 +1375,8 @@ Generation | CEPAC{% endblock %} {% block content %}
                     <div style="font-size: 0.9rem; color: var(--text-light);">
                         ${(file.size / 1024 / 1024).toFixed(2)} MB • 
                         Last modified: ${new Date(
-            file.lastModified
-        ).toLocaleDateString()}
+                          file.lastModified
+                        ).toLocaleDateString()}
                     </div>
                 </div>
                 <button onclick="removeFile()" style="background: none; border: none; color: var(--danger-color); cursor: pointer; font-size: 1.2rem;">
@@ -1498,508 +1385,1036 @@ Generation | CEPAC{% endblock %} {% block content %}
             </div>
         `;
 
-        updateFileSummary();
+    updateFileSummary();
+  }
+
+  function removeFile() {
+    document.getElementById("excelFile").value = "";
+    document.getElementById("fileList").innerHTML = "";
+    uploadedFile = null;
+    subcategoriesData = null;
+    updateFileSummary();
+  }
+
+  function goToStep(step) {
+    document.querySelectorAll(".slider-step").forEach((stepEl) => {
+      stepEl.classList.remove("active");
+    });
+
+    document.getElementById(`step-${step}`).classList.add("active");
+
+    document.querySelectorAll(".step-dot").forEach((dot) => {
+      dot.classList.remove("active");
+      if (parseInt(dot.dataset.step) === step) {
+        dot.classList.add("active");
+      }
+    });
+
+    document.getElementById("prevBtn").disabled = step === 1;
+
+    if (step === 4) {
+      document.getElementById("nextBtn").innerHTML =
+        "Generate Report <i>🚀</i>";
+      document.getElementById("nextBtn").classList.add("btn-submit");
+      document.getElementById("nextBtn").classList.remove("btn-next");
+    } else {
+      document.getElementById("nextBtn").innerHTML = "Next <i>→</i>";
+      document.getElementById("nextBtn").classList.remove("btn-submit");
+      document.getElementById("nextBtn").classList.add("btn-next");
     }
 
-    function removeFile() {
-        document.getElementById("excelFile").value = "";
-        document.getElementById("fileList").innerHTML = "";
-        uploadedFile = null;
-        subcategoriesData = null;
-        updateFileSummary();
+    currentStep = step;
+    updateProgress();
+  }
+
+  function prevStep() {
+    if (currentStep > 1) {
+      goToStep(currentStep - 1);
+    }
+  }
+
+  async function nextStep() {
+    if (!validateStep(currentStep)) {
+      return;
     }
 
-    function goToStep(step) {
-        // Hide all steps
-        document.querySelectorAll(".slider-step").forEach((stepEl) => {
-            stepEl.classList.remove("active");
-        });
-
-        // Show target step
-        document.getElementById(`step-${step}`).classList.add("active");
-
-        // Update progress dots
-        document.querySelectorAll(".step-dot").forEach((dot) => {
-            dot.classList.remove("active");
-            if (parseInt(dot.dataset.step) === step) {
-                dot.classList.add("active");
-            }
-        });
-
-        // Update navigation buttons
-        document.getElementById("prevBtn").disabled = step === 1;
-
-        if (step === 4) {
-            document.getElementById("nextBtn").innerHTML =
-                "Generate Report <i>🚀</i>";
-            document.getElementById("nextBtn").classList.add("btn-submit");
-            document.getElementById("nextBtn").classList.remove("btn-next");
-        } else {
-            document.getElementById("nextBtn").innerHTML = "Next <i>→</i>";
-            document.getElementById("nextBtn").classList.remove("btn-submit");
-            document.getElementById("nextBtn").classList.add("btn-next");
-        }
-
-        currentStep = step;
-        updateProgress();
+    if (currentStep < 4) {
+      if (currentStep === 3 && uploadedFile && !subcategoriesData) {
+        await processFileAndLoadSubcategories();
+      } else {
+        goToStep(currentStep + 1);
+      }
+    } else {
+      await submitForm();
     }
+  }
 
-    function prevStep() {
-        if (currentStep > 1) {
-            goToStep(currentStep - 1);
+  async function processFileAndLoadSubcategories() {
+    document.getElementById("loadingOverlay").style.display = "flex";
+    document.getElementById("loadingText").textContent =
+      "Processing your file and retrieving subcategories...";
+
+    try {
+      const formData = new FormData();
+
+      if (selectedManuals.length === 0) {
+        throw new Error("No manuals selected");
+      }
+
+      formData.append(
+        "nations",
+        JSON.stringify({
+          name: selectedManuals[0].name,
+          code: selectedManuals[0].code,
+        })
+      );
+
+      formData.append("weekTime", selectedDayTypes.join(","));
+      formData.append("period", selectedTimePeriods.join(","));
+
+      if (uploadedFile instanceof File) {
+        formData.append("file", uploadedFile, uploadedFile.name);
+      } else {
+        throw new Error("Please upload a valid file");
+      }
+
+      const response = await fetch(
+        "https://5m0b1g8t-4000.euw.devtunnels.ms/trip-generation/validate",
+        {
+          method: "POST",
+          body: formData,
         }
-    }
+      );
 
-    async function nextStep() {
-        // Validate current step
-        if (!validateStep(currentStep)) {
-            return;
-        }
+      if (!response.ok) {
+        throw new Error(`Server responded with ${response.status}`);
+      }
 
-        if (currentStep < 4) {
-            if (currentStep === 3 && uploadedFile && !subcategoriesData) {
-                // إذا كنا في الخطوة 3 ورفعنا ملف، نعالج الملف ونذهب للخطوة 4 مباشرة
-                await processFileAndLoadSubcategories();
-            } else {
-                goToStep(currentStep + 1);
-            }
-        } else {
-            await submitForm();
-        }
-    }
+      const responseData = await response.json();
 
-    async function processFileAndLoadSubcategories() {
-        // Show loading overlay
-        document.getElementById("loadingOverlay").style.display = "flex";
-        document.getElementById("loadingText").textContent =
-            "Processing your file and retrieving subcategories...";
+      // ✅ التحقق من وجود أخطاء في الـ matches
+      const hasValidMatches = checkForValidMatches(responseData);
 
-        try {
-            const formData = new FormData();
+      document.getElementById("loadingOverlay").style.display = "none";
 
-            // التحقق من وجود selectedManuals
-            if (selectedManuals.length === 0) {
-                throw new Error("No manuals selected");
-            }
-            
-            formData.append(
-                'nations',
-                JSON.stringify({
-                    name: selectedManuals[0].name,
-                    code: selectedManuals[0].code
-                })
-            );
+      subcategoriesData = responseData;
+      console.log("API response:", subcategoriesData);
 
-            formData.append(
-                'weekTime',
-                selectedDayTypes.join(',')
-            );
-            
-            formData.append(
-                'period',
-                selectedTimePeriods.join(',')
-            );
+      if (responseData && Array.isArray(responseData)) {
+        displaySubcategories(responseData);
+        goToStep(4);
+      } else {
+        alert("No valid data received from server.");
+        goToStep(4);
+      }
+    } catch (error) {
+      console.error("Submission error:", error);
+      document.getElementById("loadingOverlay").style.display = "none";
 
-            // file
-            if (uploadedFile instanceof File) {
-                formData.append("file", uploadedFile, uploadedFile.name);
-            } else {
-                throw new Error("Please upload a valid file");
-            }
-
-            const response = await fetch(
-                "https://5m0b1g8t-4000.euw.devtunnels.ms/trip-generation/validate",
-                {
-                    method: "POST",
-                    body: formData,
-                }
-            );
-
-            if (!response.ok) {
-                throw new Error(`Server responded with ${response.status}`);
-            }
-
-            subcategoriesData = await response.json();
-            console.log("API response:", subcategoriesData);
-            
-            // ✅ إخفاء overlay التحميل
-            document.getElementById("loadingOverlay").style.display = "none";
-            
-            // ✅ عرض Subcategories والانتقال للخطوة 4
-            if (subcategoriesData && Array.isArray(subcategoriesData) && subcategoriesData.length > 0) {
-                displaySubcategories(subcategoriesData);
-                goToStep(4);
-            } else {
-                alert("No subcategories found for the uploaded data.");
-                goToStep(4);
-            }
-
-        } catch (error) {
-            console.error("Submission error:", error);
-            document.getElementById("loadingOverlay").style.display = "none";
-            alert("Error: " + error.message);
-        }
-    }
-
-    function validateStep(step) {
-        switch (step) {
-            case 1:
-                if (selectedManuals.length === 0) {
-                    alert("Please select at least one manual");
-                    return false;
-                }
-                
-                break;
-            case 2:
-                if (selectedDayTypes.length === 0) {
-                    alert("Please select at least one day type");
-                    return false;
-                }
-                if (selectedTimePeriods.length === 0) {
-                    alert("Please select at least one time period");
-                    return false;
-                }
-                break;
-            case 3:
-                if (!uploadedFile) {
-                    alert("Please upload an Excel file");
-                    return false;
-                }
-                break;
-            case 4:
-                // Optional validation for step 4
-                // You can remove this or customize as needed
-                break;
-        }
-        return true;
-    }
-
-    // دالة محسنة لعرض subcategories
-    function displaySubcategories(columnsData) {
-        const container = document.getElementById("subcategoriesContainer");
-        
-        if (!columnsData || !Array.isArray(columnsData)) {
-            container.innerHTML = "<p>No data available from server</p>";
-            return;
-        }
-        
-        let hasMatches = false;
-        container.innerHTML = "";
-        
-        // إضافة رسالة تحميل مؤقتة
-        const loadingMsg = document.createElement("div");
-        loadingMsg.className = "loading-message";
-        loadingMsg.style.cssText = `
-            text-align: center;
-            padding: 30px;
-            color: var(--primary-color);
+      // عرض رسالة خطأ تفصيلية
+      const errorMsg = `
+            <div class="error-message">
+                <h4>⚠️ Processing Error</h4>
+                <p>${error.message}</p>
+                <p>Please check:</p>
+                <ul>
+                    <li>Your internet connection</li>
+                    <li>File format and size</li>
+                    <li>Selected manual compatibility</li>
+                </ul>
+            </div>
         `;
-        loadingMsg.innerHTML = `
-            <div style="font-size: 2rem; margin-bottom: 10px;">⏳</div>
-            <div>Loading subcategories...</div>
-        `;
-        container.appendChild(loadingMsg);
-        
-        // استخدام setTimeout لإعطاء وقت للعرض ثم إضافة البيانات
-        setTimeout(() => {
-            container.innerHTML = "";
-            
-            columnsData.forEach((col, colIndex) => {
-                const matches = col.matches || col.subcategories || [];
-                if (!matches || matches.length === 0) return;
-                
-                hasMatches = true;
-                
-                const section = document.createElement("div");
-                section.className = "summary-card";
-                
-                const columnName = col.column || col.name || `Column ${colIndex + 1}`;
-                const columnValues = col.values || [];
-                
-                section.innerHTML = `
-                    <div class="summary-title">
-                        <i>📂</i>
-                        <span>${columnName}</span>
-                        
-                    </div>
-                    <div class="subcategory-grid">
-                `;
-                
-                matches.forEach((item, index) => {
-                    const uniqueId = `${colIndex}-${index}`;
-                    const code = item.code || item.id || "";
-                    const name = item.subSubCategory || item.name || item.subcategory || "";
-                    const description = item.nation ? 
-                        `${item.nation} - ${item.category || ''}` : 
-                        (item.description || '');
-                    
-                    // التحقق من وجود متغيرات مستقلة
-                    const independentVars = item.independentVariables || [];
-                    let independentVarsHTML = "";
-                    
-                    if (independentVars.length > 1) {
-                        // إذا كان هناك أكثر من متغير، نعرض dropdown للاختيار
-                        independentVarsHTML = `
-                            <div class="independent-vars">
-                                <label>Select Independent Variable:</label>
-                                <select class="var-select" data-id="${uniqueId}" data-column="${columnName}">
-                                    ${independentVars.map((varItem, varIndex) => `
-                                        <option value="${varIndex}">${varItem}</option>
-                                    `).join('')}
-                                </select>
-                            </div>
-                        `;
-                    } else if (independentVars.length === 1) {
-                        // إذا كان هناك متغير واحد فقط، نعرضه كمعلومة
-                        independentVarsHTML = `
-                            <div class="independent-vars single">
-                                <span>Independent Variable: <strong>${independentVars[0]}</strong></span>
-                            </div>
-                        `;
-                    }
-                    
-                    section.innerHTML += `
-                        <div class="subcategory-card"
-                             data-id="${uniqueId}"
-                             data-code="${code}"
-                             data-column="${columnName}"
-                             data-name="${name}"
-                             data-indepvars='${JSON.stringify(independentVars)}'>
-                            <div class="subcategory-header">
-                                <div class="subcategory-code">${code}</div>
-                                <div class="subcategory-actions">
-                                    <input type="checkbox" class="subcategory-checkbox" id="check_${uniqueId}">
-                                </div>
-                            </div>
-                            <div class="subcategory-name">${name}</div>
-                            <div class="subcategory-description">${description}</div>
-                            ${independentVarsHTML}
-                        </div>
-                    `;
-                });
-                
-                section.innerHTML += `</div>`;
-                container.appendChild(section);
-            });
-            
-            if (!hasMatches) {
-                container.innerHTML = "<p>No subcategories found for the uploaded data</p>";
-            } else {
-                attachSubcategoryEvents();
-                updateSelectionSummary();
-            }
-        }, 500);
+
+      document.getElementById("subcategoriesContainer").innerHTML = errorMsg;
+      goToStep(4);
+    }
+  }
+  // ✅ دالة للتحقق من وجود matches صالحة
+  function checkForValidMatches(data) {
+    if (!data || !Array.isArray(data)) {
+      return false;
     }
 
-    // دالة محسنة للتعامل مع الأحداث
-    function attachSubcategoryEvents() {
-        document.querySelectorAll(".subcategory-card").forEach(card => {
-            const checkbox = card.querySelector(".subcategory-checkbox");
-            const varSelect = card.querySelector(".var-select");
-            
-            // حدث اختيار/إلغاء اختيار subcategory
-            checkbox.addEventListener("change", function() {
-                const id = card.dataset.id;
-                const code = card.dataset.code;
-                const name = card.dataset.name;
-                const column = card.dataset.column;
-                
-                if (this.checked) {
-                    // جمع بيانات المتغيرات المستقلة
-                    let selectedVar = "";
-                    const indepVars = JSON.parse(card.dataset.indepvars || '[]');
-                    
-                    if (indepVars.length > 1 && varSelect) {
-                        // إذا كان هناك dropdown للاختيار
-                        const selectedIndex = varSelect.value;
-                        selectedVar = indepVars[selectedIndex];
-                    } else if (indepVars.length === 1) {
-                        // إذا كان هناك متغير واحد فقط
-                        selectedVar = indepVars[0];
-                    }
-                    
-                    selectedSubcategories[id] = {
-                        code,
-                        name,
-                        column,
-                        independentVariable: selectedVar,
-                        fullData: card.dataset
-                    };
-                    card.classList.add("selected");
-                } else {
-                    delete selectedSubcategories[id];
-                    card.classList.remove("selected");
-                }
-                
-                updateSelectionSummary();
-            });
-            
-            // حدث تغيير اختيار المتغير المستقل
-            if (varSelect) {
-                varSelect.addEventListener("change", function() {
-                    const card = this.closest(".subcategory-card");
-                    const checkbox = card.querySelector(".subcategory-checkbox");
-                    const id = card.dataset.id;
-                    
-                    // إذا كان العنصر محدد، نقوم بتحديث البيانات
-                    if (checkbox.checked && selectedSubcategories[id]) {
-                        const indepVars = JSON.parse(card.dataset.indepvars || '[]');
-                        const selectedIndex = this.value;
-                        
-                        selectedSubcategories[id].independentVariable = indepVars[selectedIndex];
-                        updateSelectionSummary();
-                    }
-                });
-            }
-        });
+    // إذا كانت جميع العناصر هي أخطاء، نعتبرها غير صالحة
+    const allErrors = data.every((col) => col.error);
+    if (allErrors) {
+      return false;
     }
 
-    async function submitForm() {
-        if (!validateStep(4)) return;
+    // إذا كان هناك أي matches صالحة في أي عمود
+    for (const column of data) {
+      const matches = column.matches || column.subcategories || [];
 
-        document.getElementById("loadingOverlay").style.display = "flex";
-        document.getElementById("loadingText").textContent =
-            "Generating final analysis report...";
+      if (matches && matches.length > 0) {
+        const firstMatch = matches[0];
 
-        try {
-            const jData = [];
-
-            // لفّ على الداتا الأصلية القادمة من السيرفر
-            subcategoriesData.forEach((col, colIndex) => {
-                const columnName = col.column;
-                const values = col.values || [];
-                const matches = col.matches || [];
-
-                matches.forEach((item, matchIndex) => {
-                    const uniqueId = `${colIndex}-${matchIndex}`;
-
-                    // نضيف فقط المختار
-                    if (selectedSubcategories[uniqueId]) {
-                        jData.push({
-                            column: columnName,
-                            target: {
-                                nation: item.nation || selectedManuals[0]?.name || "",
-                                category: item.category || "",
-                                subCategory: item.subCategory || "",
-                                subSubCategory: item.subSubCategory || item.name || "",
-                                code: item.code || "",
-                                independentVariable:
-                                    selectedSubcategories[uniqueId].independentVariable || ""
-                            },
-                            values: values
-                        });
-                    }
-                });
-            });
-
-            const finalPayload = {
-                jData: jData,
-                time: {
-                    weekTime: selectedDayTypes,
-                    period: selectedTimePeriods
-                }
-            };
-
-            console.log("✅ Final Payload:", finalPayload);
-
-            // إرسال الداتا للسيرفر
-            const response = await fetch(
-                "https://5m0b1g8t-4000.euw.devtunnels.ms/trip-generation/generate-tg-rates",
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(finalPayload)
-                }
-            );
-
-            if (!response.ok) {
-                throw new Error(`Server Error ${response.status}`);
-            }
-            
-            // ✅ استلام الملف
-            generatedExcelBlob = await response.blob();
-
-            document.getElementById("loadingOverlay").style.display = "none";
-
-            // ✅ عرض صفحة النتيجة
-            showResults();
-
-
-        } catch (error) {
-            console.error("❌ submitForm error:", error);
-            document.getElementById("loadingOverlay").style.display = "none";
-            alert(error.message);
+        // ✅ التحقق إذا كان العنصر يحتوي على بيانات صالحة
+        if (
+          firstMatch &&
+          (firstMatch.code || firstMatch.name || firstMatch.subSubCategory) &&
+          !firstMatch.error &&
+          !firstMatch.message
+        ) {
+          return true;
         }
+      }
     }
-    function showResults() {
-        // إخفاء الفورم
-        document.querySelector(".form-slider").style.display = "none";
-        document.querySelector(".slider-navigation").style.display = "none";
-        document.querySelector(".progress-container").style.display = "none";
 
-        // إظهار النتائج
-        document.getElementById("resultsSection").style.display = "block";
+    return false;
+  }
 
-        document.getElementById("finalSummaryText").innerHTML = `
-            <div>Manuals: <strong>${selectedManuals.map(m => m.name).join(", ")}</strong></div>
+  // ✅ دالة لعرض رسالة الخطأ
+  function displayErrorMessage(data) {
+    const container = document.getElementById("subcategoriesContainer");
+    let errorMessages = [];
+
+    if (Array.isArray(data)) {
+      data.forEach((column, index) => {
+        // ✅ Error مباشر
+        if (column.error) {
+          errorMessages.push({
+            column: column.column || `Column ${index + 1}`,
+            message: column.error,
+          });
+        }
+
+        // ❓ Error داخل matches (لو موجود)
+        const matches = column.matches || column.subcategories || [];
+        matches.forEach((match) => {
+          if (match.error || match.message) {
+            errorMessages.push({
+              column: column.column || `Column ${index + 1}`,
+              message: match.error || match.message,
+            });
+          }
+        });
+      });
+    }
+
+    if (errorMessages.length > 0) {
+      container.innerHTML = `
+            <div class="error-message">
+                <h4>⚠️ Error in File Processing</h4>
+                <ul>
+                    ${errorMessages
+                      .map(
+                        (e) =>
+                          `<li><strong>${e.column}:</strong> ${e.message}</li>`
+                      )
+                      .join("")}
+                </ul>
+                <p>Please fix these issues and upload the file again.</p>
+            </div>
+        `;
+    }
+  }
+
+  //  دالة محسنة لعرض subcategories مع تحديد أول واحد تلقائياً
+  // دالة محسنة لعرض subcategories مع معالجة الأخطاء
+  //  async function displaySubcategories(columnsData) {
+  //     const container = document.getElementById("subcategoriesContainer");
+
+  //     if (!columnsData || !Array.isArray(columnsData)) {
+  //       container.innerHTML =
+  //         "<div class='error-message'>No data available from server</div>";
+  //       return;
+  //     }
+
+  //     container.innerHTML = "";
+
+  //     // تحقق إذا كانت جميع العناصر هي أخطاء
+  //     const allErrors = columnsData.every((col) => col.error);
+
+  //     if (allErrors) {
+  //       // عرض جميع رسائل الخطأ في مكان واحد
+  //       const errorSection = document.createElement("div");
+  //       errorSection.className = "error-message";
+
+  //       let errorMessages = [];
+  //       columnsData.forEach((col, index) => {
+  //         if (col.error && col.column) {
+  //           errorMessages.push(`<strong>${col.column}:</strong> ${col.error}`);
+  //         }
+  //       });
+
+  //       // إزالة التكرارات
+  //       const uniqueErrors = [...new Set(errorMessages)];
+
+  //       if (uniqueErrors.length > 0) {
+  //         errorSection.innerHTML = `
+  //                 <h4>⚠️ File Format Error</h4>
+  //                 <p>The column names in your Excel file could not be matched with the selected manual.</p>
+  //                 <div style="margin-top: 15px; padding: 10px; background: #fff5f5; border-radius: 5px;">
+  //                     <strong>Issues found:</strong>
+  //                     <ul style="margin-top: 10px;">
+  //                         ${uniqueErrors
+  //                           .map((error) => `<li>${error}</li>`)
+  //                           .join("")}
+  //                     </ul>
+  //                 </div>
+  //                 <div style="margin-top: 20px; padding: 15px; background: #e8f4f8; border-radius: 5px;">
+  //                     <strong>📋 How to fix:</strong>
+  //                     <ol style="margin-top: 10px; padding-left: 20px;">
+  //                         <li>Make sure your Excel file has proper column headers</li>
+  //                         <li>Column names should match land use types (e.g., "Commercial", "Office", "Retail")</li>
+  //                         <li>Avoid using generic names like "Zone" or "Column"</li>
+  //                         <li>Check the selected manual supports your column types</li>
+  //                     </ol>
+  //                     <div style="margin-top: 15px;">
+  //                         <button onclick="goToStep(3)" style="
+  //                             background: var(--warning-color);
+  //                             color: white;
+  //                             border: none;
+  //                             padding: 8px 16px;
+  //                             border-radius: 5px;
+  //                             cursor: pointer;
+  //                             font-weight: 500;
+  //                         ">
+  //                             ← Go Back & Upload New File
+  //                         </button>
+  //                     </div>
+  //                 </div>
+  //             `;
+  //       } else {
+  //         errorSection.innerHTML = `
+  //                 <h4>⚠️ Unknown Error</h4>
+  //                 <p>There was an issue processing your file. Please try again.</p>
+  //             `;
+  //       }
+
+  //       container.appendChild(errorSection);
+  //       return;
+  //     }
+
+  //     // إذا كانت هناك بيانات صالحة مختلطة مع أخطاء
+  //     let hasValidMatches = false;
+
+  //     columnsData.forEach((col, colIndex) => {
+  //       const matches = col.matches || col.subcategories || [];
+
+  //       // إذا كان هناك خطأ فقط
+  //       if (col.error && (!matches || matches.length === 0)) {
+  //         const errorSection = document.createElement("div");
+  //         errorSection.className = "summary-card";
+  //         errorSection.style.borderLeft = "4px solid var(--danger-color)";
+
+  //         errorSection.innerHTML = `
+  //                 <div class="summary-title">
+  //                     <i>❌</i>
+  //                     <span style="color: var(--danger-color);">${
+  //                       col.column || `Column ${colIndex + 1}`
+  //                     }</span>
+  //                     <span class="column-info" style="background: #fee; color: var(--danger-color);">
+  //                         Error
+  //                     </span>
+  //                 </div>
+  //                 <div style="padding: 15px; color: var(--danger-color); background: #fff5f5; border-radius: 8px; margin-top: 10px;">
+  //                     <strong>Error:</strong> ${col.error}
+  //                 </div>
+  //             `;
+
+  //         container.appendChild(errorSection);
+  //         return;
+  //       }
+
+  //       // إذا كان هناك matches صالحة
+  //       if (matches && matches.length > 0) {
+  //         hasValidMatches = true;
+
+  //         const section = document.createElement("div");
+  //         section.className = "summary-card";
+
+  //         const columnName = col.column || col.name || `Column ${colIndex + 1}`;
+  //         const columnValues = col.values || [];
+
+  //         // ✅ تحديد أول عنصر في العمود تلقائياً
+  //         const firstItemId = `${colIndex}-0`;
+  //         autoSelectedSubcategories.set(columnName, firstItemId);
+
+  //         // ✅ إضافة التحديد التلقائي إلى selectedSubcategories
+  //         const firstItem = matches[0];
+  //         if (firstItem) {
+  //           selectedSubcategories[firstItemId] = {
+  //             code: firstItem.code || "",
+  //             name: firstItem.subSubCategory || firstItem.name || "",
+  //             column: columnName,
+  //             independentVariable: firstItem.independentVariables?.[0] || "",
+  //             fullData: {
+  //               id: firstItemId,
+  //               code: firstItem.code,
+  //               column: columnName,
+  //               name: firstItem.subSubCategory || firstItem.name,
+  //               indepvars: JSON.stringify(firstItem.independentVariables || []),
+  //             },
+  //           };
+  //         }
+
+  //         section.innerHTML = `
+  //                 <div class="summary-title">
+  //                     <i>📂</i>
+  //                     <span>${columnName}</span>
+  //                     <span class="column-info">Select one subcategory only</span>
+  //                 </div>
+
+  //             `;
+
+  //         section.innerHTML += `<div class="subcategory-grid">`;
+  //             console.log("1");
+
+  //         matches.forEach((item, index) => {
+  //           const uniqueId = `${colIndex}-${index}`;
+  //           const code = item.code || item.id || "";
+  //           const name =
+  //             item.subSubCategory || item.name || item.subcategory || "";
+  //           const description = item.nation
+  //             ? `${item.nation} - ${item.category || ""}`
+  //             : item.description || "";
+
+  //           // ✅ التحقق مما إذا كان هذا العنصر هو المحدد تلقائياً
+  //           const isAutoSelected = index === 0;
+
+  //           // ✅ التحقق من وجود متغيرات مستقلة
+  //           const independentVars = item.independentVariables || [];
+  //           let independentVarsHTML = "";
+
+  //           if (independentVars.length > 1) {
+  //             independentVarsHTML = `
+  //                         <div class="independent-vars">
+  //                             <label>Select Independent Variable:</label>
+  //                             <select class="var-select" data-id="${uniqueId}" data-column="${columnName}">
+  //                                 ${independentVars
+  //                                   .map(
+  //                                     (varItem, varIndex) => `
+  //                                     <option value="${varIndex}">${varItem}</option>
+  //                                 `
+  //                                   )
+  //                                   .join("")}
+  //                             </select>
+  //                         </div>
+  //                     `;
+  //           } else if (independentVars.length === 1) {
+  //             independentVarsHTML = `
+  //                         <div class="independent-vars single">
+  //                             <span>Independent Variable: <strong>${independentVars[0]}</strong></span>
+  //                         </div>
+  //                     `;
+  //           }
+
+  //           section.innerHTML += `
+
+  //                     <div class="subcategory-card col-4 ${
+  //                       isAutoSelected ? "auto-selected" : ""
+  //                     }"
+  //                          data-id="${uniqueId}"
+  //                          data-code="${code}"
+  //                          data-column="${columnName}"
+  //                          data-name="${name}"
+  //                          data-indepvars='${JSON.stringify(independentVars)}'>
+  //                         <div class="subcategory-header">
+  //                             <div class="subcategory-code">${code}</div>
+  //                             <div class="subcategory-actions">
+  //                                 <input type="radio"
+  //                                        name="subcategory_${colIndex}"
+  //                                        class="subcategory-radio"
+  //                                        id="radio_${uniqueId}"
+  //                                        ${isAutoSelected ? "checked" : ""}>
+  //                             </div>
+  //                         </div>
+  //                         <div class="subcategory-name">${name}</div>
+  //                         <div class="subcategory-description">${description}</div>
+  //                         ${independentVarsHTML}
+  //                     </div>
+  //                 `;
+  //                 console.log("2");
+  //             }
+
+  //         );
+  //         console.log("3");
+
+  //         section.innerHTML += `</div>`;
+  //         container.appendChild(section);
+  //       }
+  //     });
+
+  //     if (!hasValidMatches) {
+  //       container.innerHTML = `
+  //             <div class="error-message">
+  //                 <h4>⚠️ No Valid Subcategories Found</h4>
+  //                 <p>No matching subcategories were found for your uploaded data.</p>
+  //                 <p>This could be because:</p>
+  //                 <ul>
+  //                     <li>Column names don't match any land use types in the selected manual</li>
+  //                     <li>The selected manual doesn't support your data types</li>
+  //                     <li>Excel file format is incorrect</li>
+  //                 </ul>
+  //                 <div style="margin-top: 20px;">
+  //                     <button onclick="goToStep(3)" style="
+  //                         background: var(--warning-color);
+  //                         color: white;
+  //                         border: none;
+  //                         padding: 10px 20px;
+  //                         border-radius: 5px;
+  //                         cursor: pointer;
+  //                         font-weight: 500;
+  //                         margin-right: 10px;
+  //                     ">
+  //                         ← Upload New File
+  //                     </button>
+  //                     <button onclick="goToStep(1)" style="
+  //                         background: var(--primary-color);
+  //                         color: white;
+  //                         border: none;
+  //                         padding: 10px 20px;
+  //                         border-radius: 5px;
+  //                         cursor: pointer;
+  //                         font-weight: 500;
+  //                     ">
+  //                         ↻ Change Manual
+  //                     </button>
+  //                 </div>
+  //             </div>
+  //         `;
+  //     } else {
+  //       attachSubcategoryEvents();
+  //       updateSelectionSummary();
+  //     }
+  //   }
+async function displaySubcategories(columnsData) {
+  const container = document.getElementById("subcategoriesContainer");
+
+  // التحقق من صحة البيانات
+  if (!columnsData || !Array.isArray(columnsData)) {
+    container.innerHTML =
+      "<div class='error-message'>No data available from server</div>";
+    return;
+  }
+
+  container.innerHTML = "";
+
+  /* ===========================================
+     حالة 1: كل العناصر تحتوي على أخطاء فقط
+  =========================================== */
+  const allErrors = columnsData.every((col) => col.error);
+
+  if (allErrors) {
+    // جمع جميع رسائل الخطأ
+    const errorMessages = [];
+    columnsData.forEach((col, index) => {
+      if (col.error && col.column) {
+        errorMessages.push(`<strong>${col.column}:</strong> ${col.error}`);
+      }
+    });
+
+    // إزالة التكرارات
+    const uniqueErrors = [...new Set(errorMessages)];
+
+    const errorSection = document.createElement("div");
+    errorSection.className = "error-message";
+
+    if (uniqueErrors.length > 0) {
+      errorSection.innerHTML = `
+        <h4>⚠️ File Format Error</h4>
+        <p>The column names in your Excel file could not be matched with the selected manual.</p>
+        <div style="margin-top: 15px; padding: 10px; background: #fff5f5; border-radius: 5px;">
+          <strong>Issues found:</strong>
+          <ul style="margin-top: 10px;">
+            ${uniqueErrors.map((error) => `<li>${error}</li>`).join("")}
+          </ul>
+        </div>
+        <div style="margin-top: 20px; padding: 15px; background: #e8f4f8; border-radius: 5px;">
+          <strong>📋 How to fix:</strong>
+          <ol style="margin-top: 10px; padding-left: 20px;">
+            <li>Make sure your Excel file has proper column headers</li>
+            <li>Column names should match land use types (e.g., "Commercial", "Office", "Retail")</li>
+            <li>Avoid using generic names like "Zone" or "Column"</li>
+            <li>Check the selected manual supports your column types</li>
+          </ol>
+          <div style="margin-top: 15px;">
+            <button onclick="goToStep(3)" style="
+              background: var(--warning-color);
+              color: white;
+              border: none;
+              padding: 8px 16px;
+              border-radius: 5px;
+              cursor: pointer;
+              font-weight: 500;
+            ">
+              ← Go Back & Upload New File
+            </button>
+          </div>
+        </div>
+      `;
+    } else {
+      errorSection.innerHTML = `
+        <h4>⚠️ Unknown Error</h4>
+        <p>There was an issue processing your file. Please try again.</p>
+      `;
+    }
+
+    container.appendChild(errorSection);
+    return;
+  }
+
+  /* ===========================================
+     حالة 2: بيانات مختلطة (أخطاء + تطابقات صالحة)
+  =========================================== */
+  let hasValidMatches = false;
+
+  columnsData.forEach((col, colIndex) => {
+    const matches = col.matches || col.subcategories || [];
+
+    // معلومات العمود
+    const columnName = col.column || col.name || `Column ${colIndex + 1}`;
+    const columnValues = col.values || [];
+
+    /* ❌ إذا كان هناك خطأ فقط بدون تطابقات */
+    if (col.error && (!matches || matches.length === 0)) {
+      const errorSection = document.createElement("div");
+      errorSection.className = "summary-card";
+      errorSection.style.borderLeft = "4px solid var(--danger-color)";
+
+      errorSection.innerHTML = `
+        <div class="summary-title">
+          <i>❌</i>
+          <span style="color: var(--danger-color);">${columnName}</span>
+          <span class="column-info" style="background: #fee; color: var(--danger-color);">
+            Error
+          </span>
+        </div>
+        <div style="padding: 15px; color: var(--danger-color); background: #fff5f5; border-radius: 8px; margin-top: 10px;">
+          <strong>Error:</strong> ${col.error}
+        </div>
+      `;
+
+      container.appendChild(errorSection);
+      return;
+    }
+
+    /* ✅ إذا كان هناك تطابقات صالحة */
+    if (matches && matches.length > 0) {
+      hasValidMatches = true;
+
+      // إنشاء قسم للعمود
+      const section = document.createElement("div");
+      section.className = "summary-card";
+
+      // تحديد أول عنصر تلقائياً
+      const firstItemId = `${colIndex}-0`;
+      autoSelectedSubcategories.set(columnName, firstItemId);
+
+      // إضافة التحديد التلقائي إلى selectedSubcategories
+      const firstItem = matches[0];
+      if (firstItem) {
+        selectedSubcategories[firstItemId] = {
+          code: firstItem.code || "",
+          name: firstItem.subSubCategory || firstItem.name || "",
+          column: columnName,
+          independentVariable: firstItem.independentVariables?.[0] || "",
+          fullData: {
+            id: firstItemId,
+            code: firstItem.code,
+            column: columnName,
+            name: firstItem.subSubCategory || firstItem.name,
+            indepvars: JSON.stringify(firstItem.independentVariables || []),
+          },
+        };
+      }
+
+      // بناء HTML للقسم
+      let sectionHTML = `
+        <div class="summary-title">
+          <i>📂</i>
+          <span>${columnName}</span>
+          <span class="column-info">Select one subcategory only</span>
+        </div>
+        <div class="subcategory-grid">
+      `;
+
+      // إضافة كل عنصر من التطابقات
+      matches.forEach((item, index) => {
+        const uniqueId = `${colIndex}-${index}`;
+        const code = item.code || item.id || "";
+        const name = item.subSubCategory || item.name || item.subcategory || "";
+        const description = item.nation
+          ? `${item.nation} - ${item.category || ""}`
+          : item.description || "";
+
+        // التحقق إذا كان هذا العنصر هو المحدد تلقائياً
+        const isAutoSelected = index === 0;
+
+        // بناء HTML للمتغيرات المستقلة
+        const independentVars = item.independentVariables || [];
+        let independentVarsHTML = "";
+
+        if (independentVars.length > 1) {
+          independentVarsHTML = `
+            <div class="independent-vars">
+              <label>Select Independent Variable:</label>
+              <select class="var-select" data-id="${uniqueId}" data-column="${columnName}">
+                ${independentVars
+                  .map(
+                    (varItem, varIndex) => `
+                  <option value="${varIndex}">${varItem}</option>
+                `
+                  )
+                  .join("")}
+              </select>
+            </div>
+          `;
+        } else if (independentVars.length === 1) {
+          independentVarsHTML = `
+            <div class="independent-vars single">
+              <span>Independent Variable: <strong>${independentVars[0]}</strong></span>
+            </div>
+          `;
+        }
+
+        // إضافة HTML للعنصر
+        sectionHTML += `
+          <div class="subcategory-card col-4 ${
+            isAutoSelected ? "auto-selected" : ""
+          }"
+               data-id="${uniqueId}"
+               data-code="${code}"
+               data-column="${columnName}"
+               data-name="${name}"
+               data-indepvars='${JSON.stringify(independentVars)}'>
+            <div class="subcategory-header">
+              <div class="subcategory-code">${code}</div>
+              <div class="subcategory-actions">
+                <input type="radio"
+                       name="subcategory_${colIndex}"
+                       class="subcategory-radio"
+                       id="radio_${uniqueId}"
+                       ${isAutoSelected ? "checked" : ""}>
+              </div>
+            </div>
+            <div class="subcategory-name">${name}</div>
+            <div class="subcategory-description">${description}</div>
+            ${independentVarsHTML}
+          </div>
+        `;
+      });
+
+      sectionHTML += `
+        </div>
+      `;
+
+      section.innerHTML = sectionHTML;
+      container.appendChild(section);
+    }
+  });
+
+  /* ===========================================
+     حالة 3: لا توجد تطابقات صالحة على الإطلاق
+  =========================================== */
+  if (!hasValidMatches) {
+    container.innerHTML = `
+      <div class="error-message">
+        <h4>⚠️ No Valid Subcategories Found</h4>
+        <p>No matching subcategories were found for your uploaded data.</p>
+        <p>This could be because:</p>
+        <ul>
+          <li>Column names don't match any land use types in the selected manual</li>
+          <li>The selected manual doesn't support your data types</li>
+          <li>Excel file format is incorrect</li>
+        </ul>
+        <div style="margin-top: 20px;">
+          <button onclick="goToStep(3)" style="
+            background: var(--warning-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            margin-right: 10px;
+          ">
+            ← Upload New File
+          </button>
+          <button onclick="goToStep(1)" style="
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+          ">
+            ↻ Change Manual
+          </button>
+        </div>
+      </div>
+    `;
+  } else {
+    // إضافة الأحداث وتحديث الملخص
+    attachSubcategoryEvents();
+    updateSelectionSummary();
+  }
+}
+
+  //  دالة محسنة للتعامل مع الأحداث باستخدام radio buttons
+  function attachSubcategoryEvents() {
+    document.querySelectorAll(".subcategory-card").forEach((card) => {
+      const radio = card.querySelector(".subcategory-radio");
+      const varSelect = card.querySelector(".var-select");
+
+      // حدث اختيار radio button
+      radio.addEventListener("change", function () {
+        if (this.checked) {
+          const id = card.dataset.id;
+          const code = card.dataset.code;
+          const name = card.dataset.name;
+          const column = card.dataset.column;
+          const colIndex = id.split("-")[0];
+
+          //  إلغاء تحديد جميع الكروت الأخرى في نفس العمود فقط
+          document
+            .querySelectorAll(`.subcategory-card[data-id^="${colIndex}-"]`)
+            .forEach((otherCard) => {
+              otherCard.classList.remove("selected");
+              otherCard.classList.remove("auto-selected");
+            });
+
+          // ✅ إضافة التحديد على الكرت الحالي
+          card.classList.add("selected");
+
+          // ✅ جمع بيانات المتغيرات المستقلة
+          let selectedVar = "";
+          const indepVars = JSON.parse(card.dataset.indepvars || "[]");
+
+          if (indepVars.length > 1 && varSelect) {
+            const selectedIndex = varSelect.value;
+            selectedVar = indepVars[selectedIndex];
+          } else if (indepVars.length === 1) {
+            selectedVar = indepVars[0];
+          }
+
+          // ✅ تحديث الماب
+          autoSelectedSubcategories.set(column, id);
+
+          // ✅ حفظ البيانات في selectedSubcategories
+          selectedSubcategories[id] = {
+            code,
+            name,
+            column,
+            independentVariable: selectedVar,
+            fullData: card.dataset,
+          };
+
+          // ✅ إزالة العنصر القديم من نفس العمود إذا كان موجوداً
+          Object.keys(selectedSubcategories).forEach((key) => {
+            if (key.startsWith(`${colIndex}-`) && key !== id) {
+              delete selectedSubcategories[key];
+            }
+          });
+
+          updateSelectionSummary();
+        }
+      });
+
+      // حدث تغيير اختيار المتغير المستقل
+      if (varSelect) {
+        varSelect.addEventListener("change", function () {
+          const card = this.closest(".subcategory-card");
+          const radio = card.querySelector(".subcategory-radio");
+          const id = card.dataset.id;
+
+          // إذا كان العنصر محدد، نقوم بتحديث البيانات
+          if (radio.checked && selectedSubcategories[id]) {
+            const indepVars = JSON.parse(card.dataset.indepvars || "[]");
+            const selectedIndex = this.value;
+
+            selectedSubcategories[id].independentVariable =
+              indepVars[selectedIndex];
+            updateSelectionSummary();
+          }
+        });
+      }
+
+      // لتحديد العنصر إذا نقر المستخدم على الكرت نفسه وليس الراديو فقط
+      card.addEventListener("click", function (e) {
+        if (e.target.type !== "radio" && e.target.type !== "select-one") {
+          const radio = this.querySelector(".subcategory-radio");
+          if (radio) {
+            radio.checked = true;
+            radio.dispatchEvent(new Event("change"));
+          }
+        }
+      });
+    });
+  }
+
+  async function submitForm() {
+    document.getElementById("loadingOverlay").style.display = "flex";
+    document.getElementById("loadingText").textContent =
+      "Generating final analysis report...";
+
+    try {
+      const jData = [];
+
+      // ✅ استخدام العناصر المحددة تلقائياً إذا لم يتم اختيار أي شيء
+      if (Object.keys(selectedSubcategories).length === 0) {
+        // جلب العناصر المحددة تلقائياً
+        const autoItems = getAutoSelectedItems();
+        Object.assign(selectedSubcategories, autoItems);
+      }
+
+      // ✅ لفّ على الداتا الأصلية القادمة من السيرفر
+      subcategoriesData.forEach((col, colIndex) => {
+        const columnName = col.column;
+        const values = col.values || [];
+        const matches = col.matches || [];
+
+        matches.forEach((item, matchIndex) => {
+          const uniqueId = `${colIndex}-${matchIndex}`;
+
+          // ✅ نضيف فقط المختار (سواء يدوياً أو تلقائياً)
+          if (selectedSubcategories[uniqueId]) {
+            jData.push({
+              column: columnName,
+              target: {
+                nation: item.nation || selectedManuals[0]?.name || "",
+                category: item.category || "",
+                subCategory: item.subCategory || "",
+                subSubCategory: item.subSubCategory || item.name || "",
+                code: item.code || "",
+                independentVariable:
+                  selectedSubcategories[uniqueId].independentVariable || "",
+              },
+              values: values,
+            });
+          }
+        });
+      });
+
+      
+      const finalPayload = {
+        jData: jData,
+        time: {
+          weekTime: selectedDayTypes,
+          period: selectedTimePeriods,
+        },
+      };
+
+      console.log("✅ Final Payload:", finalPayload);
+
+      // إرسال الداتا للسيرفر
+      const response = await fetch(
+        "https://5m0b1g8t-4000.euw.devtunnels.ms/trip-generation/generate-tg-rates",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(finalPayload),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`Server Error ${response.status}`);
+      }
+
+      // ✅ استلام الملف
+      generatedExcelBlob = await response.blob();
+
+      document.getElementById("loadingOverlay").style.display = "none";
+
+      // ✅ عرض صفحة النتيجة
+      showResults();
+    } catch (error) {
+      console.error("❌ submitForm error:", error);
+      document.getElementById("loadingOverlay").style.display = "none";
+      alert(error.message);
+    }
+  }
+
+  // ✅ دالة للحصول على العناصر المحددة تلقائياً
+  function getAutoSelectedItems() {
+    const items = {};
+
+    if (!subcategoriesData) return items;
+
+    subcategoriesData.forEach((col, colIndex) => {
+      const matches = col.matches || col.subcategories || [];
+      const columnName = col.column;
+
+      if (matches.length > 0) {
+        // ✅ الحصول على العنصر المحدد تلقائياً لهذا العمود (الأول دائماً)
+        const autoSelectedId = `${colIndex}-0`;
+        const item = matches[0];
+
+        if (item) {
+          items[autoSelectedId] = {
+            code: item.code || "",
+            name: item.subSubCategory || item.name || "",
+            column: columnName,
+            independentVariable: item.independentVariables?.[0] || "",
+          };
+        }
+      }
+    });
+
+    return items;
+  }
+
+  function showResults() {
+    document.querySelector(".form-slider").style.display = "none";
+    document.querySelector(".slider-navigation").style.display = "none";
+    document.querySelector(".progress-container").style.display = "none";
+
+    document.getElementById("resultsSection").style.display = "block";
+
+    document.getElementById("finalSummaryText").innerHTML = `
+            <div>Manuals: <strong>${selectedManuals
+              .map((m) => m.name)
+              .join(", ")}</strong></div>
             <div>Day Type: <strong>${selectedDayTypes.join(", ")}</strong></div>
-            <div>Time Periods: <strong>${selectedTimePeriods.join(", ")}</strong></div>
+            <div>Time Periods: <strong>${selectedTimePeriods.join(
+              ", "
+            )}</strong></div>
+            <div>Subcategories Selected: <strong>${
+              Object.keys(selectedSubcategories).length
+            }</strong></div>
         `;
+  }
+
+  function downloadExcel() {
+    if (!generatedExcelBlob) {
+      alert("No file available");
+      return;
     }
 
+    const url = window.URL.createObjectURL(generatedExcelBlob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = generatedExcelName;
+    document.body.appendChild(a);
+    a.click();
 
-    function generateFinalReport() {
-        document.getElementById("loadingOverlay").style.display = "flex";
-        document.getElementById("loadingText").textContent =
-            "Generating final analysis report...";
+    a.remove();
+    window.URL.revokeObjectURL(url);
+  }
 
-        setTimeout(() => {
-            document.getElementById("loadingOverlay").style.display = "none";
-            showResults([]);
-        }, 2000);
-    }
+  function resetAnalysis() {
+    selectedManuals = [];
+    selectedDayTypes = [];
+    selectedTimePeriods = [];
+    uploadedFile = null;
+    selectedSubcategories = {};
+    subcategoriesData = null;
+    currentStep = 1;
+    autoSelectedSubcategories.clear();
 
-   function downloadExcel() {
-        if (!generatedExcelBlob) {
-            alert("No file available");
-            return;
-        }
-
-        const url = window.URL.createObjectURL(generatedExcelBlob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = generatedExcelName;
-        document.body.appendChild(a);
-        a.click();
-
-        a.remove();
-        window.URL.revokeObjectURL(url);
-    }
-
-    function resetAnalysis() {
-        // Reset all selections
-        selectedManuals = [];
-        selectedCountry = "";
-        selectedDayTypes = [];
-        selectedTimePeriods = [];
-        uploadedFile = null;
-        selectedSubcategories = {};
-        subcategoriesData = null;
-        currentStep = 1;
-
-        // Reset UI
-        document
-            .querySelectorAll(".manual-card")
-            .forEach((card) => card.classList.remove("selected"));
-        document
-            .querySelectorAll(".time-card")
-            .forEach((card) => card.classList.remove("selected"));
-        document.getElementById("countrySelect").value = "";
-        document.getElementById("excelFile").value = "";
-        document.getElementById("fileList").innerHTML = "";
-        document.getElementById("subcategoriesContainer").innerHTML = `
+    document
+      .querySelectorAll(".manual-card")
+      .forEach((card) => card.classList.remove("selected"));
+    document
+      .querySelectorAll(".time-card")
+      .forEach((card) => card.classList.remove("selected"));
+    document.getElementById("excelFile").value = "";
+    document.getElementById("fileList").innerHTML = "";
+    document.getElementById("subcategoriesContainer").innerHTML = `
             <div class="loading-message" style="text-align: center; padding: 40px;">
                 <div style="font-size: 2rem; margin-bottom: 10px;">📊</div>
                 <div>Waiting for file processing...</div>
@@ -2009,124 +2424,158 @@ Generation | CEPAC{% endblock %} {% block content %}
             </div>
         `;
 
-        // Hide results, show form
-        document.getElementById("resultsSection").style.display = "none";
-        document.querySelector(".form-slider").style.display = "block";
-        document.querySelector(".slider-navigation").style.display = "flex";
-        document.querySelector(".progress-container").style.display = "block";
+    document.getElementById("resultsSection").style.display = "none";
+    document.querySelector(".form-slider").style.display = "block";
+    document.querySelector(".slider-navigation").style.display = "flex";
+    document.querySelector(".progress-container").style.display = "block";
 
-        // Go to step 1
-        goToStep(1);
+    goToStep(1);
 
-        // Update summaries
-        updateManualSummary();
-        updateOptionsSummary();
-        updateFileSummary();
-        updateSelectionSummary();
-    }
+    updateManualSummary();
+    updateOptionsSummary();
+    updateFileSummary();
+    updateSelectionSummary();
+  }
 
-    // Update functions
-    function updateProgress() {
-        const progress = (currentStep / 4) * 100;
-        document.getElementById("progressFill").style.width = `${progress}%`;
-
-        // Update step dots
-        document.querySelectorAll(".step-dot").forEach((dot) => {
-            const step = parseInt(dot.dataset.step);
-            if (step < currentStep) {
-                dot.classList.add("completed");
-            } else if (step === currentStep) {
-                dot.classList.add("active");
-                dot.classList.remove("completed");
-            } else {
-                dot.classList.remove("active", "completed");
-            }
-        });
-    }
-
-    function updateManualSummary() {
-        const summary = document.getElementById("manualSummaryText");
-        const manualsText =
-            selectedManuals.length > 0
-                ? `Selected: <span style="color: #007bff;">${selectedManuals.map((m) => m.name).join(", ")}</span>`
-                : "No manuals selected";
-        
-        summary.innerHTML = `
-            <div>${manualsText}</div>
-           
-        `;
-
-        if (selectedManuals.length > 0 && selectedCountry) {
-            summary.style.color = "var(--success-color)";
-        } else {
-            summary.style.color = "var(--text-light)";
+  function validateStep(step) {
+    switch (step) {
+      case 1:
+        if (selectedManuals.length === 0) {
+          alert("Please select at least one manual");
+          return false;
         }
+        break;
+      case 2:
+        if (selectedDayTypes.length === 0) {
+          alert("Please select at least one day type");
+          return false;
+        }
+        if (selectedTimePeriods.length === 0) {
+          alert("Please select at least one time period");
+          return false;
+        }
+        break;
+      case 3:
+        if (!uploadedFile) {
+          alert("Please upload an Excel file");
+          return false;
+        }
+        break;
+      case 4:
+        // لا يوجد تحقق إلزامي للخطوة 4
+        break;
     }
+    return true;
+  }
 
-    function updateOptionsSummary() {
-        const summary = document.getElementById("optionsSummaryText");
-        const dayText =
-            selectedDayTypes.length > 0
-                ? `Day Type: <span style="color: #007bff;">${selectedDayTypes.join(", ")}`
-                : "No day type selected";
-        const timeText =
-            selectedTimePeriods.length > 0
-                ? `Time Periods: <span style="color: #343434;">${selectedTimePeriods.join(", ")}</span>`
-                : "No time periods selected";
+  function updateProgress() {
+    const progress = (currentStep / 4) * 100;
+    document.getElementById("progressFill").style.width = `${progress}%`;
 
-        summary.innerHTML = `
+    document.querySelectorAll(".step-dot").forEach((dot) => {
+      const step = parseInt(dot.dataset.step);
+      if (step < currentStep) {
+        dot.classList.add("completed");
+      } else if (step === currentStep) {
+        dot.classList.add("active");
+        dot.classList.remove("completed");
+      } else {
+        dot.classList.remove("active", "completed");
+      }
+    });
+  }
+
+  function updateManualSummary() {
+    const summary = document.getElementById("manualSummaryText");
+    const manualsText =
+      selectedManuals.length > 0
+        ? `Selected: <span style="color: #007bff;">${selectedManuals
+            .map((m) => m.name)
+            .join(", ")}</span>`
+        : "No manuals selected";
+
+    summary.innerHTML = `<div>${manualsText}</div>`;
+
+    if (selectedManuals.length > 0) {
+      summary.style.color = "var(--success-color)";
+    } else {
+      summary.style.color = "var(--text-light)";
+    }
+  }
+
+  function updateOptionsSummary() {
+    const summary = document.getElementById("optionsSummaryText");
+    const dayText =
+      selectedDayTypes.length > 0
+        ? `Day Type: <span style="color: #007bff;">${selectedDayTypes.join(
+            ", "
+          )}</span>`
+        : "No day type selected";
+    const timeText =
+      selectedTimePeriods.length > 0
+        ? `Time Periods: <span style="color: #343434;">${selectedTimePeriods.join(
+            ", "
+          )}</span>`
+        : "No time periods selected";
+
+    summary.innerHTML = `
             <div>${dayText}</div>
             <div>${timeText}</div>
         `;
 
-        if (selectedDayTypes.length > 0 && selectedTimePeriods.length > 0) {
-            summary.style.color = "var(--success-color)";
-        } else {
-            summary.style.color = "var(--text-light)";
-        }
+    if (selectedDayTypes.length > 0 && selectedTimePeriods.length > 0) {
+      summary.style.color = "var(--success-color)";
+    } else {
+      summary.style.color = "var(--text-light)";
     }
+  }
 
-    function updateFileSummary() {
-        const summary = document.getElementById("fileSummaryText");
-        if (uploadedFile) {
-            summary.textContent = `Uploaded: ${uploadedFile.name} (${(
-                uploadedFile.size /
-                1024 /
-                1024
-            ).toFixed(2)} MB)`;
-            summary.style.color = "var(--success-color)";
-        } else {
-            summary.textContent = "No file uploaded";
-            summary.style.color = "var(--text-light)";
-        }
+  function updateFileSummary() {
+    const summary = document.getElementById("fileSummaryText");
+    if (uploadedFile) {
+      summary.textContent = `Uploaded: ${uploadedFile.name} (${(
+        uploadedFile.size /
+        1024 /
+        1024
+      ).toFixed(2)} MB)`;
+      summary.style.color = "var(--success-color)";
+    } else {
+      summary.textContent = "No file uploaded";
+      summary.style.color = "var(--text-light)";
     }
+  }
 
-    function updateSelectionSummary() {
-        const summaryCard = document.getElementById("selectionSummary");
-        const summaryText = document.getElementById("selectionSummaryText");
-        const count = Object.keys(selectedSubcategories).length;
+  function updateSelectionSummary() {
+    const summaryCard = document.getElementById("selectionSummary");
+    const summaryText = document.getElementById("selectionSummaryText");
 
-        if (count > 0) {
-            summaryCard.style.display = "block";
-            const items = Object.values(selectedSubcategories).map((sc, index) => {
-                const varInfo = sc.independentVariable ? 
-                    `<br><small style="color: #dc3545;">Variable: ${sc.independentVariable}</small>` : '';
-                return `<div>${index + 1}. ${sc.name} (${sc.code}) - <span style="color: #007bff;">${sc.column}</span>${varInfo}</div>`;
-            }).join("");
-            
-            summaryText.innerHTML = `
+    const count = Object.keys(selectedSubcategories).length;
+
+    if (count > 0) {
+      summaryCard.style.display = "block";
+      const items = Object.values(selectedSubcategories)
+        .map((sc, index) => {
+          const varInfo = sc.independentVariable
+            ? `<br><small style="color: #4f5cc6;;">Variable: ${sc.independentVariable}</small>`
+            : "";
+          return `<div>${index + 1}. ${sc.name} (${
+            sc.code
+          }) - <span style="color: #007bff;">${
+            sc.column
+          }</span>${varInfo}</div>`;
+        })
+        .join("");
+
+      summaryText.innerHTML = `
                 <div><strong>Subcategories Selected:</strong> ${count}</div>
                 <div style="margin-top: 10px; max-height: 150px; overflow-y: auto;">
                     ${items}
                 </div>
             `;
-        } else {
-            summaryCard.style.display = "none";
-        }
+    } else {
+      summaryCard.style.display = "none";
     }
-
-   
+  }
 </script>
-
 
 {% endblock %}
