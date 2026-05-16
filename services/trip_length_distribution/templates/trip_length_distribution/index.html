@@ -1,17 +1,24 @@
-{% extends "includes/base.html" %}
-{% load static %}
-
-{% block title %}Trip Length Distribution | CEPAC{% endblock %}
-
+{% extends "includes/base.html" %} {% load static %} 
+{% block title %}Trip Length Distribution | CEPAC{% endblock %} 
 {% block content %}
 <div class="tld-container">
   <div class="tld-page">
     <div class="tld-wrapper">
       <div class="tld-left">
         <div class="tld-hero">
-          <h1>Trip <br>Length <br>Distribution</h1>
+          <h1>Trip <br />Length <br />Distribution</h1>
           <div class="tld-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="64"
+              height="64"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
               <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
               <polyline points="9 22 9 12 15 12 15 22"></polyline>
             </svg>
@@ -19,31 +26,50 @@
         </div>
       </div>
       <div class="tld-right">
-        <form action="{% url 'trip_length_distribution:time' %}" method="post" class="tld-form">
+        <form
+          action="{% url 'trip_length_distribution:time' %}"
+          method="post"
+          class="tld-form"
+        >
           {% csrf_token %}
-          <h2 class="tld-form-title">Please Enter Trip Length Distribution Data</h2>
+          <h2 class="tld-form-title">
+            Please Enter Trip Length Distribution Data
+          </h2>
 
           <div class="tld-form-group">
             <label for="Minimum">Minimum of TLD</label>
-            {{ form.Minimum }}
-            {% if errors.Minimum %}<div class="tld-error">{{ errors.Minimum }}</div>{% endif %}
+            {{ form.Minimum }} {% if errors.Minimum %}
+            <div class="tld-error">{{ errors.Minimum }}</div>
+            {% endif %}
           </div>
 
           <div class="tld-form-group">
             <label for="Maximum">Maximum of TLD</label>
-            {{ form.Maximum }}
-            {% if errors.Maximum %}<div class="tld-error">{{ errors.Maximum }}</div>{% endif %}
+            {{ form.Maximum }} {% if errors.Maximum %}
+            <div class="tld-error">{{ errors.Maximum }}</div>
+            {% endif %}
           </div>
 
           <div class="tld-form-group">
             <label for="intervals">Number of Intervals</label>
-            {{ form.intervals }}
-            {% if errors.intervals %}<div class="tld-error">{{ errors.intervals }}</div>{% endif %}
+            {{ form.intervals }} {% if errors.intervals %}
+            <div class="tld-error">{{ errors.intervals }}</div>
+            {% endif %}
           </div>
 
           <button type="submit" class="tld-submit-btn">
             <span>NEXT</span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
               <polyline points="9 18 15 12 9 6"></polyline>
             </svg>
           </button>
@@ -75,7 +101,11 @@
 
   .tld-left {
     flex: 1;
-    background: linear-gradient(135deg, #17a98a 0%, #17a98a 100%);
+    background: linear-gradient(
+      135deg,
+      var(--accent-color) 0%,
+      var(--accent-color) 100%
+    );
     color: white;
     padding: 60px 40px;
     display: flex;
@@ -161,7 +191,7 @@
     gap: 10px;
     width: 100%;
     padding: 14px 20px;
-    background: #17a98a;
+    background: var(--accent-color);
     color: white;
     border: none;
     border-radius: 8px;
@@ -173,7 +203,7 @@
   }
 
   .tld-submit-btn:hover {
-    background: #17a98a;
+    background: var(--accent-color);
     transform: translateY(-2px);
     color: white;
   }
@@ -190,11 +220,12 @@
     .tld-wrapper {
       flex-direction: column;
     }
-    
-    .tld-left, .tld-right {
+
+    .tld-left,
+    .tld-right {
       padding: 40px;
     }
-    
+
     .tld-hero h1 {
       font-size: 28px;
       margin-bottom: 20px;
@@ -202,14 +233,15 @@
   }
 
   @media (max-width: 576px) {
-    .tld-left, .tld-right {
+    .tld-left,
+    .tld-right {
       padding: 30px 20px;
     }
-    
+
     .tld-hero h1 {
       font-size: 24px;
     }
-    
+
     .tld-form-title {
       font-size: 20px;
     }

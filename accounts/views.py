@@ -18,10 +18,10 @@ def signup_view(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            messages.success(request, "تم إنشاء الحساب بنجاح. مرحباً بك!")
+            messages.success(request, "Account created and logged in successfully!")
             return redirect("accounts:login")
         else:
-            messages.error(request, "هناك أخطاء في النموذج. راجع المدخلات.")
+            messages.error(request, "Please correct the errors below.")
     else:
         form = SignupForm()
     return render(request, "accounts/signup.html", {"form": form})
@@ -37,7 +37,7 @@ def login_view(request):
             next_url = request.POST.get("next") or "/"
             return redirect(next_url)
         else:
-            messages.error(request, "اسم المستخدم أو كلمة المرور غير صحيحة.")
+            messages.error(request, "Invalid username or password.")
     
     return render(request, "accounts/login.html", {"form": form})
 
@@ -47,5 +47,5 @@ def login_view(request):
 @login_required
 def logout_view(request):
     logout(request)
-    messages.info(request, "تم تسجيل الخروج.")
+    messages.info(request, "Logged out successfully.")
     return redirect("accounts:login")

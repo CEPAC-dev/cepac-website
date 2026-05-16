@@ -36,6 +36,8 @@ INSTALLED_APPS = [
     "services.trip_length_distribution",
     "services.outlier",
     "services.trip_generation",
+   
+    
 
 ]
 
@@ -102,8 +104,7 @@ STATICFILES_DIRS = [BASE_DIR / "main" / "static"]
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
-
-
+DEFAULT_FROM_EMAIL = "info@cepac-eg.com"
 
 LOGIN_URL = 'accounts:login'             
 LOGIN_REDIRECT_URL = "/" 

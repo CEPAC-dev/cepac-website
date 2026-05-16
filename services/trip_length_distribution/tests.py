@@ -6,7 +6,7 @@ class TripLengthFlowTest(TestCase):
         self.client = Client()
 
     def test_initial_get(self):
-        resp = self.client.get(reverse("trip_length_distribution:index"))
+        resp = self.client.get(reverse("trip_length_distribution:manual"))
         self.assertEqual(resp.status_code, 200)
         self.assertContains(resp, "Trip Length Distribution")
 

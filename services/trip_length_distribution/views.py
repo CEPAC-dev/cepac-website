@@ -3,7 +3,6 @@ import io
 import json
 import uuid  # ADD THIS IMPORT
 from urllib.parse import unquote
-
 from django.conf import settings
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
@@ -27,6 +26,8 @@ from .services import (
     save_matrix_to_media, run_octave_script, load_fitting_results,
     get_plot_url, cleanup_session_data
 )
+import pandas as pd
+import numpy as np
 
 from django.contrib.auth.decorators import login_required
 
@@ -54,7 +55,7 @@ def index(request):
 
 def time_entry(request):
     if request.method != "POST":
-        return redirect(reverse("trip_length_distribution:index"))
+        return redirect(reverse("trip_length_distribution:manual"))
 
     # Create session ID
     session_id = _get_or_create_session_id(request)
@@ -109,9 +110,27 @@ def time_entry(request):
         return render(request, "trip_length_distribution/time.html", ctx)
 
     return render(
-        request, "trip_length_distribution/index.html",
-        {"form": form, "errors": {"form": "Please correct the errors."}}
+        request,
+        "trip_length_distribution/index.html",
+        {"form": form, "errors": {"form": "Please correct the errors."}},
     )
+
+
+@login_required
+def choose_method(request):
+    """Render a choice page allowing Manual Entry or Upload Excel."""
+    # Clean up any previous session-specific TLD files
+    if 'tld_session_id' in request.session:
+        try:
+            cleanup_session_data(request.session['tld_session_id'])
+        except Exception:
+            pass
+        try:
+            del request.session['tld_session_id']
+        except Exception:
+            pass
+
+    return render(request, "trip_length_distribution/choose_method.html")
 @login_required 
 def send_to_octave(request):
     if request.method != "POST":
@@ -160,13 +179,230 @@ def send_to_octave(request):
         return JsonResponse({"status": "error", "message": str(e)}, status=500)
 
     return redirect(reverse("trip_length_distribution:output"))
+
+
+@login_required
+def upload_excel_start(request):
+    """Step 1: Upload Excel file and show available columns."""
+    if request.method != "POST":
+        return render(request, "trip_length_distribution/upload_excel_start.html")
+
+    # Get file
+    f = request.FILES.get("excel_file")
+    if not f:
+        messages.error(request, "No file uploaded.")
+        return render(request, "trip_length_distribution/upload_excel_start.html")
+
+    # Create session ID if needed
+    session_id = _get_or_create_session_id(request)
+    request.session["session_id"] = session_id
+
+    try:
+        df = pd.read_excel(f)
+    except Exception as e:
+        messages.error(request, f"Failed to read Excel file: {e}")
+        return render(request, "trip_length_distribution/upload_excel_start.html")
+
+    if df.empty:
+        messages.error(request, "Excel file is empty.")
+        return render(request, "trip_length_distribution/upload_excel_start.html")
+
+    # Get all columns
+    columns = df.columns.tolist()
+    
+    # Try to find numeric columns
+    numeric_cols = df.select_dtypes(include=[np.number]).columns.tolist()
+    
+    # Store dataframe in session (as dict/JSON for serialization)
+    request.session["excel_data"] = df.to_json()
+    request.session["excel_columns"] = columns
+    request.session["numeric_columns"] = numeric_cols
+
+    return render(request, "trip_length_distribution/upload_excel_select_column.html", {
+        "columns": columns,
+        "numeric_columns": numeric_cols,
+    })
+
+
+@login_required
+def upload_excel_select_column(request):
+    """Step 2: User selects which column is the time data."""
+    if request.method != "POST":
+        # Show selection form
+        columns = request.session.get("excel_columns", [])
+        numeric_cols = request.session.get("numeric_columns", [])
+        return render(request, "trip_length_distribution/upload_excel_select_column.html", {
+            "columns": columns,
+            "numeric_columns": numeric_cols,
+        })
+
+    selected_col = request.POST.get("time_column")
+    if not selected_col:
+        messages.error(request, "Please select a column.")
+        columns = request.session.get("excel_columns", [])
+        numeric_cols = request.session.get("numeric_columns", [])
+        return render(request, "trip_length_distribution/upload_excel_select_column.html", {
+            "columns": columns,
+            "numeric_columns": numeric_cols,
+        })
+
+    # Load dataframe from session
+    excel_json = request.session.get("excel_data")
+    if not excel_json:
+        messages.error(request, "Session data lost. Please upload again.")
+        return redirect(reverse("trip_length_distribution:upload_excel"))
+
+    try:
+        df = pd.read_json(excel_json)
+    except Exception as e:
+        messages.error(request, f"Failed to read session data: {e}")
+        return redirect(reverse("trip_length_distribution:upload_excel"))
+
+    # Extract numeric data from selected column
+    try:
+        series = pd.to_numeric(df[selected_col], errors="coerce").dropna()
+        if series.empty:
+            messages.error(request, f"No numeric data found in column '{selected_col}'.")
+            columns = request.session.get("excel_columns", [])
+            numeric_cols = request.session.get("numeric_columns", [])
+            return render(request, "trip_length_distribution/upload_excel_select_column.html", {
+                "columns": columns,
+                "numeric_columns": numeric_cols,
+            })
+    except Exception as e:
+        messages.error(request, f"Error processing column: {e}")
+        return redirect(reverse("trip_length_distribution:upload_excel"))
+
+    # Calculate min, max, suggested intervals
+    min_val = float(series.min())
+    max_val = float(series.max())
+    data_count = len(series)
+    suggested_intervals = max(5, int(np.sqrt(data_count)))
+
+    # Store in session
+    request.session["time_data"] = series.tolist()
+    request.session["selected_column"] = selected_col
+    request.session["data_min"] = min_val
+    request.session["data_max"] = max_val
+
+    return render(request, "trip_length_distribution/upload_excel_generate_intervals.html", {
+        "data_min": min_val,
+        "data_max": max_val,
+        "data_count": data_count,
+        "suggested_intervals": suggested_intervals,
+    })
+
+
+@login_required
+def upload_excel_generate_intervals(request):
+    """Step 3: User specifies number of intervals and sees the breakdown."""
+    if request.method == "GET":
+        min_val = request.session.get("data_min", 0)
+        max_val = request.session.get("data_max", 100)
+        data_count = len(request.session.get("time_data", []))
+        suggested = max(5, int(np.sqrt(data_count)))
+        return render(request, "trip_length_distribution/upload_excel_generate_intervals.html", {
+            "data_min": min_val,
+            "data_max": max_val,
+            "data_count": data_count,
+            "suggested_intervals": suggested,
+        })
+
+    # POST: user submitted interval count
+    intervals_str = request.POST.get("intervals", "0")
+    try:
+        intervals = int(intervals_str)
+    except ValueError:
+        messages.error(request, "Please enter a valid number of intervals.")
+        return redirect(reverse("trip_length_distribution:upload_excel_generate_intervals"))
+
+    if intervals < 1:
+        messages.error(request, "Intervals must be at least 1.")
+        return redirect(reverse("trip_length_distribution:upload_excel_generate_intervals"))
+
+    # Get time data from session
+    time_data = request.session.get("time_data", [])
+    min_val = request.session.get("data_min")
+    max_val = request.session.get("data_max")
+
+    if not time_data:
+        messages.error(request, "Session data lost. Please upload again.")
+        return redirect(reverse("trip_length_distribution:upload_excel"))
+
+    # Generate intervals using the same logic as build_time_edges
+    step, array_of_time = build_time_edges(min_val, max_val, intervals)
+
+    # Build bins and compute frequencies
+    bins = [min_val] + array_of_time
+    try:
+        series = pd.Series(time_data)
+        cats = pd.cut(series, bins=bins, right=False)
+        counts = list(cats.value_counts(sort=False).astype(float).tolist())
+    except Exception as e:
+        messages.error(request, f"Failed to compute frequencies: {e}")
+        return redirect(reverse("trip_length_distribution:upload_excel_generate_intervals"))
+
+    # Prepare display data
+    interval_data = []
+    for i, (edge, count) in enumerate(zip(array_of_time, counts)):
+        left = array_of_time[i-1] if i > 0 else min_val
+        right = edge
+        interval_data.append({
+            "interval": f"{left:.2f} - {right:.2f}",
+            "count": int(count),
+        })
+
+    # Store in session
+    request.session["intervals"] = intervals
+    request.session["numberOfIntervals"] = intervals
+    request.session["arrayOfTime"] = array_of_time
+    request.session["minimumTime"] = min_val
+    request.session["frequencies"] = [float(x) for x in counts]
+
+    return render(request, "trip_length_distribution/upload_excel_review_intervals.html", {
+        "interval_data": interval_data,
+        "total_values": sum(counts),
+    })
+
+
+@login_required
+def upload_excel_process(request):
+    """Step 4: Process the intervals and run Octave."""
+    session_id = request.session.get("session_id")
+    frequencies = request.session.get("frequencies", [])
+    array_of_time = request.session.get("arrayOfTime", [])
+
+    if not session_id or not frequencies or not array_of_time:
+        messages.error(request, "Session incomplete. Please upload again.")
+        return redirect(reverse("trip_length_distribution:upload_excel"))
+
+    try:
+        # Normalize, save matrix, run octave
+        normed = normalize_frequencies(frequencies)
+        save_matrix_to_media(array_of_time, normed, session_id)
+        run_octave_script(session_id)
+    except Exception as e:
+        messages.error(request, f"Processing failed: {e}")
+        return redirect(reverse("trip_length_distribution:upload_excel"))
+
+    return redirect(reverse("trip_length_distribution:output"))
+
+
+@login_required
+def upload_excel_time(request):
+    """Redirect to new upload flow."""
+    return redirect(reverse("trip_length_distribution:upload_excel"))
+
+
+
+
 @login_required  
 def output(request):
     # Get session ID
     session_id = request.session.get("session_id")
     if not session_id:
         messages.warning(request, "Session expired. Please start over.")
-        return redirect("trip_length_distribution:index")
+        return redirect("trip_length_distribution:manual")
 
     # Guard: make sure we have session data first
     number_of_intervals = request.session.get("numberOfIntervals")
@@ -174,7 +410,7 @@ def output(request):
 
     if not number_of_intervals or not frequencies:
         messages.warning(request, "Please start by entering Trip Length Distribution inputs.")
-        return redirect("trip_length_distribution:index")
+        return redirect("trip_length_distribution:manual")
 
     data = {
         "numberOfIntervals": number_of_intervals,

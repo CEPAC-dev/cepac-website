@@ -1,92 +1,139 @@
-{% extends "includes/base.html" %}
-{% load static %}
+{% extends "includes/base.html" %} {% load static %} {% block title %}About |
+CEPAC{% endblock %} {% block content %}
+<!-- Page Title -->
+<div class="page-title" data-aos="fade">
+  <div class="container">
+    <nav class="breadcrumbs">
+      <ol>
+        <li><a href="{% url 'main:home' %}">Home</a></li>
+        <li class="current">About</li>
+      </ol>
+    </nav>
+    <h1>About CEPAC</h1>
+  </div>
+</div>
+<!-- End Page Title -->
 
-{% block title %}About | CEPAC{% endblock %}
+<!-- About Section -->
+<section id="about" class="section about">
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+    <div class="row gy-4">
+      <div class="col-lg-6 order-1 order-lg-2"></div>
+      <div class="col-lg-6 order-2 order-lg-1 content">
+        <h3>Civil Engineering Projects Arabic Center (CEPAC)</h3>
+        <!-- <p class="fst-italic">
+          CEPAC is a leading international pioneer in traffic impact studies,
+          dedicated to providing comprehensive solutions for transportation
+          planning and infrastructure development projects worldwide.
+        </p> -->
+        <!-- <ul>
+          <li>
+            <i class="bi bi-check2-all"></i>
+            <span>Utilizing cutting-edge methodologies and technology.</span>
+          </li>
+          <li>
+            <i class="bi bi-check2-all"></i>
+            <span>In-depth traffic studies and data analysis.</span>
+          </li>
+          <li>
+            <i class="bi bi-check2-all"></i>
+            <span>Advanced transportation modeling techniques.</span>
+          </li>
+        </ul> -->
+        <p>
+          CEPAC is an engineering consultancy specialized in transportation
+          planning, traffic engineering, and infrastructure studies. The company
+          delivers practical, data-driven mobility solutions through expertise
+          in traffic impact assessments, transportation modeling, and smart
+          transportation systems to support sustainable urban development.
+        </p>
 
-{% block content %}
-  <!-- Page Title -->
-  <div class="page-title" data-aos="fade">
-    <div class="container">
-      <nav class="breadcrumbs">
-        <ol>
-          <li><a href="{% url 'main:home' %}">Home</a></li>
-          <li class="current">About</li>
-        </ol>
-      </nav>
-      <h1>About CEPAC</h1>
-    </div>
-  </div><!-- End Page Title -->
-
-  <!-- About Section -->
-  <section id="about" class="section about">
-    <div class="container" data-aos="fade-up" data-aos-delay="100">
-      <div class="row gy-4">
-        <div class="col-lg-6 order-1 order-lg-2">
-          <img src="{% static 'img/about.webp' %}" class="img-fluid" alt="About CEPAC">
-        </div>
-        <div class="col-lg-6 order-2 order-lg-1 content">
-          <h3>Leading Integrated Solutions for Transportation</h3>
-          <p class="fst-italic">
-            CEPAC is a leading international pioneer in traffic impact studies, dedicated to providing comprehensive solutions for transportation planning and infrastructure development projects worldwide.
-          </p>
-          <ul>
-            <li><i class="bi bi-check2-all"></i> <span>Utilizing cutting-edge methodologies and technology.</span></li>
-            <li><i class="bi bi-check2-all"></i> <span>In-depth traffic studies and data analysis.</span></li>
-            <li><i class="bi bi-check2-all"></i> <span>Advanced transportation modeling techniques.</span></li>
-          </ul>
-          <p>
-            Our team of experienced professionals combines data-driven analysis with a deep understanding of local regulations and global best practices to deliver tailored solutions that meet the unique needs of each project.
-          </p>
-        </div>
+        <p>
+          The company delivers practical, data-driven mobility solutions through
+          expertise in traffic impact assessments, transportation modeling, and
+          smart transportation systems to support sustainable urban development.
+        </p>
       </div>
     </div>
-  </section><!-- /About Section -->
+  </div>
+</section>
+<!-- /About Section -->
 
-  <!-- Stats Section -->
-  <section id="stats" class="stats section">
-    <div class="container" data-aos="fade-up" data-aos-delay="100">
-      <div class="row gy-4">
-        <div class="col-lg-3 col-md-6">
-          <div class="stats-item">
-            <i class="bi bi-emoji-smile"></i>
-            <span data-purecounter-start="0" data-purecounter-end="232" data-purecounter-duration="1" class="purecounter"></span>
-            <p><strong>Happy Clients</strong> <span>worldwide</span></p>
-          </div>
-        </div><!-- End Stats Item -->
-        <div class="col-lg-3 col-md-6">
-          <div class="stats-item">
-            <i class="bi bi-journal-richtext"></i>
-            <span data-purecounter-start="0" data-purecounter-end="521" data-purecounter-duration="1" class="purecounter"></span>
-            <p><strong>Projects</strong> <span>successfully completed</span></p>
-          </div>
-        </div><!-- End Stats Item -->
-        <div class="col-lg-3 col-md-6">
-          <div class="stats-item">
-            <i class="bi bi-headset"></i>
-            <span data-purecounter-start="0" data-purecounter-end="1453" data-purecounter-duration="1" class="purecounter"></span>
-            <p><strong>Hours Of Support</strong> <span>provided</span></p>
-          </div>
-        </div><!-- End Stats Item -->
-        <div class="col-lg-3 col-md-6">
-          <div class="stats-item">
-            <i class="bi bi-people"></i>
-            <span data-purecounter-start="0" data-purecounter-end="32" data-purecounter-duration="1" class="purecounter"></span>
-            <p><strong>Hard Workers</strong> <span>dedicated team members</span></p>
-          </div>
-        </div><!-- End Stats Item -->
+<!-- Stats Section -->
+<!-- <section id="stats" class="stats section">
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+    <div class="row gy-4">
+      <div class="col-lg-3 col-md-6">
+        <div class="stats-item">
+          <i class="bi bi-journal-richtext"></i>
+          <span
+            data-purecounter-start="0"
+            data-purecounter-end="15"
+            data-purecounter-duration="1"
+            class="purecounter"
+          ></span>
+          <p><strong>Traffic Studies</strong> <span>completed</span></p>
+        </div>
       </div>
+      <!-- End Stats Item --
+      <div class="col-lg-3 col-md-6">
+        <div class="stats-item">
+          <i class="bi bi-signpost-split"></i>
+          <span
+            data-purecounter-start="0"
+            data-purecounter-end="120"
+            data-purecounter-duration="1"
+            class="purecounter"
+          ></span>
+          <p><strong>Intersections</strong> <span>analyzed</span></p>
+        </div>
+      </div>
+      <!-- End Stats Item --
+      <div class="col-lg-3 col-md-6">
+        <div class="stats-item">
+          <i class="bi bi-clock-history"></i>
+          <span
+            data-purecounter-start="0"
+            data-purecounter-end="2000"
+            data-purecounter-duration="1"
+            class="purecounter"
+          ></span>
+          <p><strong>Technical Hours</strong> <span>logged</span></p>
+        </div>
+      </div>
+      <!-- End Stats Item --
+      <div class="col-lg-3 col-md-6">
+        <div class="stats-item">
+          <i class="bi bi-people-fill"></i>
+          <span
+            data-purecounter-start="0"
+            data-purecounter-end="12"
+            data-purecounter-duration="1"
+            class="purecounter"
+          ></span>
+          <p><strong>Engineering Staff</strong> <span>team members</span></p>
+        </div>
+      </div>
+      <!-- End Stats Item --
     </div>
-  </section><!-- /Stats Section -->
+  </div>
+</section> --
+<!-- /Stats Section --
 
-  <!-- Clients Section -->
-  <section id="clients" class="section clients">
-    <div class="container section-title" data-aos="fade-up">
-      <h2>Our Clients</h2>
-      <p>We take pride in our diverse clientele, ranging from small businesses to large corporations, all benefiting from our comprehensive traffic impact studies and transportation planning solutions.</p>
-    </div><!-- End Section Title -->
-    <div class="container" data-aos="fade-up" data-aos-delay="100">
-      <div class="swiper init-swiper">
-        <script type="application/json" class="swiper-config">
+<!-- Clients Section --
+<section id="clients" class="section clients">
+  <div class="container section-title" data-aos="fade-up">
+    <h2>Our Clients</h2>
+    <p>
+      We take pride in our diverse clientele, ranging from small businesses to
+      large corporations, all benefiting from our comprehensive traffic impact
+      studies and transportation planning solutions.
+    </p>
+  </div>
+  <!-- End Section Title --
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+    <div class="swiper init-swiper">
+      <script type="application/json" class="swiper-config">
         {
           "loop": true,
           "speed": 600,
@@ -118,28 +165,78 @@
             }
           }
         }
-        </script>
-        <div class="swiper-wrapper align-items-center">
-          <div class="swiper-slide"><img src="{% static 'img/clients/client-1.png' %}" class="img-fluid" alt="Client 1"></div>
-          <div class="swiper-slide"><img src="{% static 'img/clients/client-2.png' %}" class="img-fluid" alt="Client 2"></div>
-          <div class="swiper-slide"><img src="{% static 'img/clients/client-3.png' %}" class="img-fluid" alt="Client 3"></div>
-          <div class="swiper-slide"><img src="{% static 'img/clients/client-4.png' %}" class="img-fluid" alt="Client 4"></div>
-          <div class="swiper-slide"><img src="{% static 'img/clients/client-5.png' %}" class="img-fluid" alt="Client 5"></div>
-          <div class="swiper-slide"><img src="{% static 'img/clients/client-6.png' %}" class="img-fluid" alt="Client 6"></div>
-          <div class="swiper-slide"><img src="{% static 'img/clients/client-7.png' %}" class="img-fluid" alt="Client 7"></div>
-          <div class="swiper-slide"><img src="{% static 'img/clients/client-8.png' %}" class="img-fluid" alt="Client 8"></div>
+      </script>
+      <div class="swiper-wrapper align-items-center">
+        <div class="swiper-slide">
+          <img
+            src="{% static 'img/clients/client-1.png' %}"
+            class="img-fluid"
+            alt="Client 1"
+          />
         </div>
-        <div class="swiper-pagination"></div>
+        <div class="swiper-slide">
+          <img
+            src="{% static 'img/clients/client-2.png' %}"
+            class="img-fluid"
+            alt="Client 2"
+          />
+        </div>
+        <div class="swiper-slide">
+          <img
+            src="{% static 'img/clients/client-3.png' %}"
+            class="img-fluid"
+            alt="Client 3"
+          />
+        </div>
+        <div class="swiper-slide">
+          <img
+            src="{% static 'img/clients/client-4.png' %}"
+            class="img-fluid"
+            alt="Client 4"
+          />
+        </div>
+        <div class="swiper-slide">
+          <img
+            src="{% static 'img/clients/client-5.png' %}"
+            class="img-fluid"
+            alt="Client 5"
+          />
+        </div>
+        <div class="swiper-slide">
+          <img
+            src="{% static 'img/clients/client-6.png' %}"
+            class="img-fluid"
+            alt="Client 6"
+          />
+        </div>
+        <div class="swiper-slide">
+          <img
+            src="{% static 'img/clients/client-7.png' %}"
+            class="img-fluid"
+            alt="Client 7"
+          />
+        </div>
+        <div class="swiper-slide">
+          <img
+            src="{% static 'img/clients/client-8.png' %}"
+            class="img-fluid"
+            alt="Client 8"
+          />
+        </div>
       </div>
+      <div class="swiper-pagination"></div>
     </div>
-  </section><!-- /Clients Section -->
+  </div>
+</section>
+<!-- /Clients Section -->
 
-  <!-- Testimonials Section -->
-  <section id="testimonials" class="testimonials section">
+<!-- Testimonials Section -->
+<!-- <section id="testimonials" class="testimonials section">
     <div class="container section-title" data-aos="fade-up">
       <h2>Testimonials</h2>
       <p>Read what our clients have to say about our services and solutions.</p>
-    </div><!-- End Section Title -->
+    </div>
+    <!-- End Section Title --
     <div class="container">
       <div class="row gy-4">
         <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
@@ -154,7 +251,7 @@
               CEPAC provided exceptional service and insights that helped us achieve our project goals efficiently. Their expertise in traffic impact studies is unparalleled.
             <i class="bi bi-quote quote-icon-right"></i></p>
           </div>
-        </div><!-- End testimonial item -->
+        </div><!-- End testimonial item --
         <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
           <div class="testimonial-item">
             <img src="{% static 'img/testimonials/testimonials-2.jpg' %}" class="testimonial-img" alt="Sara Wilsson">
@@ -167,7 +264,7 @@
               Working with CEPAC was a great experience. Their professional approach and detailed analysis were critical in the success of our project.
             <i class="bi bi-quote quote-icon-right"></i></p>
           </div>
-        </div><!-- End testimonial item -->
+        </div><!-- End testimonial item --
         <div class="col-lg-6" data-aos="fade-up" data-aos-delay="300">
           <div class="testimonial-item">
             <img src="{% static 'img/testimonials/testimonials-3.jpg' %}" class="testimonial-img" alt="Jena Karlis">
@@ -180,7 +277,7 @@
               CEPAC's innovative solutions and commitment to excellence were evident throughout our collaboration. We highly recommend their services.
             <i class="bi bi-quote quote-icon-right"></i></p>
           </div>
-        </div><!-- End testimonial item -->
+        </div><!-- End testimonial item --
         <div class="col-lg-6" data-aos="fade-up" data-aos-delay="400">
           <div class="testimonial-item">
             <img src="{% static 'img/testimonials/testimonials-4.jpg' %}" class="testimonial-img" alt="Matt Brandon">
@@ -193,7 +290,7 @@
               The detailed traffic impact studies provided by CEPAC were instrumental in our project's success. Their team's dedication and expertise are unmatched.
             <i class="bi bi-quote quote-icon-right"></i></p>
           </div>
-        </div><!-- End testimonial item -->
+        </div><!-- End testimonial item --
         <div class="col-lg-6" data-aos="fade-up" data-aos-delay="500">
           <div class="testimonial-item">
             <img src="{% static 'img/testimonials/testimonials-5.jpg' %}" class="testimonial-img" alt="John Larson">
@@ -206,7 +303,7 @@
               CEPAC's team was extremely professional and their insights were invaluable. Their solutions greatly improved our project's outcomes.
             <i class="bi bi-quote quote-icon-right"></i></p>
           </div>
-        </div><!-- End testimonial item -->
+        </div><!-- End testimonial item --
         <div class="col-lg-6" data-aos="fade-up" data-aos-delay="600">
           <div class="testimonial-item">
             <img src="{% static 'img/testimonials/testimonials-6.jpg' %}" class="testimonial-img" alt="Emily Harison">
@@ -219,8 +316,9 @@
               The expertise and dedication demonstrated by CEPAC were critical in the success of our transportation planning project. We highly recommend their services.
             <i class="bi bi-quote quote-icon-right"></i></p>
           </div>
-        </div><!-- End testimonial item -->
+        </div><!-- End testimonial item --
       </div>
     </div>
-  </section><!-- /Testimonials Section -->
+  </section> -->
+<!-- /Testimonials Section -->
 {% endblock %}

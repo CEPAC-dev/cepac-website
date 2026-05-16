@@ -1,206 +1,389 @@
-
-{% extends "includes/base.html" %}
-{% block title %}Home | CEPAC{% endblock %}
-{% block content %}
-{% load static %}         
-
+{% extends "includes/base.html" %} {% block title %}Home | CEPAC{% endblock %}
+{% block content %} {% load static %}
 
 <!-- Hero Section -->
-    <section id="hero" class="hero section">
-        <div id="hero-carousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="5000">
+<section id="hero" class="hero section">
+  <div
+    id="hero-carousel"
+    class="carousel slide carousel-fade"
+    data-bs-ride="carousel"
+    data-bs-interval="5000"
+  >
+    <div class="carousel-item active">
+      <img src="{% static 'img/hero-carousel/1.webp' %}" alt="" />
+      <div class="carousel-container">
+        <h2>Welcome to <span>CEPAC</span></h2>
+        <p>
+          CEPAC is an Egyptian company specialized in traffic impact studies.
+          Dedicated to providing comprehensive transportation solutions Planning
+          and infrastructure development projects around the world. together
+          Committed to excellence and innovation, we specialize in providing
+          Accurate and in-depth traffic impact assessments that enable us
+          customers to make informed decisions.
+        </p>
+        <a href="{% url 'main:services'%}" class="btn-get-started"
+          >Go TO Services</a
+        >
+      </div>
+    </div>
+    <!-- End Carousel Item -->
 
-            <div class="carousel-item active">
-                <img src="{% static 'img/hero-carousel/1.webp' %}" alt="">
-                <div class="carousel-container">
-                    <h2>Welcome to <span>CEPAC</span></h2>
-                    <p>CEPAC is a leading international pioneer in traffic impact studies, dedicated to providing comprehensive solutions for transportation planning and infrastructure development projects worldwide. With a commitment to excellence and innovation, we specialize in delivering accurate and insightful traffic impact assessments that empower our clients to make informed decisions.</p>
-                    <a href="{% url 'main:services'%}" class="btn-get-started">Get Started</a>
-                </div>
-            </div><!-- End Carousel Item -->
+    <div class="carousel-item">
+      <img src="{% static 'img/hero-carousel/2.webp'%}" alt="" />
+      <div class="carousel-container">
+        <h2>Excellence in Transportation</h2>
+        <p>
+          At CEPAC, we leverage cutting-edge technology and industry expertise
+          to analyze and mitigate the impact of transportation systems on
+          communities, environments, and economies.
+        </p>
+        <a href="{% url 'main:services'%}" class="btn-get-started"
+          >Go TO Services</a
+        >
+      </div>
+    </div>
+    <!-- End Carousel Item -->
 
-            <div class="carousel-item">
-                <img src="{% static 'img/hero-carousel/2.webp'%}" alt="">
-                <div class="carousel-container">
-                    <h2>Excellence in Transportation</h2>
-                    <p>At CEPAC, we leverage cutting-edge technology and industry expertise to analyze and mitigate the impact of transportation systems on communities, environments, and economies.</p>
-                    <a href="{% url 'main:services'%}" class="btn-get-started">Get Started</a>
-                </div>
-            </div><!-- End Carousel Item -->
+    <div class="carousel-item">
+      <img src="{% static 'img/hero-carousel/3.webp'%}" alt="" />
+      <div class="carousel-container">
+        <h2>Innovative Solutions</h2>
+        <p>
+          Our team of experienced professionals combines data-driven analysis
+          with a deep understanding of local regulations and global best
+          practices to deliver tailored solutions that meet the unique needs of
+          each project.
+        </p>
+        <a href="{% url 'main:services'%}" class="btn-get-started"
+          >Go TO Services</a
+        >
+      </div>
+    </div>
+    <!-- End Carousel Item -->
 
-            <div class="carousel-item">
-                <img src="{% static 'img/hero-carousel/3.webp'%}" alt="">
-                <div class="carousel-container">
-                    <h2>Innovative Solutions</h2>
-                    <p>Our team of experienced professionals combines data-driven analysis with a deep understanding of local regulations and global best practices to deliver tailored solutions that meet the unique needs of each project.</p>
-                    <a href="{% url 'main:services'%}" class="btn-get-started">Get Started</a>
-                </div>
-            </div><!-- End Carousel Item -->
+    <a
+      class="carousel-control-prev"
+      href="#hero-carousel"
+      role="button"
+      data-bs-slide="prev"
+    >
+      <span
+        class="carousel-control-prev-icon bi bi-chevron-left"
+        aria-hidden="true"
+      ></span>
+    </a>
 
-            <a class="carousel-control-prev" href="#hero-carousel" role="button" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon bi bi-chevron-left" aria-hidden="true"></span>
-            </a>
+    <a
+      class="carousel-control-next"
+      href="#hero-carousel"
+      role="button"
+      data-bs-slide="next"
+    >
+      <span
+        class="carousel-control-next-icon bi bi-chevron-right"
+        aria-hidden="true"
+      ></span>
+    </a>
+  </div>
 
-            <a class="carousel-control-next" href="#hero-carousel" role="button" data-bs-slide="next">
-                <span class="carousel-control-next-icon bi bi-chevron-right" aria-hidden="true"></span>
-            </a>
+  <div class="featured container">
+    <div class="row gy-4">
+      <div class="col-lg-4 d-flex" data-aos="fade-up" data-aos-delay="100">
+        <div class="featured-item position-relative">
+          <div class="icon">
+            <i class="bi bi-bounding-box-circles icon"></i>
+          </div>
+          <h4><a href="#" class="stretched-link">Traffic Surveys</a></h4>
+
+          <p>
+            We conduct thorough traffic surveys utilizing cutting-edge
+            methodologies and technology to gather precise data on traffic
+            patterns, volume, and behavior.
+          </p>
         </div>
+      </div>
+      <!-- End Featured Item -->
 
-        <div class="featured container">
-            <div class="row gy-4">
-                <div class="col-lg-4 d-flex" data-aos="fade-up" data-aos-delay="100">
-                    <div class="featured-item position-relative">
-                        <div class="icon"><i class="bi bi-bounding-box-circles icon"></i></div>
-                        <h4><a href="#" class="stretched-link">Traffic Surveys</a></h4>
-
-                        <p>We conduct thorough traffic surveys utilizing cutting-edge methodologies and technology to gather precise data on traffic patterns, volume, and behavior.</p>
-                    </div>
-                </div><!-- End Featured Item -->
-
-                <div class="col-lg-4 d-flex" data-aos="fade-up" data-aos-delay="200">
-                    <div class="featured-item position-relative">
-                        <div class="icon"><i class="bi bi-calendar4-week icon"></i></div>
-                        <h4><a href="" class="stretched-link">Traffic Studies</a></h4>
-                        <p>Our expertise lies in conducting in-depth traffic studies, analyzing data to provide valuable insights into traffic flow, congestion, and optimization strategies.</p>
-                    </div>
-                </div><!-- End Featured Item -->
-
-                <div class="col-lg-4 d-flex" data-aos="fade-up" data-aos-delay="300">
-                    <div class="featured-item position-relative">
-                        <div class="icon"><i class="bi bi-broadcast icon"></i></div>
-                        <h4><a href="" class="stretched-link">Transportation Models</a></h4>
-                        <p>Leveraging advanced transportation modeling techniques, we develop comprehensive models that accurately simulate transportation systems, aiding in informed decision-making and infrastructure planning.</p>
-                    </div>
-                </div><!-- End Featured Item -->
-            </div>
+      <div class="col-lg-4 d-flex" data-aos="fade-up" data-aos-delay="200">
+        <div class="featured-item position-relative">
+          <div class="icon"><i class="bi bi-calendar4-week icon"></i></div>
+          <h4><a href="" class="stretched-link">Traffic Impact Studies</a></h4>
+          <p>
+            Our expertise lies in conducting in-depth traffic studies, analyzing
+            data to provide valuable insights into traffic flow, congestion, and
+            optimization strategies.
+          </p>
         </div>
-    </section><!-- /Hero Section -->
+      </div>
+      <!-- End Featured Item -->
 
-    <!-- About Section -->
-    <section id="about" class="section about">
-        <div class="container" data-aos="fade-up" data-aos-delay="100">
-            <div class="row gy-4">
-                <div class="col-lg-6 order-1 order-lg-2">
-                    <img src="{% static 'img/about.webp'%}" class="img-fluid" alt="">
-                </div>
-                <div class="col-lg-6 order-2 order-lg-1 content">
-                    <h3>About CEPAC</h3>
-                    <p class="fst-italic">
-                        CEPAC is dedicated to providing comprehensive solutions for transportation planning and infrastructure development projects worldwide.
-                    </p>
-                    <ul>
-                        <li><i class="bi bi-check2-all"></i> <span>Utilizing cutting-edge methodologies and technology.</span></li>
-                        <li><i class="bi bi-check2-all"></i> <span>In-depth traffic studies and data analysis.</span></li>
-                        <li><i class="bi bi-check2-all"></i> <span>Advanced transportation modeling techniques.</span></li>
-                    </ul>
-                    <p>
-                        Our team of experienced professionals combines data-driven analysis with a deep understanding of local regulations and global best practices.
-                    </p>
-                </div>
-            </div>
+      <div class="col-lg-4 d-flex" data-aos="fade-up" data-aos-delay="300">
+        <div class="featured-item position-relative">
+          <div class="icon"><i class="bi bi-broadcast icon"></i></div>
+          <h4>
+            <a href="" class="stretched-link">Transportation Master plans </a>
+          </h4>
+          <p>
+            We specialize in crafting robust transportation master plans
+            tailored to the unique needs of each project, encompassing strategic
+            frameworks for efficient traffic management and infrastructure
+            development
+          </p>
         </div>
-    </section><!-- /About Section -->
+      </div>
+      <!-- End Featured Item -->
+    </div>
+  </div>
+</section>
+<!-- /Hero Section -->
 
-    <!-- Services Section -->
-    <section id="services" class="services section">
-        <div class="container">
-            <div class="row gy-4">
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
-                    <div class="service-item position-relative">
-                        <div class="icon"><i class="bi bi-activity"></i></div>
-                        <a href="" class="stretched-link">
-                            <h3>Trip Length Distribution</h3>
-                        </a>
-                        <p>
-                            The service analyzes data on Trip Length Distribution (TLD) based on observed data, aiming to model the relationship between time and frequencies using a mathematical function tailored to the characteristics of trip length distribution.                        </p>
-                    </div>
-                </div><!-- End Service Item -->
+<!-- About Section -->
+<section id="about" class="section about">
+  <div class="about-overlay"></div>
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+    <div class="row gy-5">
+      <div class="col-lg-6 order-2 order-lg-1 content">
+        <h3>About CEPAC</h3>
+        <p class="fst-italic">
+          CEPAC is an engineering consultancy specialized in transportation
+          planning, traffic engineering, and infrastructure studies. The company
+          delivers practical, data-driven mobility solutions through expertise
+          in traffic impact assessments, transportation modeling, and smart
+          transportation systems to support sustainable urban development.
+        </p>
+        <p>
+          The company delivers practical, data-driven mobility solutions through
+          expertise in traffic impact assessments, transportation modeling, and
+          smart transportation systems to support sustainable urban development.
+        </p>
+      </div>
+      <div class="col-lg-6 order-1 order-lg-2">
+        <!-- Placeholder for background image -->
+      </div>
+    </div>
 
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
-                    <div class="service-item position-relative">
-                        <div class="icon"><i class="bi bi-broadcast"></i></div>
-                        <a href="" class="stretched-link">
-                            <h3>Turning Movement Volumes</h3>
-                        </a>
-                        <p>
-                            This service provides a programming solution to estimate the optimal Turning Movement Volumes (TMVs) at an intersection with an unlimited number of directions. The program analyzes the incoming and outgoing traffic flows from all possible directions, in addition to classifying the traffic movements for each direction based on their importance and impact.                        </p>
-                    </div>
-                </div><!-- End Service Item -->
-
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
-                    <div class="service-item position-relative">
-                        <div class="icon"><i class="bi bi-easel"></i></div>
-                        <a href="" class="stretched-link">
-                            <h3> " KMZ & KML File Processing Service!"</h3>
-                        </a>
-                        <p>
-                            This service offers a powerful tool to upload and process KMZ and KML files, extracting geographic data and seamlessly converting it into Excel format. The areas of geographic shapes (Polygons) are calculated accurately, with names updated to include the area (in square meters), along with a hierarchical path reflecting the file’s structure. The modifications are saved in an updated KMZ file, ready for quick download. All of this with just a click, making working with geographic data easier and more organized!
-                        </p>
-                    </div>
-                </div><!-- End Service Item -->
-
-
-            </div>
+    <!-- About Features -->
+    <div class="row about-features mt-5 pt-5">
+      <div
+        class="col-lg-3 col-md-6 text-center feature-box"
+        data-aos="fade-up"
+        data-aos-delay="100"
+      >
+        <div class="feature-icon mb-3">
+          <i class="bi bi-diagram-3"></i>
         </div>
-    </section><!-- /Services Section -->
-
-    <!-- Clients Section -->
-    <section id="clients" class="section clients">
-        <!-- Section Title -->
-        <div class="container section-title" data-aos="fade-up">
-            <h2>Clients</h2>
-            <p>We take pride in our diverse clientele, ranging from small businesses to large corporations, all benefiting from our comprehensive traffic impact studies and transportation planning solutions.</p>
-        </div><!-- End Section Title -->
-
-        <div class="container" data-aos="fade-up" data-aos-delay="100">
-            <div class="swiper init-swiper">
-                <script type="application/json" class="swiper-config">
-                {
-                    "loop": true,
-                    "speed": 600,
-                    "autoplay": {
-                        "delay": 5000
-                    },
-                    "slidesPerView": "auto",
-                    "pagination": {
-                        "el": ".swiper-pagination",
-                        "type": "bullets",
-                        "clickable": true
-                    },
-                    "breakpoints": {
-                        "320": {
-                            "slidesPerView": 2,
-                            "spaceBetween": 40
-                        },
-                        "480": {
-                            "slidesPerView": 3,
-                            "spaceBetween": 60
-                        },
-                        "640": {
-                            "slidesPerView": 4,
-                            "spaceBetween": 80
-                        },
-                        "992": {
-                            "slidesPerView": 6,
-                            "spaceBetween": 120
-                        }
-                    }
-                }
-                </script>
-                <div class="swiper-wrapper align-items-center">
-                    <div class="swiper-slide"><img src="{% static 'img/clients/client-1.png'%}" class="img-fluid" alt=""></div>
-                    <div class="swiper-slide"><img src="{% static 'img/clients/client-2.png'%}" class="img-fluid" alt=""></div>
-                    <div class="swiper-slide"><img src="{% static 'img/clients/client-3.png'%}" class="img-fluid" alt=""></div>
-                    <div class="swiper-slide"><img src="{% static 'img/clients/client-4.png'%}" class="img-fluid" alt=""></div>
-                    <div class="swiper-slide"><img src="{% static 'img/clients/client-5.png'%}" class="img-fluid" alt=""></div>
-                    <div class="swiper-slide"><img src="{% static 'img/clients/client-6.png'%}" class="img-fluid" alt=""></div>
-                    <div class="swiper-slide"><img src="{% static 'img/clients/client-7.png'%}" class="img-fluid" alt=""></div>
-                    <div class="swiper-slide"><img src="{% static 'img/clients/client-8.png'%}" class="img-fluid" alt=""></div>
-                </div>
-                <div class="swiper-pagination"></div>
-            </div>
+        <h5 class="fw-bold text-uppercase">Transportation<br />Planning</h5>
+      </div>
+      <div
+        class="col-lg-3 col-md-6 text-center feature-box"
+        data-aos="fade-up"
+        data-aos-delay="200"
+      >
+        <div class="feature-icon mb-3">
+          <i class="bi bi-signpost-split"></i>
         </div>
-    </section><!-- /Clients Section -->
+        <h5 class="fw-bold text-uppercase">Traffic<br />Engineering</h5>
+      </div>
+      <div
+        class="col-lg-3 col-md-6 text-center feature-box"
+        data-aos="fade-up"
+        data-aos-delay="300"
+      >
+        <div class="feature-icon mb-3">
+          <i class="bi bi-graph-up"></i>
+        </div>
+        <h5 class="fw-bold text-uppercase">Data-Driven<br />Solutions</h5>
+      </div>
+      <div
+        class="col-lg-3 col-md-6 text-center feature-box"
+        data-aos="fade-up"
+        data-aos-delay="400"
+      >
+        <div class="feature-icon mb-3">
+          <i class="bi bi-code-slash"></i>
+        </div>
+        <h5 class="fw-bold text-uppercase">Software<br />Development</h5>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /About Section -->
 
+<!-- Services Section -->
+<!-- <section id="services" class="services section">
+  <div class="container">
+    <!-- <div class="section-title" data-aos="fade-up">
+      <h2>Our IT Services</h2>
+      <p>
+        Explore CEPAC's software and transformation tools, designed to support
+        traffic planning and data processing across multiple service areas.
+      </p>
+    </div> --
+    <div class="row gy-4">
+      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+        <div class="service-item position-relative">
+          <div class="icon"><i class="bi bi-activity"></i></div>
+          <a
+            href="{% url 'trip_length_distribution:method_choice' %}"
+            class="stretched-link"
+          >
+            <h3>Trip Length Distribution</h3>
+          </a>
+          <p>
+            Analyze trip length distribution data and fit a mathematical model
+            to describe the relationship between travel time and observed
+            frequencies.
+          </p>
+        </div>
+      </div>
+      <!-- End Service Item --
+
+      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+        <div class="service-item position-relative">
+          <div class="icon"><i class="bi bi-car-front"></i></div>
+          <a href="{% url 'trip_generation:index' %}" class="stretched-link">
+            <h3>Trip Generation</h3>
+          </a>
+          <p>
+            Calculate trip generation rates for different land uses and support
+            smarter transportation planning with data-driven analysis.
+          </p>
+        </div>
+      </div>
+
+      <!-- End Service Item --
+
+      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+        <div class="service-item position-relative">
+          <div class="icon"><i class="bi bi-file-earmark-arrow-up"></i></div>
+          <a href="{% url 'pdf_to_word:form' %}" class="stretched-link">
+            <h3>File Conversion</h3>
+          </a>
+          <p>
+            Convert documents and spatial files with CEPAC tools. Supported
+            conversions include PDF to Word, KMZ to Excel, KMZ to Shapefile, and
+            Shapefile to KMZ.
+          </p>
+        </div>
+      </div>
+      <!-- End Service Item --
+
+      <!-- End Service Item --
+    </div>
+  </div>
+</section> -->
+<!-- /Services Section -->
+
+<!-- Clients Section -->
+<!-- <section id="clients" class="section clients">
+  <!- Section Title --
+  <div class="container section-title" data-aos="fade-up">
+    <h2>Clients</h2>
+    <p>
+      We take pride in our diverse clientele, ranging from small businesses to
+      large corporations, all benefiting from our comprehensive traffic impact
+      studies and transportation planning solutions.
+    </p>
+  </div>
+  <!- End Section Title --
+
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+    <div class="swiper init-swiper">
+      <script type="application/json" class="swiper-config">
+        {
+          "loop": true,
+          "speed": 600,
+          "autoplay": {
+            "delay": 5000
+          },
+          "slidesPerView": "auto",
+          "pagination": {
+            "el": ".swiper-pagination",
+            "type": "bullets",
+            "clickable": true
+          },
+          "breakpoints": {
+            "320": {
+              "slidesPerView": 2,
+              "spaceBetween": 40
+            },
+            "480": {
+              "slidesPerView": 3,
+              "spaceBetween": 60
+            },
+            "640": {
+              "slidesPerView": 4,
+              "spaceBetween": 80
+            },
+            "992": {
+              "slidesPerView": 6,
+              "spaceBetween": 120
+            }
+          }
+        }
+      </script>
+      <div class="swiper-wrapper align-items-center">
+        <div class="swiper-slide">
+          <img
+            src="{% static 'img/clients/client-1.png'%}"
+            class="img-fluid"
+            alt=""
+          />
+        </div>
+        <div class="swiper-slide">
+          <img
+            src="{% static 'img/clients/client-2.png'%}"
+            class="img-fluid"
+            alt=""
+          />
+        </div>
+        <div class="swiper-slide">
+          <img
+            src="{% static 'img/clients/client-3.png'%}"
+            class="img-fluid"
+            alt=""
+          />
+        </div>
+        <div class="swiper-slide">
+          <img
+            src="{% static 'img/clients/client-4.png'%}"
+            class="img-fluid"
+            alt=""
+          />
+        </div>
+        <div class="swiper-slide">
+          <img
+            src="{% static 'img/clients/client-5.png'%}"
+            class="img-fluid"
+            alt=""
+          />
+        </div>
+        <div class="swiper-slide">
+          <img
+            src="{% static 'img/clients/client-6.png'%}"
+            class="img-fluid"
+            alt=""
+          />
+        </div>
+        <div class="swiper-slide">
+          <img
+            src="{% static 'img/clients/client-7.png'%}"
+            class="img-fluid"
+            alt=""
+          />
+        </div>
+        <div class="swiper-slide">
+          <img
+            src="{% static 'img/clients/client-8.png'%}"
+            class="img-fluid"
+            alt=""
+          />
+        </div>
+      </div>
+      <div class="swiper-pagination"></div>
+    </div>
+  </div>
+</section>
+<!- /Clients Section -->
 
 {% endblock %}
-

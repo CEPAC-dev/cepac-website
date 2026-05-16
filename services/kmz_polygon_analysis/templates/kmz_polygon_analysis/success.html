@@ -1,9 +1,5 @@
-{% extends "includes/base.html" %}
-{% load static %}
-
-{% block title %}Analysis Successful | CEPAC{% endblock %}
-
-{% block content %}
+{% extends "includes/base.html" %} {% load static %} {% block title %}Analysis
+Successful | CEPAC{% endblock %} {% block content %}
 <section class="success-section">
   <div class="container">
     <div class="row justify-content-center">
@@ -11,7 +7,17 @@
         <div class="success-card">
           <div class="success-header">
             <div class="success-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="48"
+                height="48"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
                 <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
                 <polyline points="22 4 12 14.01 9 11.01"></polyline>
               </svg>
@@ -19,21 +25,51 @@
             <h1>Analysis Complete!</h1>
             <p class="success-subtitle">Your files are ready for download</p>
           </div>
-          
+
           <div class="success-body">
             <div class="download-options">
-              <a href="{{ kmz_link }}" class="download-btn kmz-download" target="_blank">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <a
+                href="{{ kmz_link }}"
+                class="download-btn kmz-download"
+                target="_blank"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
                   <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                   <polyline points="7 10 12 15 17 10"></polyline>
                   <line x1="12" y1="15" x2="12" y2="3"></line>
                 </svg>
                 <span>Download Updated KMZ</span>
               </a>
-              
-              <a href="{{ excel_link }}" class="download-btn excel-download" target="_blank">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+
+              <a
+                href="{{ excel_link }}"
+                class="download-btn excel-download"
+                target="_blank"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                  ></path>
                   <path d="M16 13H8"></path>
                   <path d="M16 17H8"></path>
                   <polyline points="10 9 9 9 8 9"></polyline>
@@ -41,11 +77,26 @@
                 <span>Download Excel Summary</span>
               </a>
             </div>
-            
+
             <div class="action-buttons">
-              <a href="{% url 'kmz_polygon_analysis:form' %}" class="analyze-again-btn">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18-5M22 12.5a10 10 0 0 1-18 5"></path>
+              <a
+                href="{% url 'kmz_polygon_analysis:form' %}"
+                class="analyze-again-btn"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18-5M22 12.5a10 10 0 0 1-18 5"
+                  ></path>
                 </svg>
                 <span>Analyze Another File</span>
               </a>
@@ -151,7 +202,7 @@
 
   .excel-download:hover {
     background: #17a98a;
-    color: white;    
+    color: white;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(16, 185, 129, 0.3);
   }
@@ -182,20 +233,20 @@
     .success-section {
       padding: 40px 0;
     }
-    
+
     .success-header {
       padding: 30px 20px 15px;
     }
-    
+
     .success-body {
       padding: 30px 20px;
     }
-    
+
     .success-icon {
       width: 60px;
       height: 60px;
     }
-    
+
     .success-header h1 {
       font-size: 24px;
     }

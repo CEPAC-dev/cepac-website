@@ -1,11 +1,6 @@
-{% extends "includes/base.html" %}
-{% load static %}
-{% load tld_filters %}
-{% get_media_prefix as MEDIA_PREFIX %}
-
-{% block title %}Trip Length Distribution Results | CEPAC{% endblock %}
-
-{% block content %}
+{% extends "includes/base.html" %} {% load static %} {% load tld_filters %} {%
+get_media_prefix as MEDIA_PREFIX %} {% block title %}Trip Length Distribution
+Results | CEPAC{% endblock %} {% block content %}
 <div class="tld-results-container" id="print">
   <div class="tld-results-wrapper">
     <div class="tld-results-grid">
@@ -28,9 +23,13 @@
               {% for i in data.numberOfIntervals|times %}
               <tr>
                 <td>{{ i|add:1 }}</td>
-                <td>{{ data.fittingResults.inputs.time|get_item:i|floatformat:2 }}</td>
+                <td>
+                  {{ data.fittingResults.inputs.time|get_item:i|floatformat:2 }}
+                </td>
                 <td>{{ data.frequencies|get_item:i|floatformat:2 }}</td>
-                <td>{{ data.fittingResults.inputs.frequency|get_item:i|multiply:100|floatformat:2 }}%</td>
+                <td>
+                  {{data.fittingResults.inputs.frequency|get_item:i|multiply:100|floatformat:2}}%
+                </td>
               </tr>
               {% endfor %}
             </tbody>
@@ -50,13 +49,16 @@
         <div class="tld-section-header">
           <h2><i class="fas fa-chart-line"></i> Analysis Results</h2>
         </div>
-        
+
         <div class="tld-results-content">
           <!-- Visualization -->
           <div class="tld-visualization">
-            <img src="{{ plot_url }}" alt="Trip Length Distribution Fitting Results" class="tld-plot">
+            <img
+              src="{{ plot_url }}"
+              alt="Trip Length Distribution Fitting Results"
+              class="tld-plot" />
           </div>
-          
+
           <!-- Parameters Card -->
           <div class="tld-parameters-card">
             <div class="tld-parameter-group">
@@ -64,41 +66,43 @@
               <ul class="tld-parameter-list">
                 <li>
                   <span class="tld-param-name">A:</span>
-                  <span class="tld-param-value">{{ data.fittingResults.optimized_parameters.a|floatformat:3 }}</span>
+                  <span class="tld-param-value">{{data.fittingResults.optimized_parameters.a|floatformat:3}}</span>
                 </li>
                 <li>
                   <span class="tld-param-name">B:</span>
-                  <span class="tld-param-value">{{ data.fittingResults.optimized_parameters.b|floatformat:3 }}</span>
+                  <span class="tld-param-value">{{data.fittingResults.optimized_parameters.b|floatformat:3}}</span>
                 </li>
                 <li>
                   <span class="tld-param-name">C:</span>
-                  <span class="tld-param-value">{{ data.fittingResults.optimized_parameters.c|floatformat:3 }}</span>
+                  <span class="tld-param-value">{{data.fittingResults.optimized_parameters.c|floatformat:3}}</span>
                 </li>
               </ul>
             </div>
-            
+
             <div class="tld-parameter-group">
               <h3><i class="fas fa-function"></i> Distribution Equation</h3>
               <div class="tld-equation">
                 <p>
-                  <strong>f(t)</strong> = 
-                  {{ data.fittingResults.optimized_parameters.a|floatformat:3 }}
-                  t<sup>{{ data.fittingResults.optimized_parameters.b|floatformat:4 }}</sup>
-                  e<sup>{{ data.fittingResults.optimized_parameters.c|floatformat:3 }} t</sup>
+                  <strong>f(t)</strong> = {{data.fittingResults.optimized_parameters.a|floatformat:3 }}
+                  t<sup>{{data.fittingResults.optimized_parameters.b|floatformat:3}}</sup>
+                  e<sup> {{data.fittingResults.optimized_parameters.c|floatformat:3}}
+                    t</sup>
                 </p>
               </div>
             </div>
-            
+
             <div class="tld-parameter-group">
               <h3><i class="fas fa-chart-bar"></i> Statistics</h3>
               <ul class="tld-parameter-list">
                 <li>
                   <span class="tld-param-name">R²:</span>
-                  <span class="tld-param-value">{{ data.fittingResults.statistics.R2|floatformat:4 }}</span>
+                  <span class="tld-param-value">{{data.fittingResults.statistics.R2|floatformat:4 }}</span>
                 </li>
                 <li>
                   <span class="tld-param-name">SSE:</span>
-                  <span class="tld-param-value">{{ data.fittingResults.statistics.SSE|floatformat:4 }}</span>
+                  <span class="tld-param-value">
+                    {{ data.fittingResults.statistics.SSE|floatformat:4}}
+                  </span>
                 </li>
               </ul>
             </div>
@@ -113,14 +117,21 @@
 <div class="tld-actions-container">
   <div class="tld-actions-grid">
     {% with json_data=data|tojson %}
-      <a href="{% url 'trip_length_distribution:download_pdf' %}?data={{ json_data|urlencode }}" class="tld-action-btn pdf-btn">
-        <i class="fas fa-file-pdf"></i> Download PDF Report
-      </a>
-      <a href="{% url 'trip_length_distribution:download_excel' %}?data={{ json_data|urlencode }}" class="tld-action-btn excel-btn">
-        <i class="fas fa-file-excel"></i> Download Excel Data
-      </a>
+    <a
+      href="{% url 'trip_length_distribution:download_pdf' %}?data={{ json_data|urlencode }}"
+      target="_blank"
+      class="tld-action-btn pdf-btn">
+      <i class="fas fa-file-pdf"></i> Download PDF Report
+    </a>
+    <a
+      href="{% url 'trip_length_distribution:download_excel' %}?data={{ json_data|urlencode }}"
+      class="tld-action-btn excel-btn">
+      <i class="fas fa-file-excel"></i> Download Excel Data
+    </a>
     {% endwith %}
-    <a href="{% url 'trip_length_distribution:index' %}" class="tld-action-btn new-analysis-btn">
+    <a
+      href="{% url 'trip_length_distribution:method_choice' %}"
+      class="tld-action-btn new-analysis-btn">
       <i class="fas fa-plus-circle"></i> New Analysis
     </a>
   </div>
@@ -160,7 +171,7 @@
 
   .tld-section-header {
     padding: 20px;
-    background: #17a98a;
+    background: var(--accent-color);
     color: white;
   }
 
@@ -184,15 +195,15 @@
     font-size: 14px;
   }
 
-  .tld-data-table th, 
+  .tld-data-table th,
   .tld-data-table td {
     padding: 12px 15px;
     text-align: left;
-    border-bottom: 1px solid #e9ecef;;
+    border-bottom: 1px solid #e9ecef;
   }
 
   .tld-data-table th {
-    background: #17a98a;
+    background: var(--accent-color);
     color: white;
     font-weight: 500;
   }
@@ -252,7 +263,7 @@
   .tld-parameter-group h3 {
     margin-top: 0;
     margin-bottom: 15px;
-    color: #17a98a;
+    color: var(--accent-color);
     display: flex;
     align-items: center;
     gap: 8px;
@@ -338,7 +349,7 @@
   }
 
   .excel-btn:hover {
-    background: #17a98a;
+    background: var(--accent-color);
     transform: translateY(-2px);
     color: white;
   }
@@ -350,7 +361,7 @@
 
   .new-analysis-btn:hover {
     background: #4a6cf7;
-    color: white;    
+    color: white;
     transform: translateY(-2px);
   }
 
@@ -371,13 +382,13 @@
     .tld-section-header {
       padding: 15px;
     }
-    
+
     .tld-table-container,
     .tld-results-content {
       padding: 15px;
     }
-    
-    .tld-data-table th, 
+
+    .tld-data-table th,
     .tld-data-table td {
       padding: 8px 10px;
     }
@@ -385,5 +396,7 @@
 </style>
 
 <!-- Font Awesome for icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 {% endblock %}

@@ -2,6 +2,50 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
 
+
+
+.signup-header {
+    background-color: var(--accent-color);
+}
+.signup-btn {
+    background-color: var(--accent-color);
+    color: #ffffff;
+    border: 1px solid #fff;
+}
+.signup-btn:hover,
+.signup-btn:focus {
+    background-color: #fff;
+    color: var(--accent-color);
+    border: 1px solid var(--accent-color);
+}       
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .servieseTime{
     background: white;
     font-family: 'Inter UI', sans-serif;

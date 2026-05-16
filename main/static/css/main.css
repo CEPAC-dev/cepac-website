@@ -1,19 +1,24 @@
-
 /* Fonts */
 :root {
-  --default-font: "Open Sans",  system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  --heading-font: "Raleway",  sans-serif;
-  --nav-font: "Poppins",  sans-serif;
+  --default-font: "Open Sans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --heading-font: "Raleway", sans-serif;
+  --nav-font: "Poppins", sans-serif;
 }
 
 /* Global Colors  */
 :root {
-  --background-color: #ffffff; /* Background color for the entire website, including individual sections */
-  --default-color: #444444; /* Default color used for the majority of the text content across the entire website */
-  --heading-color: #545454; /* Color for headings, subheadings and title throughout the website */
-  --accent-color: #3498db; /* Accent color that represents your brand on the website. It's used for buttons, links, and other elements that need to stand out */
-  --surface-color: #ffffff; /* The surface color is used as a background of boxed elements within sections, such as cards, icon boxes, or other elements that require a visual separation from the global background. */
-  --contrast-color: #ffffff; /* Contrast color for text, ensuring readability against backgrounds of accent, heading, or default colors. */
+  --background-color: #ffffff;
+  /* Background color for the entire website, including individual sections */
+  --default-color: #444444;
+  /* Default color used for the majority of the text content across the entire website */
+  --heading-color: #545454;
+  /* Color for headings, subheadings and title throughout the website */
+  --accent-color: #3498db;
+  /* Accent color that represents your brand on the website. It's used for buttons, links, and other elements that need to stand out */
+  --surface-color: #ffffff;
+  /* The surface color is used as a background of boxed elements within sections, such as cards, icon boxes, or other elements that require a visual separation from the global background. */
+  --contrast-color: #ffffff;
+  /* Contrast color for text, ensuring readability against backgrounds of accent, heading, or default colors. */
   --nosel-color: #5a5aea;
   --warning-color: #e67e22;
   --danger-color: #e74c3c;
@@ -27,18 +32,25 @@
 
 /* Nav Menu Colors*/
 :root {
-  --nav-color: #444444;  /* The default color of the main navmenu links */
-  --nav-hover-color: #17a98a; /* Applied to main navmenu links when they are hovered over or active */
-  --nav-mobile-background-color: #ffffff; /* Used as the background color for mobile navigation menu */
-  --nav-dropdown-background-color: #ffffff; /* Used as the background color for dropdown items that appear when hovering over primary navigation items */
-  --nav-dropdown-color: #444444; /* Used for navigation links of the dropdown items in the navigation menu. */
-  --nav-dropdown-hover-color: #17a98a; /* Similar to --nav-hover-color, this color is applied to dropdown navigation links when they are hovered over. */
+  --nav-color: #444444;
+  /* The default color of the main navmenu links */
+  --nav-hover-color: #0e7ad2;
+  /* Applied to main navmenu links when they are hovered over or active */
+  --nav-mobile-background-color: #ffffff;
+  /* Used as the background color for mobile navigation menu */
+  --nav-dropdown-background-color: #ffffff;
+  /* Used as the background color for dropdown items that appear when hovering over primary navigation items */
+  --nav-dropdown-color: #444444;
+  /* Used for navigation links of the dropdown items in the navigation menu. */
+  --nav-dropdown-hover-color: #17a98a;
+  /* Similar to --nav-hover-color, this color is applied to dropdown navigation links when they are hovered over. */
 }
 
 
 /* Customize Colors  */
 :root {
-  --black-color: #000;  /* The default color of the main navmenu links */
+  --black-color: #000;
+  /* The default color of the main navmenu links */
 }
 
 /* Color Presets */
@@ -804,7 +816,7 @@ section .btn-get-started {
 }
 
 
-section .btn-get-started:hover{
+section .btn-get-started:hover {
   border: 2px solid var(--accent-color);
 }
 
@@ -861,7 +873,7 @@ section .btn-get-started:hover{
 
 .hero .carousel-item::before {
   content: "";
-  background-color: color-mix(in srgb, var(--black-color), transparent 30%);
+  background-color: color-mix(in srgb, var(--black-color), transparent 15%);
   position: absolute;
   inset: 0;
 }
@@ -884,6 +896,7 @@ section .btn-get-started:hover{
   color: var(--background-color);
   text-align: center;
 }
+
 .hero .carousel-item p {
   color: var(--background-color);
   text-align: center;
@@ -1089,34 +1102,157 @@ section .btn-get-started:hover{
 /*--------------------------------------------------------------
 # About Section
 --------------------------------------------------------------*/
+
+.about {
+  background: url("../img/about.jpeg") center center no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.about::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(39deg, rgb(255 255 255 / 95%) 66%, #ffffff4f 50%, rgb(18 17 17 / 0%) 100%);
+  z-index: 1;
+}
+
+.about::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  background: linear-gradient(347deg, var(--background-color) -395%, var(--accent-color) 137%);
+  clip-path: polygon(0 40%, 100% 0%, 100% 100%, 0 100%);
+  z-index: 2;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.about .container {
+  position: relative;
+  z-index: 3;
+}
+
+.about .content {
+  padding-right: 30px;
+}
+
 .about .content h3 {
-  font-size: 1.75rem;
+  font-size: 2.5rem;
   font-weight: 700;
+  color: var(--heading-color);
+  position: relative;
+  display: inline-block;
+  margin-bottom: 10px;
+  padding-bottom: 20px;
+}
+
+.about .content h3::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 60px;
+  height: 4px;
+  background: var(--accent-color);
+}
+
+.about .content p {
+  font-size: 1rem;
+  line-height: 1.8;
+  margin-bottom: 20px;
+  color: var(--default-color);
 }
 
 .about .content .fst-italic {
-  color: color-mix(in srgb, var(--default-color), transparent 40%);
+  color: var(--default-color);
+  font-weight: 500;
+  margin-bottom: 15px;
 }
 
-.about .content ul {
-  list-style: none;
-  padding: 0;
+/* About Features */
+.about-features {
+  position: relative;
+  z-index: 3;
 }
 
-.about .content ul li {
-  padding: 10px 0 0 0;
+.feature-box {
+  padding: 30px 20px;
+  transition: all 0.3s ease;
+}
+
+.feature-box h5 {
+  font-size: 0.9rem;
+  color: var(--heading-color);
+  letter-spacing: 1px;
+  line-height: 1.5;
+}
+
+.feature-icon {
+  width: 70px;
+  height: 70px;
+  margin: 0 auto;
   display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent-color), #4dd5ff);
+  color: white;
+  font-size: 32px;
+  transition: all 0.3s ease;
 }
 
-.about .content ul i {
+.feature-box:hover .feature-icon {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.feature-box:hover h5 {
   color: var(--accent-color);
-  margin-right: 0.5rem;
-  line-height: 1.2;
-  font-size: 1.25rem;
 }
 
-.about .content p:last-child {
-  margin-bottom: 0;
+@media (max-width: 768px) {
+  .about .content h3 {
+    font-size: 2rem;
+  }
+
+  .about .content {
+    padding-right: 0;
+    margin-bottom: 30px;
+  }
+
+  .feature-box {
+    margin-bottom: 20px;
+  }
 }
 
 /*--------------------------------------------------------------
@@ -1238,29 +1374,48 @@ section .btn-get-started:hover{
 .stats .stats-item {
   padding: 30px;
   width: 100%;
+  background-color: rgba(255, 255, 255, 0.96);
+  border-radius: 22px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: center;
+}
+
+.stats .stats-item:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.12);
 }
 
 .stats .stats-item i {
   color: var(--accent-color);
-  display: block;
+  display: inline-flex;
   font-size: 44px;
-  float: left;
-  line-height: 0;
+  line-height: 1;
+  margin-bottom: 15px;
 }
 
 .stats .stats-item .purecounter {
   color: var(--heading-color);
   font-size: 48px;
-  line-height: 40px;
-  display: block;
+  line-height: 1;
+  display: inline-block;
   font-weight: 700;
-  margin-left: 60px;
+  margin: 0;
+}
+
+.stats .stats-item .purecounter::after {
+  content: "+";
+  font-size: 0.6em;
+  display: inline-block;
+  margin-left: 4px;
+  vertical-align: super;
+  color: var(--accent-color);
 }
 
 .stats .stats-item p {
   color: color-mix(in srgb, var(--default-color), transparent 40%);
   padding: 15px 0 0 0;
-  margin: 0 0 0 60px;
+  margin: 0;
   font-family: var(--heading-font);
   font-size: 14px;
 }
@@ -1396,40 +1551,112 @@ section .btn-get-started:hover{
 --------------------------------------------------------------*/
 .portfolio .portfolio-filters {
   padding: 0;
-  margin: 0 auto 20px auto;
+  margin: 0 auto 30px auto;
   list-style: none;
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
 }
 
 .portfolio .portfolio-filters li {
   cursor: pointer;
-  display: inline-block;
-  padding: 0;
-  font-size: 18px;
-  font-weight: 500;
-  margin: 0 10px;
-  line-height: 1;
-  margin-bottom: 5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 18px;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 0;
+  border-radius: 12px;
   transition: all 0.3s ease-in-out;
+  background-color: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(120, 120, 120, 0.12);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.05);
 }
 
 .portfolio .portfolio-filters li:hover,
 .portfolio .portfolio-filters li.filter-active {
   color: var(--accent-color);
+  border-color: rgba(79, 103, 255, 0.35);
+  box-shadow: 0 16px 32px rgba(79, 103, 255, 0.09);
 }
 
-.portfolio .portfolio-filters li:first-child {
-  margin-left: 0;
+.portfolio .portfolio-filters .filter-parent {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 16px 20px;
+  min-width: 200px;
 }
 
-.portfolio .portfolio-filters li:last-child {
-  margin-right: 0;
+.portfolio .portfolio-filters .filter-parent .filter-title {
+  display: block;
+  font-size: 15px;
+  font-weight: 700;
+  color: #111;
+}
+
+.portfolio .portfolio-filters .portfolio-subfilters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.portfolio .portfolio-filters .portfolio-subfilters li {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #555;
+  background-color: #f7f8fc;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  transition: all 0.25s ease-in-out;
+}
+
+.portfolio .portfolio-filters .portfolio-subfilters li:hover,
+.portfolio .portfolio-filters .portfolio-subfilters li.filter-active {
+  color: #fff;
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+}
+
+@media (max-width: 900px) {
+  .portfolio .portfolio-filters {
+    gap: 12px;
+  }
+
+  .portfolio .portfolio-filters .filter-parent {
+    min-width: 180px;
+  }
 }
 
 @media (max-width: 575px) {
-  .portfolio .portfolio-filters li {
-    font-size: 14px;
-    margin: 0 5px;
+  .portfolio .portfolio-filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .portfolio .portfolio-filters li,
+  .portfolio .portfolio-filters .filter-parent {
+    width: 100%;
+    text-align: left;
+  }
+
+  .portfolio .portfolio-filters .portfolio-subfilters {
+    gap: 6px;
+  }
+
+  .portfolio .portfolio-filters .portfolio-subfilters li {
+    font-size: 12px;
+    padding: 8px 12px;
   }
 }
 
@@ -2335,7 +2562,7 @@ section .btn-get-started:hover{
 }
 
 .contact .info-item p {
-  padding: 0;
+  padding: 0 49px;
   margin-bottom: 0;
   font-size: 14px;
 }

@@ -1,9 +1,5 @@
-{% extends "includes/base.html" %}
-{% load static %}
-
-{% block title %}PDF to Word | CEPAC{% endblock %}
-
-{% block content %}
+{% extends "includes/base.html" %} {% load static %} {% block title %}PDF to
+Word | CEPAC{% endblock %} {% block content %}
 <section class="polygon-analysis-section">
   <div class="container">
     <div class="row justify-content-center">
@@ -11,8 +7,20 @@
         <div class="analysis-card">
           <div class="card-header">
             <div class="header-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="32"
+                height="32"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                ></path>
                 <polyline points="14 2 14 8 20 8"></polyline>
                 <path d="M16 13H8"></path>
                 <path d="M16 17H8"></path>
@@ -20,16 +28,34 @@
               </svg>
             </div>
             <h1>PDF to Word Conversion</h1>
-            <p class="subtitle">Convert your PDF documents to editable Word files</p>
+            <p class="subtitle">
+              Convert your PDF documents to editable Word files
+            </p>
           </div>
-          
+
           <div class="card-body">
-            <form method="POST" enctype="multipart/form-data" class="upload-form">
+            <form
+              method="POST"
+              enctype="multipart/form-data"
+              class="upload-form"
+            >
               {% csrf_token %}
               <div id="drop-area" class="file-drop-zone">
                 <div class="drop-zone-content">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7"></path>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="48"
+                    height="48"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path
+                      d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7"
+                    ></path>
                     <line x1="16" y1="5" x2="22" y2="5"></line>
                     <line x1="19" y1="2" x2="19" y2="8"></line>
                     <polyline points="12 15 8 11 4 15"></polyline>
@@ -38,7 +64,13 @@
                   <h3>Drag & Drop Your File</h3>
                   <p class="text-muted">Supported format: .pdf</p>
                   <div class="file-input-wrapper">
-                    <input type="file" name="file" id="fileInput" accept=".pdf" class="d-none">
+                    <input
+                      type="file"
+                      name="file"
+                      id="fileInput"
+                      accept=".pdf"
+                      class="d-none"
+                    />
                     <label for="fileInput" class="browse-btn">
                       <span>Browse Files</span>
                     </label>
@@ -46,8 +78,20 @@
                 </div>
                 <div id="file-info" class="file-info">
                   <div id="file-preview" class="file-preview">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path
+                        d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                      ></path>
                       <polyline points="14 2 14 8 20 8"></polyline>
                     </svg>
                     <div>
@@ -57,7 +101,17 @@
                   </div>
                   <button type="submit" class="analyze-btn">
                     <span>Convert to Word</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
                       <polyline points="9 18 15 12 9 6"></polyline>
                     </svg>
                   </button>
@@ -66,23 +120,33 @@
             </form>
 
             {% if messages %}
-              <div class="messages-container">
-                {% for message in messages %}
-                  <div class="alert alert-{{ message.tags }}" role="alert">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      {% if message.tags == 'success' %}
-                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                      {% else %}
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <line x1="12" y1="8" x2="12" y2="12"></line>
-                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
-                      {% endif %}
-                    </svg>
-                    <span>{{ message }}</span>
-                  </div>
-                {% endfor %}
+            <div class="messages-container">
+              {% for message in messages %}
+              <div class="alert alert-{{ message.tags }}" role="alert">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  {% if message.tags == 'success' %}
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                  <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                  {% else %}
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="8" x2="12" y2="12"></line>
+                  <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                  {% endif %}
+                </svg>
+                <span>{{ message }}</span>
               </div>
+              {% endfor %}
+            </div>
             {% endif %}
           </div>
         </div>
@@ -100,11 +164,11 @@
 
   // Format file size
   function formatFileSize(bytes) {
-    if (bytes === 0) return '0 Bytes';
+    if (bytes === 0) return "0 Bytes";
     const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const sizes = ["Bytes", "KB", "MB", "GB"];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
   }
 
   fileInput.addEventListener("change", (e) => {
@@ -112,20 +176,20 @@
       const file = e.target.files[0];
       fileNameDisplay.textContent = file.name;
       fileSizeDisplay.textContent = formatFileSize(file.size);
-      fileInfo.style.display = 'flex';
-      dropArea.classList.add('file-selected');
+      fileInfo.style.display = "flex";
+      dropArea.classList.add("file-selected");
     }
   });
 
   // Drag and drop functionality
-  ['dragover', 'dragenter'].forEach(eventName => {
+  ["dragover", "dragenter"].forEach((eventName) => {
     dropArea.addEventListener(eventName, (e) => {
       e.preventDefault();
       dropArea.classList.add("dragover");
     });
   });
 
-  ['dragleave', 'dragend'].forEach(eventName => {
+  ["dragleave", "dragend"].forEach((eventName) => {
     dropArea.addEventListener(eventName, () => {
       dropArea.classList.remove("dragover");
     });
@@ -134,19 +198,38 @@
   dropArea.addEventListener("drop", (e) => {
     e.preventDefault();
     dropArea.classList.remove("dragover");
-    
+
     if (e.dataTransfer.files.length > 0) {
       const file = e.dataTransfer.files[0];
       fileInput.files = e.dataTransfer.files;
       fileNameDisplay.textContent = file.name;
       fileSizeDisplay.textContent = formatFileSize(file.size);
-      fileInfo.style.display = 'flex';
-      dropArea.classList.add('file-selected');
+      fileInfo.style.display = "flex";
+      dropArea.classList.add("file-selected");
     }
   });
 </script>
 
 <style>
+  :root {
+    --pdf-page-accent-color: var(--accent-color);
+    --pdf-page-accent-color-light: color-mix(
+      in srgb,
+      var(--accent-color),
+      white 80%
+    );
+    --pdf-page-accent-color-shadow: color-mix(
+      in srgb,
+      var(--accent-color),
+      transparent 80%
+    );
+    --pdf-page-accent-color-shadow-strong: color-mix(
+      in srgb,
+      var(--accent-color),
+      transparent 60%
+    );
+  }
+
   .polygon-analysis-section {
     padding: 40px 0;
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
@@ -163,7 +246,11 @@
   .card-header {
     padding: 32px;
     text-align: center;
-    background: linear-gradient(135deg, #17a98a 0%, #17a98a 100%);
+    background: linear-gradient(
+      135deg,
+      var(--pdf-page-accent-color) 0%,
+      var(--pdf-page-accent-color) 100%
+    );
     color: white;
   }
 
@@ -205,8 +292,8 @@
   }
 
   .file-drop-zone.dragover {
-    border-color: #17a98a;
-    background-color: rgba(74, 108, 247, 0.05);
+    border-color: var(--pdf-page-accent-color);
+    background-color: var(--pdf-page-accent-color-light);
   }
 
   .file-drop-zone.file-selected {
@@ -235,20 +322,20 @@
   .browse-btn {
     display: inline-block;
     padding: 12px 24px;
-    background: #17a98a;
+    background: var(--pdf-page-accent-color);
     color: white;
     border-radius: 8px;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s ease;
     border: none;
-    box-shadow: 0 2px 5px rgba(74, 108, 247, 0.2);
+    box-shadow: 0 2px 5px var(--pdf-page-accent-color-shadow);
   }
 
   .browse-btn:hover {
-    background: #17a98a;
+    background: var(--pdf-page-accent-color);
     transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(74, 108, 247, 0.3);
+    box-shadow: 0 4px 8px var(--pdf-page-accent-color-shadow-strong);
   }
 
   .file-info {
@@ -268,7 +355,7 @@
   }
 
   .file-preview svg {
-    color: #17a98a;
+    color: var(--pdf-page-accent-color);
   }
 
   .filename {
@@ -288,7 +375,7 @@
     align-items: center;
     gap: 8px;
     padding: 12px 20px;
-    background: #17a98a;
+    background: var(--accent-color);
     color: white;
     border: none;
     border-radius: 8px;
@@ -298,7 +385,7 @@
   }
 
   .analyze-btn:hover {
-    background: #17a98a;
+    background: var(--accent-color);
     transform: translateY(-1px);
   }
 
@@ -338,17 +425,17 @@
     .card-body {
       padding: 24px;
     }
-    
+
     .card-header {
       padding: 24px;
     }
-    
+
     .file-info {
       flex-direction: column;
       gap: 16px;
       align-items: flex-start;
     }
-    
+
     .analyze-btn {
       width: 100%;
       justify-content: center;
