@@ -34,3 +34,8 @@ def form_view(request):
         form = KMZToShapefileForm()
 
     return render(request, "kmz_to_shapefile/form.html", {"form": form})
+
+
+
+def index(request):
+    return render(request, "kmz_to_shapefile/index.html")

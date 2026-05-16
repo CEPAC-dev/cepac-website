@@ -1,9 +1,5 @@
-{% extends "includes/base.html" %}
-{% load static %}
-
-{% block title %}Conversion Successful | CEPAC{% endblock %}
-
-{% block content %}
+{% extends "includes/base.html" %} {% load static %} {% block title %}Conversion
+Successful | CEPAC{% endblock %} {% block content %}
 <section class="conversion-success-section">
   <div class="container">
     <div class="row justify-content-center">
@@ -11,7 +7,17 @@
         <div class="conversion-success-card">
           <div class="success-header">
             <div class="success-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="48"
+                height="48"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
                 <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
                 <polyline points="22 4 12 14.01 9 11.01"></polyline>
               </svg>
@@ -19,11 +25,25 @@
             <h1>Conversion Successful!</h1>
             <p class="subtitle">Your Shapefile archive is ready</p>
           </div>
-          
+
           <div class="success-body">
             <div class="download-actions">
-              <a href="{{ download_link }}" class="download-btn" target="_blank">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <a
+                href="{{ download_link }}"
+                class="download-btn"
+                target="_blank"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
                   <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                   <polyline points="7 10 12 15 17 10"></polyline>
                   <line x1="12" y1="15" x2="12" y2="3"></line>
@@ -31,11 +51,26 @@
                 <span>Download Shapefile ZIP</span>
               </a>
             </div>
-            
+
             <div class="secondary-action">
-              <a href="{% url 'kmz_to_shapefile:form' %}" class="convert-again-btn">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18-5M22 12.5a10 10 0 0 1-18 5"></path>
+              <a
+                href="{% url 'kmz_to_shapefile:form' %}"
+                class="convert-again-btn"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18-5M22 12.5a10 10 0 0 1-18 5"
+                  ></path>
                 </svg>
                 <span>Convert Another KMZ</span>
               </a>
@@ -48,6 +83,21 @@
 </section>
 
 <style>
+  :root {
+    --service-accent-color: var(--accent-color);
+    --service-accent-light: color-mix(in srgb, var(--accent-color), white 80%);
+    --service-accent-shadow: color-mix(
+      in srgb,
+      var(--accent-color),
+      transparent 80%
+    );
+    --service-accent-shadow-strong: color-mix(
+      in srgb,
+      var(--accent-color),
+      transparent 60%
+    );
+  }
+
   .conversion-success-section {
     padding: 40px 0;
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
@@ -65,7 +115,11 @@
 
   .success-header {
     padding: 40px 30px;
-    background: linear-gradient(135deg, #17a98a 0%, #17a98a 100%);
+    background: linear-gradient(
+      135deg,
+      var(--service-accent-color) 0%,
+      var(--service-accent-color) 100%
+    );
     color: white;
   }
 
@@ -107,20 +161,20 @@
     justify-content: center;
     gap: 10px;
     padding: 14px 28px;
-    background: #17a98a;
+    background: var(--service-accent-color);
     color: white;
     border-radius: 8px;
     font-weight: 500;
     text-decoration: none;
     transition: all 0.2s ease;
-    box-shadow: 0 2px 5px rgba(16, 185, 129, 0.2);
+    box-shadow: 0 2px 5px var(--service-accent-shadow);
   }
 
   .download-btn:hover {
-    background: #17a98a;
+    background: var(--service-accent-color);
     color: white;
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(16, 185, 129, 0.3);
+    box-shadow: 0 4px 8px var(--service-accent-shadow-strong);
   }
 
   .convert-again-btn {
@@ -128,16 +182,16 @@
     align-items: center;
     gap: 8px;
     padding: 12px 24px;
-    border: 2px solid #17a98a;
+    border: 2px solid var(--service-accent-color);
     border-radius: 8px;
-    color: #17a98a;
+    color: var(--service-accent-color);
     font-weight: 500;
     text-decoration: none;
     transition: all 0.2s ease;
   }
 
   .convert-again-btn:hover {
-    background: #f5f7ff;
+    background: var(--service-accent-light);
     transform: translateY(-2px);
   }
 
@@ -145,20 +199,20 @@
     .conversion-success-section {
       padding: 40px 0;
     }
-    
+
     .success-header {
       padding: 30px 20px;
     }
-    
+
     .success-body {
       padding: 30px 20px;
     }
-    
+
     .success-icon {
       width: 60px;
       height: 60px;
     }
-    
+
     .success-header h1 {
       font-size: 24px;
     }

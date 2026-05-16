@@ -1,96 +1,156 @@
-{% extends "includes/base.html" %}
-{% load static %}
+{% extends "includes/base.html" %} {% load static %} {% block title %}Contact |
+CEPAC{% endblock %} {% block content %}
 
-{% block title %}Contact | CEPAC{% endblock %}
+<!-- Page Title -->
+<div class="page-title" data-aos="fade">
+  <div class="container">
+    <nav class="breadcrumbs">
+      <ol>
+        <li><a href="{% url 'main:home' %}">Home</a></li>
+        <li class="current">Contact</li>
+      </ol>
+    </nav>
+    <h1>Contact</h1>
+  </div>
+</div>
+<!-- End Page Title -->
 
-{% block content %}
-
-  <!-- Page Title -->
-  <div class="page-title" data-aos="fade">
-    <div class="container">
-      <nav class="breadcrumbs">
-        <ol>
-          <li><a href="{% url 'main:home' %}">Home</a></li>
-          <li class="current">Contact</li>
-        </ol>
-      </nav>
-      <h1>Contact</h1>
-    </div>
-  </div><!-- End Page Title -->
-
-  <!-- Contact Section -->
-  <section id="contact" class="contact section">
-    <div class="container" data-aos="fade-up" data-aos-delay="100">
-
-      <div class="row gy-4">
-
-        <div class="col-lg-6">
-          <div class="info-item d-flex flex-column justify-content-center align-items-center" data-aos="fade-up" data-aos-delay="200">
-            <i class="bi bi-geo-alt"></i>
-            <h3>Address</h3>
-            <p>53 Dr Hasan El-Shareef, Al Manteqah Ath Thamenah, Nasr City, Cairo Governorate 4441576</p>
-          </div>
-        </div><!-- End Info Item -->
-
-        <div class="col-lg-3 col-md-6">
-          <div class="info-item d-flex flex-column justify-content-center align-items-center" data-aos="fade-up" data-aos-delay="300">
-            <i class="bi bi-telephone"></i>
-            <h3>Call Us</h3>
-            <p>+20 1227340564</p>
-          </div>
-        </div><!-- End Info Item -->
-
-        <div class="col-lg-3 col-md-6">
-          <div class="info-item d-flex flex-column justify-content-center align-items-center" data-aos="fade-up" data-aos-delay="400">
-            <i class="bi bi-envelope"></i>
-            <h3>Email Us</h3>
-            <p>sayedsobky@gmail.com</p>
-          </div>
-        </div><!-- End Info Item -->
-
+<!-- Contact Section -->
+<section id="contact" class="contact section">
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+    <div class="row gy-4">
+      <div class="col-lg-6">
+        <div
+          class="info-item d-flex flex-column justify-content-center align-items-center"
+          data-aos="fade-up"
+          data-aos-delay="200"
+        >
+          <i class="bi bi-geo-alt"></i>
+          <h3>Address</h3>
+          <p class="">
+            65 Dr. Hassan Elsherief, Al Manteqah Ath Thamenah, Nasr City
+          </p>
+        </div>
       </div>
+      <!-- End Info Item -->
 
-      <div class="row gy-4 mt-1">
-        <div class="col-lg-6" data-aos="fade-up" data-aos-delay="300">
-          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3453.547779118894!2d31.356464700000007!3d30.049829100000004!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14583d6b4b4f0cc5%3A0x50969e53ec2f8860!2sE%20SPACES!5e0!3m2!1sen!2seg!4v1723063777146!5m2!1sen!2seg" frameborder="0" style="border:0; width: 100%; height: 400px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-        </div><!-- End Google Maps -->
+      <div class="col-lg-3 col-md-6">
+        <div
+          class="info-item d-flex flex-column justify-content-center align-items-center"
+          data-aos="fade-up"
+          data-aos-delay="300"
+        >
+          <i class="bi bi-telephone"></i>
+          <h3>Call Us</h3>
+          <p>+20 10 19965067</p>
+        </div>
+      </div>
+      <!-- End Info Item -->
 
-        <div class="col-lg-6">
-          <form action="{% url 'main:contact' %}" method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="400">
-            {% csrf_token %}
-            <div class="row gy-4">
+      <div class="col-lg-3 col-md-6">
+        <div
+          class="info-item d-flex flex-column justify-content-center align-items-center"
+          data-aos="fade-up"
+          data-aos-delay="400"
+        >
+          <i class="bi bi-envelope"></i>
+          <h3>Email Us</h3>
+          <p><a href="mailto:info@cepac-eg.com">info@cepac-eg.com</a></p>
+        </div>
+      </div>
+      <!-- End Info Item -->
+    </div>
 
-              <div class="col-md-6">
-                <input type="text" name="name" class="form-control" placeholder="Your Name" required>
-              </div>
+    <div class="row gy-4 mt-1">
+      <div class="col-lg-6" data-aos="fade-up" data-aos-delay="300">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2160.591971467144!2d31.356518436103613!3d30.048656286451433!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14583d00211496bb%3A0x209c5d0f4c122824!2sCEPAC!5e1!3m2!1sen!2seg!4v1778405709479!5m2!1sen!2seg"
+          width="600"
+          height="450"
+          style="border: 0"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+        ></iframe>
+      </div>
+      <!-- End Google Maps -->
 
-              <div class="col-md-6">
-                <input type="email" class="form-control" name="email" placeholder="Your Email" required>
-              </div>
+      <div class="col-lg-6">
+        {% if messages %}
+        <div class="mb-4">
+          {% for message in messages %}
+          <div class="alert alert-{{ message.tags }}" role="alert">
+            {{ message }}
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
 
-              <div class="col-md-12">
-                <input type="text" class="form-control" name="subject" placeholder="Subject" required>
-              </div>
-
-              <div class="col-md-12">
-                <textarea class="form-control" name="message" rows="6" placeholder="Message" required></textarea>
-              </div>
-
-              <div class="col-md-12 text-center">
-                <div class="loading" style="display: none;">Loading</div>
-                <div class="error-message" style="display: none;"></div>
-                <div class="sent-message" style="display: none;">Your message has been sent. Thank you!</div>
-
-                <button type="submit">Send Message</button>
-              </div>
-
+        <form
+          action="{% url 'main:contact' %}"
+          method="post"
+          class="php-email-form"
+          data-aos="fade-up"
+          data-aos-delay="400"
+        >
+          {% csrf_token %}
+          <div class="row gy-4">
+            <div class="col-md-6">
+              <input
+                type="text"
+                name="name"
+                class="form-control"
+                placeholder="Your Name"
+                required
+              />
             </div>
-          </form>
-        </div><!-- End Contact Form -->
 
+            <div class="col-md-6">
+              <input
+                type="email"
+                class="form-control"
+                name="email"
+                placeholder="Your Email"
+                required
+              />
+            </div>
+
+            <div class="col-md-12">
+              <input
+                type="text"
+                class="form-control"
+                name="subject"
+                placeholder="Subject"
+                required
+              />
+            </div>
+
+            <div class="col-md-12">
+              <textarea
+                class="form-control"
+                name="message"
+                rows="6"
+                placeholder="Message"
+                required
+              ></textarea>
+            </div>
+
+            <div class="col-md-12 text-center">
+              <div class="loading" style="display: none">Loading</div>
+              <div class="error-message" style="display: none"></div>
+              <div class="sent-message" style="display: none">
+                Your message has been sent. Thank you!
+              </div>
+
+              <button type="submit">Send Message</button>
+            </div>
+          </div>
+        </form>
       </div>
-
+      <!-- End Contact Form -->
     </div>
-  </section><!-- /Contact Section -->
+  </div>
+</section>
+<!-- /Contact Section -->
 
 {% endblock %}

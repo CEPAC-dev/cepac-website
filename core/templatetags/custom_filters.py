@@ -10,9 +10,16 @@ def times(number):
         return []
 
 @register.filter(name='get_item')
-def get_item(lst, index):
+def get_item(obj, key):
     try:
-        return lst[int(index)]
+        # Try integer index first (for lists)
+        return obj[int(key)]
+    except (ValueError, TypeError):
+        # If not an integer, treat as dictionary key
+        try:
+            return obj[key]
+        except Exception:
+            return None
     except Exception:
         return None
 
@@ -33,3 +40,9 @@ def multiply(value, arg):
             return value * arg
         except Exception:
             return value
+@register.filter(name='dict_lookup')
+def dict_lookup(dictionary, key):
+    """Retrieve value from dict using a key"""
+    if isinstance(dictionary, dict):
+        return dictionary.get(key, '')
+    return ''
