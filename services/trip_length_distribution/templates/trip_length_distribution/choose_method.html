@@ -1,0 +1,127 @@
+{% extends "includes/base.html" %} {% load static %} {% block title %}Trip
+Length Distribution | Choose Method{% endblock %} {% block content %}
+
+<style>
+  .choice-card {
+    border-radius: 16px;
+    border: 1px solid #dee2e6;
+    transition: all 0.2s;
+    background: white;
+  }
+
+  .choice-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+    border-color: #0d6efd;
+  }
+
+  .icon-lg {
+    font-size: 3rem;
+  }
+
+  .badge-light {
+    background: #f8f9fa;
+    color: #6c757d;
+    font-weight: normal;
+    padding: 6px 12px;
+  }
+</style>
+
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <!-- Header -->
+      <div class="text-center mb-5">
+        <h3 class="fw-bold mb-2">Select Input Method</h3>
+        <p class="text-secondary">
+          Choose how you'd like to enter your trip data
+        </p>
+      </div>
+
+      <!-- Two Options -->
+      <div class="row g-4">
+        <!-- Manual Option -->
+        <div class="col-md-6">
+          <div class="choice-card p-4 h-100">
+            <div class="text-center">
+              <!-- Icon -->
+              <div class="mb-3">
+                <i class="bi bi-pencil-square icon-lg text-primary"></i>
+              </div>
+
+              <!-- Title -->
+              <h5 class="fw-bold mb-2">Manual Entry</h5>
+
+              <!-- Description -->
+              <p class="text-secondary small mb-3">
+                Enter trip times manually using our simple form
+              </p>
+
+              <!-- Features -->
+              <div class="d-flex justify-content-center gap-2 mb-4">
+                <span class="badge badge-light">Quick</span>
+                <span class="badge badge-light">Simple</span>
+                <span class="badge badge-light">No files</span>
+              </div>
+
+              <!-- Button -->
+              <a
+                href="{% url 'trip_length_distribution:manual' %}"
+                class="btn btn-outline-primary w-100 py-2"
+              >
+                Continue
+                <i class="bi bi-arrow-right ms-1"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Excel Option -->
+        <div class="col-md-6">
+          <div class="choice-card p-4 h-100 border-primary">
+            <div class="text-center">
+              <!-- Icon -->
+              <div class="mb-3">
+                <i class="bi bi-file-earmark-excel icon-lg text-success"></i>
+              </div>
+
+              <!-- Title -->
+              <h5 class="fw-bold mb-2">Excel Upload</h5>
+
+              <!-- Description -->
+              <p class="text-secondary small mb-3">
+                Upload an existing Excel file with your data
+              </p>
+
+              <!-- Features -->
+              <div class="d-flex justify-content-center gap-2 mb-4">
+                <span class="badge badge-light">Bulk</span>
+                <span class="badge badge-light">Fast</span>
+                <span class="badge badge-light">.xlsx .csv</span>
+              </div>
+
+              <!-- Button -->
+              <a
+                href="{% url 'trip_length_distribution:upload_excel' %}"
+                class="btn btn-primary w-100 py-2"
+              >
+                Continue
+                <i class="bi bi-arrow-right ms-1"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer Note -->
+      <div class="text-center mt-4">
+        <p class="text-secondary small">
+          <i class="bi bi-arrow-repeat me-1"></i>
+          Same results with either method
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

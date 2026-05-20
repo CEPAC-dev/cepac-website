@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     "accounts",
     "core",
     "main",
+    "portfolio",
     "services.kmz_polygon_analysis",
     "services.kmz_to_excel",
     "services.kmz_to_shapefile",

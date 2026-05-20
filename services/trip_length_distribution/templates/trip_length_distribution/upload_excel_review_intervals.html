@@ -1,0 +1,288 @@
+{% extends "includes/base.html" %} {% load static %} {% block title %}Review
+Intervals | Trip Length Distribution | CEPAC{% endblock %} {% block content %}
+
+<style>
+  .step-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+  }
+
+  .step {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #6c757d;
+    font-size: 0.95rem;
+  }
+
+  .step.active {
+    color: #0d6efd;
+    font-weight: 600;
+  }
+
+  .step-number {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #e9ecef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  .step.active .step-number {
+    background: #0d6efd;
+    color: white;
+  }
+
+  .step.completed .step-number {
+    background: #198754;
+    color: white;
+  }
+
+  .step-line {
+    width: 40px;
+    height: 2px;
+    background: #dee2e6;
+    margin: 0 -0.5rem;
+  }
+
+  .card {
+    border-radius: 20px;
+    border: none;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+  }
+
+  .interval-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .interval-table thead {
+    background: #f8f9fa;
+  }
+
+  .interval-table th {
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+    color: #495057;
+    border-bottom: 2px solid #dee2e6;
+  }
+
+  .interval-table td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #e9ecef;
+  }
+
+  .interval-table tbody tr:hover {
+    background: #f8f9fa;
+  }
+
+  .interval-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 0.75rem;
+  }
+
+  .interval-label {
+    font-weight: 600;
+    color: #0d6efd;
+  }
+
+  .interval-count {
+    background: #0d6efd;
+    color: white;
+    padding: 0.35rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  .summary-box {
+    background: linear-gradient(135deg, #f0f7ff 0%, #e7f1ff 100%);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    border-left: 4px solid #0d6efd;
+  }
+
+  .summary-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+  }
+
+  .summary-label {
+    color: #6c757d;
+    font-weight: 600;
+  }
+
+  .summary-value {
+    color: #0d6efd;
+    font-weight: 700;
+  }
+
+  .processing-spinner {
+    display: none;
+  }
+
+  .btn-process {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    border: none;
+    color: white;
+    font-weight: 600;
+  }
+
+  .btn-process:hover {
+    background: linear-gradient(135deg, #218838 0%, #1aa179 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(40, 167, 69, 0.3);
+  }
+</style>
+
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-7">
+      <!-- Progress Steps -->
+      <div class="step-indicator">
+        <div class="step completed">
+          <span class="step-number">✓</span>
+          <span>Upload File</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="step completed">
+          <span class="step-number">✓</span>
+          <span>Select Column</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="step completed">
+          <span class="step-number">✓</span>
+          <span>Generate Intervals</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="step active">
+          <span class="step-number">4</span>
+          <span>Process</span>
+        </div>
+      </div>
+
+      <!-- Main Card -->
+      <div class="card p-5">
+        <div class="card-body">
+          <!-- Header -->
+          <div class="mb-4">
+            <h3 class="fw-bold mb-2">Review Intervals</h3>
+            <p class="text-secondary">
+              Review the distribution of your data across intervals
+            </p>
+          </div>
+
+          <!-- Summary Box -->
+          <div class="summary-box">
+            <div class="summary-item">
+              <span class="summary-label">Total Values:</span>
+              <span class="summary-value">{{ total_values }}</span>
+            </div>
+            <div class="summary-item">
+              <span class="summary-label">Number of Intervals:</span>
+              <span class="summary-value">{{ interval_data|length }}</span>
+            </div>
+            <div class="summary-item">
+              <span class="summary-label">Average per Interval:</span>
+              <span class="summary-value"
+                >{{ total_values|add:0|floatformat:0 }}/{{ interval_data|length
+                }}</span
+              >
+            </div>
+          </div>
+
+          <!-- Intervals Display -->
+          <div class="mb-5">
+            <h5 class="fw-bold mb-3">
+              <i class="bi bi-diagram-3"></i> Interval Distribution
+            </h5>
+            {% for interval in interval_data %}
+            <div class="interval-row">
+              <span class="interval-label">{{ interval.interval }}</span>
+              <span class="interval-count">
+                <i class="bi bi-graph-up"></i>
+                {{ interval.count }} values
+              </span>
+            </div>
+            {% empty %}
+            <div class="alert alert-warning">
+              No intervals generated. Please check your data.
+            </div>
+            {% endfor %}
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="d-grid gap-2">
+            <form
+              method="post"
+              action="{% url 'trip_length_distribution:upload_excel_process' %}"
+              id="processForm"
+            >
+              {% csrf_token %}
+              <button
+                type="submit"
+                class="btn btn-lg btn-process w-100"
+                style="border-radius: 8px"
+              >
+                <i class="bi bi-play-fill me-2"></i>
+                <span id="buttonText">Process with Octave</span>
+                <span class="processing-spinner ms-2">
+                  <span
+                    class="spinner-border spinner-border-sm"
+                    role="status"
+                    aria-hidden="true"
+                  ></span>
+                </span>
+              </button>
+            </form>
+            <a
+              href="{% url 'trip_length_distribution:upload_excel_generate_intervals' %}"
+              class="btn btn-outline-secondary btn-lg"
+              style="border-radius: 8px"
+            >
+              <i class="bi bi-arrow-left me-2"></i> Back to Interval Settings
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Info Box -->
+      <div class="mt-4 p-4 bg-light rounded-3">
+        <p class="mb-2"><strong>✅ Ready to Process</strong></p>
+        <ul class="mb-0 small text-secondary">
+          <li>Your data will be fitted to a distribution model</li>
+          <li>Octave will compute optimized parameters</li>
+          <li>Results will be displayed with statistics and visualizations</li>
+          <li>You'll be able to download PDFs and Excel reports</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.getElementById("processForm").addEventListener("submit", (e) => {
+    const button = e.target.querySelector('button[type="submit"]');
+    button.disabled = true;
+    button.querySelector("#buttonText").style.display = "none";
+    button.querySelector(".processing-spinner").style.display = "inline";
+  });
+</script>
+
+{% endblock %}

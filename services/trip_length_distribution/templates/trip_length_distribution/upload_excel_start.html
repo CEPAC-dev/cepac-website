@@ -1,0 +1,301 @@
+{% extends "includes/base.html" %} {% load static %} {% block title %}Upload
+Excel | Trip Length Distribution | CEPAC{% endblock %} {% block content %}
+
+<style>
+  .upload-card {
+    border-radius: 20px;
+    border: none;
+    background: white;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+  }
+
+  .upload-area {
+    border: 2px dashed #dee2e6;
+    border-radius: 16px;
+    padding: 3rem;
+    text-align: center;
+    background: #f8f9fa;
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+
+  .upload-area:hover {
+    border-color: #0d6efd;
+    background: #f0f7ff;
+  }
+
+  .upload-area.dragover {
+    border-color: #0d6efd;
+    background: #e7f1ff;
+    transform: scale(1.01);
+  }
+
+  .step-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+  }
+
+  .step {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #6c757d;
+    font-size: 0.95rem;
+  }
+
+  .step.active {
+    color: #0d6efd;
+    font-weight: 600;
+  }
+
+  .step-number {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #e9ecef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  .step.active .step-number {
+    background: #0d6efd;
+    color: white;
+  }
+
+  .step-line {
+    width: 40px;
+    height: 2px;
+    background: #dee2e6;
+    margin: 0 -0.5rem;
+  }
+
+  #fileInput {
+    display: none;
+  }
+
+  .btn-upload {
+    background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
+    border: none;
+    padding: 0.75rem 2rem;
+    border-radius: 8px;
+    color: white;
+    font-weight: 600;
+    transition: all 0.3s;
+  }
+
+  .btn-upload:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(13, 110, 253, 0.3);
+  }
+
+  .alert {
+    border-radius: 12px;
+  }
+
+  .icon-large {
+    font-size: 3.5rem;
+  }
+</style>
+
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-7">
+      <!-- Progress Steps -->
+      <div class="step-indicator">
+        <div class="step active">
+          <span class="step-number">1</span>
+          <span>Upload File</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="step">
+          <span class="step-number">2</span>
+          <span>Select Column</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="step">
+          <span class="step-number">3</span>
+          <span>Generate Intervals</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="step">
+          <span class="step-number">4</span>
+          <span>Process</span>
+        </div>
+      </div>
+
+      <!-- Main Card -->
+      <div class="upload-card card p-5">
+        <div class="card-body">
+          <!-- Header -->
+          <div class="text-center mb-5">
+            <div class="mb-3">
+              <i class="bi bi-file-earmark-excel icon-large text-success"></i>
+            </div>
+            <h3 class="fw-bold mb-2">Upload Trip Times Data</h3>
+            <p class="text-secondary">
+              Upload your Excel file containing trip time values
+            </p>
+          </div>
+
+          <!-- Alert -->
+          {% if messages %} {% for message in messages %}
+          <div
+            class="alert alert-{{ message.tags }} alert-dismissible fade show"
+            role="alert"
+          >
+            {{ message }}
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="alert"
+            ></button>
+          </div>
+          {% endfor %} {% endif %}
+
+          <div class="alert alert-info bg-light border-0 mb-4">
+            <i class="bi bi-info-circle-fill text-info"></i>
+            <strong class="ms-2">Supported Formats:</strong> Excel (.xlsx, .xls)
+          </div>
+
+          <!-- Upload Form -->
+          <form method="post" enctype="multipart/form-data" id="uploadForm">
+            {% csrf_token %}
+
+            <!-- Drag and Drop Area -->
+            <div class="upload-area mb-4" id="dropArea">
+              <i
+                class="bi bi-cloud-arrow-up mb-3"
+                style="font-size: 2.5rem; color: #6c757d"
+              ></i>
+              <h5 class="text-secondary">Drag and drop your Excel file here</h5>
+              <p class="text-muted small mb-3">or click to select</p>
+              <button type="button" class="btn btn-upload" id="selectBtn">
+                Choose File
+              </button>
+              <input
+                type="file"
+                id="fileInput"
+                name="excel_file"
+                accept=".xlsx,.xls"
+                required
+              />
+            </div>
+
+            <!-- File Info -->
+            <div
+              id="fileInfo"
+              class="alert alert-light border mb-4"
+              style="display: none"
+            >
+              <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-check-circle-fill text-success"></i>
+                <span id="fileName" class="fw-600"></span>
+              </div>
+              <small id="fileSize" class="text-muted d-block mt-2"></small>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="d-grid gap-2">
+              <button
+                type="submit"
+                class="btn btn-primary btn-lg"
+                style="border-radius: 8px"
+              >
+                <i class="bi bi-upload me-2"></i> Continue to Column Selection
+              </button>
+              <a
+                href="{% url 'trip_length_distribution:method_choice' %}"
+                class="btn btn-outline-secondary btn-lg"
+                style="border-radius: 8px"
+              >
+                <i class="bi bi-arrow-left me-2"></i> Back
+              </a>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Help Text -->
+      <div class="mt-4 p-4 bg-light rounded-3">
+        <p class="mb-2"><strong>File Requirements:</strong></p>
+        <ul class="mb-0 small text-secondary">
+          <li>Excel file with numerical trip time values</li>
+          <li>One column should contain the trip times</li>
+          <li>The file will be read and parsed automatically</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const fileInput = document.getElementById("fileInput");
+  const selectBtn = document.getElementById("selectBtn");
+  const dropArea = document.getElementById("dropArea");
+  const fileInfo = document.getElementById("fileInfo");
+  const uploadForm = document.getElementById("uploadForm");
+
+  selectBtn.addEventListener("click", () => fileInput.click());
+
+  ["dragenter", "dragover", "dragleave", "drop"].forEach((eventName) => {
+    dropArea.addEventListener(eventName, preventDefaults, false);
+  });
+
+  function preventDefaults(e) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+
+  ["dragenter", "dragover"].forEach((eventName) => {
+    dropArea.addEventListener(eventName, () => {
+      dropArea.classList.add("dragover");
+    });
+  });
+
+  ["dragleave", "drop"].forEach((eventName) => {
+    dropArea.addEventListener(eventName, () => {
+      dropArea.classList.remove("dragover");
+    });
+  });
+
+  dropArea.addEventListener("drop", (e) => {
+    const dt = e.dataTransfer;
+    const files = dt.files;
+    handleFiles(files);
+  });
+
+  fileInput.addEventListener("change", (e) => {
+    handleFiles(e.target.files);
+  });
+
+  function handleFiles(files) {
+    if (files.length > 0) {
+      const file = files[0];
+      fileInput.files = files;
+      updateFileInfo(file);
+    }
+  }
+
+  function updateFileInfo(file) {
+    document.getElementById("fileName").textContent = file.name;
+    document.getElementById("fileSize").textContent =
+      `Size: ${(file.size / 1024).toFixed(2)} KB`;
+    fileInfo.style.display = "block";
+  }
+
+  uploadForm.addEventListener("submit", (e) => {
+    if (!fileInput.files || fileInput.files.length === 0) {
+      e.preventDefault();
+      alert("Please select a file");
+    }
+  });
+</script>
+
+{% endblock %}
