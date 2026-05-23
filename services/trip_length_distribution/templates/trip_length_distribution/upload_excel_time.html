@@ -1,0 +1,306 @@
+{% extends "includes/base.html" %} 
+{% load static %} 
+{% block title %}Trip Length Distribution | CEPAC{% endblock %} 
+{% block content %}
+
+<style>
+  .upload-card {
+    border-radius: 20px;
+    border: none;
+    background: white;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+  }
+  
+  .upload-area {
+    border: 2px dashed #dee2e6;
+    border-radius: 16px;
+    padding: 2.5rem;
+    text-align: center;
+    background: #f8f9fa;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  
+  .upload-area:hover {
+    border-color: #0d6efd;
+    background: #f0f7ff;
+  }
+  
+  .upload-area.dragover {
+    border-color: #0d6efd;
+    background: #e7f1ff;
+  }
+  
+  .file-info {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 1rem;
+    font-size: 0.9rem;
+  }
+  
+  .format-badge {
+    background: #e9ecef;
+    color: #495057;
+    padding: 4px 12px;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 500;
+  }
+  
+  .step-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .step {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #6c757d;
+  }
+  
+  .step.active {
+    color: #0d6efd;
+    font-weight: 500;
+  }
+  
+  .step-number {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #e9ecef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+  
+  .step.active .step-number {
+    background: #0d6efd;
+    color: white;
+  }
+  
+  .step-line {
+    width: 50px;
+    height: 2px;
+    background: #dee2e6;
+  }
+</style>
+
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      
+      <!-- Progress Steps -->
+      <div class="step-indicator mb-4">
+        <div class="step active">
+          <span class="step-number">1</span>
+          <span>Set Parameters</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="step active">
+          <span class="step-number">2</span>
+          <span>Upload File</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="step">
+          <span class="step-number">3</span>
+          <span>Process</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="step">
+          <span class="step-number">4</span>
+          <span>Results</span>
+        </div>
+      </div>
+      
+      <!-- Main Card -->
+      <div class="upload-card card p-4">
+        <div class="card-body">
+          
+          <!-- Header -->
+          <div class="d-flex align-items-center gap-3 mb-4">
+            <div class="bg-light p-3 rounded-3">
+              <i class="bi bi-file-earmark-excel fs-3 text-success"></i>
+            </div>
+            <div>
+              <h4 class="fw-bold mb-1">Upload Excel File</h4>
+              <p class="text-secondary mb-0 small">Upload your trip times data for processing</p>
+            </div>
+          </div>
+          
+          <!-- Info Alert -->
+          <div class="alert alert-info bg-light d-flex align-items-center gap-3 mb-4" style="border: none;">
+            <i class="bi bi-info-circle-fill fs-5"></i>
+            <div class="small">
+              <strong>Make sure you have already:</strong><br>
+              Set time edges (Minimum, Maximum, Intervals) in the previous step
+            </div>
+          </div>
+          
+          <!-- Upload Form -->
+          <form method="post" enctype="multipart/form-data" id="uploadForm">
+            {% csrf_token %}
+            
+            <!-- File Upload Area -->
+            <div class="upload-area mb-4" id="dropArea">
+              <input
+                type="file"
+                name="excel_file"
+                id="excel_file"
+                class="d-none"
+                accept=".xlsx,.xls,.csv"
+                required
+                onchange="updateFileName(this)"
+              />
+              
+              <i class="bi bi-cloud-upload fs-1 text-secondary mb-3"></i>
+              <h6 class="fw-bold mb-2">Drag & drop or click to upload</h6>
+              <p class="text-secondary small mb-3">Supported formats: .xlsx, .xls, .csv</p>
+              
+              <!-- Selected File Name (hidden initially) -->
+              <div id="selectedFile" class="file-info d-none mb-3">
+                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                <span id="fileName"></span>
+              </div>
+              
+              <button type="button" class="btn btn-light" onclick="document.getElementById('excel_file').click()">
+                <i class="bi bi-folder2-open me-2"></i>
+                Browse Files
+              </button>
+            </div>
+            
+            <!-- Format Guidelines -->
+            <div class="row g-3 mb-4">
+              <div class="col-md-6">
+                <div class="d-flex align-items-center gap-2">
+                  <i class="bi bi-check-circle text-success small"></i>
+                  <span class="small">First row should contain headers</span>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="d-flex align-items-center gap-2">
+                  <i class="bi bi-check-circle text-success small"></i>
+                  <span class="small">Trip times in first column</span>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="d-flex align-items-center gap-2">
+                  <i class="bi bi-check-circle text-success small"></i>
+                  <span class="small">Maximum file size: 10MB</span>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="d-flex align-items-center gap-2">
+                  <i class="bi bi-check-circle text-success small"></i>
+                  <span class="small">Numeric values only</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="d-flex gap-2">
+              <a href="{% url 'trip_length_distribution:method_choice' %}" class="btn btn-outline-secondary px-4">
+                <i class="bi bi-arrow-left me-2"></i>
+                Back
+              </a>
+              <button type="submit" class="btn btn-primary flex-grow-1 py-2" id="submitBtn" disabled>
+                <i class="bi bi-upload me-2"></i>
+                Upload and Process
+              </button>
+            </div>
+          </form>
+          
+          <!-- Template Link -->
+          <div class="text-center mt-4">
+            <a href="#" class="text-decoration-none small">
+              <i class="bi bi-download me-1"></i>
+              Download sample Excel template
+            </a>
+          </div>
+          
+        </div>
+      </div>
+      
+      <!-- Quick Tips -->
+      <div class="d-flex justify-content-center gap-4 mt-3">
+        <span class="format-badge">
+          <i class="bi bi-file-excel me-1"></i>
+          .xlsx
+        </span>
+        <span class="format-badge">
+          <i class="bi bi-file-excel me-1"></i>
+          .xls
+        </span>
+        <span class="format-badge">
+          <i class="bi bi-file-text me-1"></i>
+          .csv
+        </span>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<script>
+  // Update filename when file is selected
+  function updateFileName(input) {
+    const fileName = input.files[0]?.name;
+    const selectedFileDiv = document.getElementById('selectedFile');
+    const fileNameSpan = document.getElementById('fileName');
+    const submitBtn = document.getElementById('submitBtn');
+    
+    if (fileName) {
+      fileNameSpan.textContent = fileName;
+      selectedFileDiv.classList.remove('d-none');
+      submitBtn.disabled = false;
+    }
+  }
+  
+  // Drag and drop functionality
+  const dropArea = document.getElementById('dropArea');
+  const fileInput = document.getElementById('excel_file');
+  
+  ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+    dropArea.addEventListener(eventName, preventDefaults, false);
+  });
+  
+  function preventDefaults(e) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+  
+  ['dragenter', 'dragover'].forEach(eventName => {
+    dropArea.addEventListener(eventName, highlight, false);
+  });
+  
+  ['dragleave', 'drop'].forEach(eventName => {
+    dropArea.addEventListener(eventName, unhighlight, false);
+  });
+  
+  function highlight() {
+    dropArea.classList.add('dragover');
+  }
+  
+  function unhighlight() {
+    dropArea.classList.remove('dragover');
+  }
+  
+  dropArea.addEventListener('drop', handleDrop, false);
+  
+  function handleDrop(e) {
+    const dt = e.dataTransfer;
+    const files = dt.files;
+    
+    if (files.length > 0) {
+      fileInput.files = files;
+      updateFileName(fileInput);
+    }
+  }
+</script>
+
+{% endblock %}

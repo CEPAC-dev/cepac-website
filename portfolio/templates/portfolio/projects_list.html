@@ -1,0 +1,164 @@
+{% extends "includes/base.html" %} {% load static %} {% block title %}Our
+Portfolio | CEPAC{% endblock %} {% block content %}
+
+<!-- Page Title -->
+<div class="page-title" data-aos="fade">
+  <div class="container">
+    <nav class="breadcrumbs">
+      <ol>
+        <li><a href="{% url 'main:home' %}">Home</a></li>
+        <li class="current">Portfolio</li>
+      </ol>
+    </nav>
+    <h1>Our Portfolio</h1>
+    <p>Comprehensive Traffic Impact Studies & Transportation Solutions</p>
+  </div>
+</div>
+<!-- End Page Title -->
+
+<!-- Portfolio Section -->
+<section id="portfolio" class="portfolio section">
+  <div class="container">
+    <!-- Category Filters -->
+    <div class="row mb-5">
+      <div class="col-12" data-aos="fade-up">
+        <div class="d-flex justify-content-center gap-3 flex-wrap">
+          <a
+            href="{% url 'portfolio:projects_list' %}"
+            class="filter-btn {% if not selected_category %}active{% endif %}"
+          >
+            All Projects
+          </a>
+          {% for category in categories %}
+          <a
+            href="?category={{ category.slug }}"
+            class="filter-btn {% if selected_category == category.slug %}active{% endif %}"
+          >
+            {{ category.name }}
+          </a>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Projects Grid -->
+    <div class="row gy-4" data-aos="fade-up" data-aos-delay="200">
+      {% for project in projects %}
+      <div class="col-lg-4 col-md-6">
+        <div
+          class="portfolio-card h-100 shadow-sm rounded overflow-hidden transition-all hover-lift"
+        >
+          <!-- Project Image -->
+          <div
+            class="portfolio-image-wrapper position-relative overflow-hidden"
+            style="height: 250px"
+          >
+            {% if project.main_image %}
+            <img
+              src="{{ project.main_image }}"
+              alt="{{ project.name }}"
+              class="img-fluid w-100 h-100 object-fit-cover"
+            />
+            {% else %}
+            <div
+              class="bg-light w-100 h-100 d-flex align-items-center justify-content-center"
+            >
+              <i class="bi bi-image text-muted" style="font-size: 3rem"></i>
+            </div>
+            {% endif %}
+
+            <!-- Overlay with CTA -->
+            <div
+              class="portfolio-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-end justify-content-between p-3"
+              style="
+                background: linear-gradient(
+                  to top,
+                  rgba(0, 0, 0, 0.7),
+                  transparent
+                );
+              "
+            >
+              <div class="flex-grow-1">
+                <h5 class="text-white mb-0">{{ project.name }}</h5>
+              </div>
+              <a
+                href="{% url 'portfolio:project_detail' project.slug %}"
+                class="btn btn-sm btn-light rounded-circle d-flex align-items-center justify-content-center"
+                style="width: 40px; height: 40px"
+                title="View Details"
+              >
+                <i class="bi bi-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Card Body -->
+          <div class="portfolio-info p-4">
+            {% if project.category %}
+            <span class="badge bg-primary mb-2"
+              >{{ project.category.name }}</span
+            >
+            {% endif %}
+            <p class="text-muted small mb-3">
+              <i class="bi bi-geo-alt me-2"></i>{{ project.location }}
+            </p>
+            <p class="card-text text-dark">{{ project.description }}</p>
+
+            <!-- View Details Button -->
+            <a
+              href="{% url 'portfolio:project_detail' project.slug %}"
+              class="btn btn-primary btn-sm w-100 mt-3"
+            >
+              View Full Details <i class="bi bi-arrow-right ms-2"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <div class="col-12">
+        <div class="alert alert-info text-center py-5">
+          <p class="mb-0">No projects found in this category.</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <!-- End Projects Grid -->
+  </div>
+</section>
+<!-- End Portfolio Section -->
+
+{% endblock %} {% block extra_head %}
+<style>
+  .portfolio-card {
+    transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease;
+  }
+
+  .portfolio-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
+  }
+
+  .portfolio-overlay {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .portfolio-card:hover .portfolio-overlay {
+    opacity: 1;
+  }
+
+  .object-fit-cover {
+    object-fit: cover;
+  }
+
+  .hover-lift {
+    transition: all 0.3s ease;
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-5px);
+  }
+</style>
+{% endblock %}

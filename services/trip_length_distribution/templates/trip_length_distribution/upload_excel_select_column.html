@@ -1,0 +1,265 @@
+{% extends "includes/base.html" %} {% load static %} {% block title %}Select
+Time Column | Trip Length Distribution | CEPAC{% endblock %} {% block content %}
+
+<style>
+  .step-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+  }
+
+  .step {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #6c757d;
+    font-size: 0.95rem;
+  }
+
+  .step.active {
+    color: #0d6efd;
+    font-weight: 600;
+  }
+
+  .step-number {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #e9ecef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  .step.active .step-number {
+    background: #0d6efd;
+    color: white;
+  }
+
+  .step.completed .step-number {
+    background: #198754;
+    color: white;
+  }
+
+  .step-line {
+    width: 40px;
+    height: 2px;
+    background: #dee2e6;
+    margin: 0 -0.5rem;
+  }
+
+  .column-card {
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    padding: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-bottom: 1rem;
+  }
+
+  .column-card:hover {
+    border-color: #0d6efd;
+    background: #f0f7ff;
+  }
+
+  .column-card.selected {
+    border-color: #0d6efd;
+    background: #e7f1ff;
+  }
+
+  .column-card input[type="radio"] {
+    cursor: pointer;
+  }
+
+  .column-badge {
+    display: inline-block;
+    background: #e9ecef;
+    padding: 0.35rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+    margin-right: 0.5rem;
+  }
+
+  .column-badge.numeric {
+    background: #d1ecf1;
+    color: #0c5460;
+  }
+
+  .card {
+    border-radius: 20px;
+    border: none;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+  }
+</style>
+
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-7">
+      <!-- Progress Steps -->
+      <div class="step-indicator">
+        <div class="step completed">
+          <span class="step-number">✓</span>
+          <span>Upload File</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="step active">
+          <span class="step-number">2</span>
+          <span>Select Column</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="step">
+          <span class="step-number">3</span>
+          <span>Generate Intervals</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="step">
+          <span class="step-number">4</span>
+          <span>Process</span>
+        </div>
+      </div>
+
+      <!-- Main Card -->
+      <div class="card p-5">
+        <div class="card-body">
+          <!-- Header -->
+          <div class="mb-5">
+            <h3 class="fw-bold mb-2">Select Time Column</h3>
+            <p class="text-secondary">
+              Which column contains the trip time values?
+            </p>
+          </div>
+
+          <!-- Alert -->
+          {% if messages %} {% for message in messages %}
+          <div
+            class="alert alert-{{ message.tags }} alert-dismissible fade show"
+            role="alert"
+          >
+            {{ message }}
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="alert"
+            ></button>
+          </div>
+          {% endfor %} {% endif %}
+
+          <!-- Column Selection Form -->
+          <form method="post" id="columnForm">
+            {% csrf_token %} {% if numeric_columns %}
+            <div class="mb-4">
+              <label class="fw-bold mb-3 d-block">
+                <i class="bi bi-lightning-fill text-success"></i> Numeric
+                Columns (Recommended)
+              </label>
+              {% for col in numeric_columns %}
+              <label class="column-card">
+                <div class="d-flex gap-3">
+                  <input
+                    type="radio"
+                    name="time_column"
+                    value="{{ col }}"
+                    required
+                  />
+                  <div class="flex-grow-1">
+                    <div class="fw-600">{{ col }}</div>
+                    <span class="column-badge numeric">Numeric</span>
+                  </div>
+                </div>
+              </label>
+              {% endfor %}
+            </div>
+            {% endif %} {% if columns %}
+            <div class="mb-5">
+              <label class="fw-bold mb-3 d-block">
+                <i class="bi bi-list-ul"></i> All Columns
+              </label>
+              {% for col in columns %} {% if not numeric_columns or col not in
+              numeric_columns %}
+              <label class="column-card">
+                <div class="d-flex gap-3">
+                  <input
+                    type="radio"
+                    name="time_column"
+                    value="{{ col }}"
+                    required
+                  />
+                  <div class="flex-grow-1">
+                    <div class="fw-600">{{ col }}</div>
+                    <span class="column-badge">Text/Mixed</span>
+                  </div>
+                </div>
+              </label>
+              {% endif %} {% endfor %}
+            </div>
+            {% endif %}
+
+            <!-- Action Buttons -->
+            <div class="d-grid gap-2">
+              <button
+                type="submit"
+                class="btn btn-primary btn-lg"
+                style="border-radius: 8px"
+              >
+                <i class="bi bi-check-lg me-2"></i> Continue to Interval
+                Generation
+              </button>
+              <a
+                href="{% url 'trip_length_distribution:upload_excel' %}"
+                class="btn btn-outline-secondary btn-lg"
+                style="border-radius: 8px"
+              >
+                <i class="bi bi-arrow-left me-2"></i> Back to Upload
+              </a>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Info Box -->
+      <div class="mt-4 p-4 bg-light rounded-3">
+        <p class="mb-2"><strong>💡 Tips:</strong></p>
+        <ul class="mb-0 small text-secondary">
+          <li>Select the column that contains your trip time values</li>
+          <li>Numeric columns are highlighted and recommended</li>
+          <li>
+            Non-numeric values will be automatically converted if possible
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const columnCards = document.querySelectorAll(".column-card");
+  columnCards.forEach((card) => {
+    card.addEventListener("click", () => {
+      columnCards.forEach((c) => c.classList.remove("selected"));
+      card.classList.add("selected");
+      card.querySelector("input").checked = true;
+    });
+
+    if (card.querySelector("input").checked) {
+      card.classList.add("selected");
+    }
+  });
+
+  document.getElementById("columnForm").addEventListener("submit", (e) => {
+    const selected = document.querySelector(
+      'input[name="time_column"]:checked',
+    );
+    if (!selected) {
+      e.preventDefault();
+      alert("Please select a column");
+    }
+  });
+</script>
+
+{% endblock %}

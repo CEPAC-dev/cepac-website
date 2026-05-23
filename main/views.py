@@ -57,7 +57,7 @@ def contact(request):
     return render(request, "contact/index.html")
 
 def portfolio(request):
-    return render(request, "portfolio/index.html")
+    return redirect("portfolio:projects_list")
 
 def team(request):
     return render(request, "team/index.html")

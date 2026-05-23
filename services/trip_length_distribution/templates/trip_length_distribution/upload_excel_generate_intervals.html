@@ -1,0 +1,289 @@
+{% extends "includes/base.html" %} {% load static %} {% block title %}Generate
+Intervals | Trip Length Distribution | CEPAC{% endblock %} {% block content %}
+
+<style>
+  .step-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+  }
+
+  .step {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #6c757d;
+    font-size: 0.95rem;
+  }
+
+  .step.active {
+    color: #0d6efd;
+    font-weight: 600;
+  }
+
+  .step-number {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #e9ecef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  .step.active .step-number {
+    background: #0d6efd;
+    color: white;
+  }
+
+  .step.completed .step-number {
+    background: #198754;
+    color: white;
+  }
+
+  .step-line {
+    width: 40px;
+    height: 2px;
+    background: #dee2e6;
+    margin: 0 -0.5rem;
+  }
+
+  .card {
+    border-radius: 20px;
+    border: none;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+  }
+
+  .info-box {
+    background: linear-gradient(135deg, #f0f7ff 0%, #e7f1ff 100%);
+    border-left: 4px solid #0d6efd;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .stat-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+  }
+
+  .stat-label {
+    font-weight: 600;
+    color: #6c757d;
+  }
+
+  .stat-value {
+    font-weight: 700;
+    color: #0d6efd;
+  }
+
+  .form-control {
+    border-radius: 8px;
+    border: 2px solid #e9ecef;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+  }
+
+  .form-control:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.1);
+  }
+
+  .input-group-text {
+    background: #f8f9fa;
+    border: 2px solid #e9ecef;
+    border-right: none;
+  }
+
+  .form-control {
+    border-left: none;
+  }
+
+  .suggestion-badge {
+    display: inline-block;
+    background: #fff3cd;
+    color: #664d03;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+  }
+</style>
+
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-7">
+      <!-- Progress Steps -->
+      <div class="step-indicator">
+        <div class="step completed">
+          <span class="step-number">✓</span>
+          <span>Upload File</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="step completed">
+          <span class="step-number">✓</span>
+          <span>Select Column</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="step active">
+          <span class="step-number">3</span>
+          <span>Generate Intervals</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="step">
+          <span class="step-number">4</span>
+          <span>Process</span>
+        </div>
+      </div>
+
+      <!-- Main Card -->
+      <div class="card p-5">
+        <div class="card-body">
+          <!-- Header -->
+          <div class="mb-4">
+            <h3 class="fw-bold">Generate Intervals</h3>
+            <p class="text-secondary">
+              Define how many intervals to divide your data into
+            </p>
+          </div>
+
+          <!-- Data Info Box -->
+          <div class="info-box">
+            <div class="stat-row">
+              <span class="stat-label">Data Range:</span>
+              <span class="stat-value"
+                >{{ data_min|floatformat:2 }} - {{ data_max|floatformat:2
+                }}</span
+              >
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">Total Values:</span>
+              <span class="stat-value">{{ data_count }}</span>
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">Suggested Intervals:</span>
+              <span class="stat-value">{{ suggested_intervals }}</span>
+            </div>
+          </div>
+
+          <!-- Interval Selection Form -->
+          <form method="post" id="intervalForm">
+            {% csrf_token %}
+
+            <div class="mb-4">
+              <label for="intervals" class="form-label fw-bold mb-2">
+                <i class="bi bi-diagram-3"></i> Number of Intervals
+              </label>
+              <div class="input-group input-group-lg">
+                <span class="input-group-text">
+                  <i class="bi bi-diagram-3"></i>
+                </span>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="intervals"
+                  name="intervals"
+                  min="1"
+                  max="100"
+                  value="{{ suggested_intervals }}"
+                  required
+                />
+              </div>
+              <div class="suggestion-badge">
+                <i class="bi bi-info-circle"></i>
+                Based on your data, {{ suggested_intervals }} intervals are
+                recommended (≈√n rule)
+              </div>
+              <small class="text-muted d-block mt-2">
+                Enter a value between 1 and 100. More intervals = finer
+                granularity.
+              </small>
+            </div>
+
+            <!-- Real-time Preview -->
+            <div class="mb-4 p-3 bg-light rounded-2" id="preview">
+              <small class="text-secondary">
+                <strong>Preview:</strong> With
+                <span id="previewIntervals">{{ suggested_intervals }}</span>
+                intervals, each interval will have approximately
+                <span id="previewSize"
+                  >{{ data_count|add:suggested_intervals|add:"-1"|floatformat:0
+                  }}</span
+                >
+                values
+              </small>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="d-grid gap-2">
+              <button
+                type="submit"
+                class="btn btn-primary btn-lg"
+                style="border-radius: 8px"
+              >
+                <i class="bi bi-forward me-2"></i> Continue to Review
+              </button>
+              <a
+                href="{% url 'trip_length_distribution:upload_excel_select_column' %}"
+                class="btn btn-outline-secondary btn-lg"
+                style="border-radius: 8px"
+              >
+                <i class="bi bi-arrow-left me-2"></i> Back to Column Selection
+              </a>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Help Box -->
+      <div class="mt-4 p-4 bg-light rounded-3">
+        <p class="mb-2"><strong>📊 Choosing Intervals:</strong></p>
+        <ul class="mb-0 small text-secondary">
+          <li>
+            <strong>Few intervals (5-10):</strong> Better for overview, coarser
+            distribution
+          </li>
+          <li>
+            <strong>Many intervals (20-50):</strong> More detail, finer
+            distribution
+          </li>
+          <li>
+            <strong>Rule of Thumb:</strong> Use √n where n = number of data
+            points
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const intervalsInput = document.getElementById('intervals');
+  const dataCount = {{ data_count }};
+
+  intervalsInput.addEventListener('input', (e) => {
+    const intervals = parseInt(e.target.value) || 1;
+    document.getElementById('previewIntervals').textContent = intervals;
+    const avgSize = Math.round(dataCount / intervals);
+    document.getElementById('previewSize').textContent = avgSize;
+  });
+
+  document.getElementById('intervalForm').addEventListener('submit', (e) => {
+    const intervals = parseInt(intervalsInput.value);
+    if (intervals < 1 || intervals > 100) {
+      e.preventDefault();
+      alert('Please enter a value between 1 and 100');
+    }
+  });
+</script>
+
+{% endblock %}
